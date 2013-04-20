@@ -6,5 +6,4 @@
 #' 
 get_data <- function(url) {
     paste(readLines(url, warn = F), collapse="")
-    
 }

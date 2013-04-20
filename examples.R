@@ -21,3 +21,8 @@ POST(
 			 response = list(format = "csv"
 			 )))
 )
+
+
+## Parsa output till en data.frame när output är ett CSV-objekt
+a <- content(response, as="text")
+b <- read.table(textConnection(a), sep=',', header=T, stringsAsFactors=F)

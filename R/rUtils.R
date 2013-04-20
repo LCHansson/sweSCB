@@ -31,7 +31,7 @@ getContent <- function(response, type = "csv") {
             header = T, 
             stringsAsFactors = F
         )
-    } else {    
+    } else {
         stop("Unsupported type format")
     }
     

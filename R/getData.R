@@ -5,5 +5,12 @@
 #' @param url url address
 #' 
 getData <- function(url) {
-    paste(readLines(url, warn = F), collapse="")
+    data.frame(
+        t(sapply(
+            RJSONIO::fromJSON(
+                paste(readLines(url, warn = F), collapse = "")
+            ),
+            c
+        ))
+    )
 }

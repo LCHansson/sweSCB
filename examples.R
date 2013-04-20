@@ -1,36 +1,3 @@
-#' @title rSCBapi
-#' 
-#' @description A package for interfacing with the API of Statistics Sweden
-#' (Statistiska Centralbyrån)
-#' 
-#' @section ...
-#
-#' @name rSCBapi
-#' @docType package
-
-scbQueryData <- list(
-	base_url = "http://api.scb.se",
-	api_name = "OV0104", # Are there any other names?
-	api_version = "v1",
-	database_id = "doris",
-	language = "sv",
-	levels = "ssd",
-	table_id = "BE/BE0401/BE0401B/BefProgFoddaMedel10"
-)
-
-basePath <- buildPath(scbQueryData)
-
-
-baseUrl <- parse_url(basePath)
-
-baseUrl$query = NULL
-baseUrl$params = NULL
-
-build_url(baseUrl)
-
-
-
-
 POST(
 	"http://api.scb.se/OV0104/v1/doris/sv/ssd/BE/BE0401/BE0401B/BefProgFoddaMedel10",
 	body = toJSON(

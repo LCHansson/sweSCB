@@ -4,6 +4,6 @@
 #' 
 #' @param url url address
 #' 
-get_data <- function(url) {
+getData <- function(url) {
     paste(readLines(url, warn = F), collapse="")
 }

@@ -6,6 +6,8 @@ Date: 2013-04-20
 Author: Love Hansson, Thomas Reinholdsson
 Maintainer: Who to complain to <yourfault@somewhere.net>
 Description: More about what it does (maybe more than one line)
-License: What license is it under?
+Depends:
+	RJSONIO
+License: AGPLv3
 Collate:
     'rSCBapi.R'

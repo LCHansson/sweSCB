@@ -1,6 +1,7 @@
 #' @title rSCBapi
 #' 
-#' @description ...
+#' @description A package for interfacing with the API of Statistics Sweden
+#' (Statistiska Centralbyrån)
 #' 
 #' @section ...
 #

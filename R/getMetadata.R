@@ -4,7 +4,7 @@
 #' 
 #' @param url url address
 #' 
-getData <- function(url) {
+getMetadata <- function(url) {
     data.frame(
         t(sapply(
             RJSONIO::fromJSON(

@@ -1,0 +1,11 @@
+Package: rSCBapi
+Type: Package
+Title: R interface to the SCB API
+Version: 0.1
+Date: 2013-04-20
+Author: Love Hansson, Thomas Reinholdsson
+Maintainer: Who to complain to <yourfault@somewhere.net>
+Description: More about what it does (maybe more than one line)
+License: What license is it under?
+Collate:
+    'rSCBapi.R'

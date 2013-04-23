@@ -8,8 +8,9 @@ Maintainer: Who to complain to <yourfault@somewhere.net>
 Description: More about what it does (maybe more than one line)
 Depends:
     httr,
-	RJSONIO
+    RJSONIO
 License: AGPLv3
 Collate:
-    'rSCBapi.R'
-    
+    'getLevels.R'
+    'getMetadata.R'
+    'rUtils.R'

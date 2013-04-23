@@ -15,42 +15,10 @@ scbQueryData <- list(
 	database_id = "doris",
 	language = "sv",
 	levels = "ssd",
-	table_id = "BE/BE0401/BE0401B/BefProgFoddaMedel10"
+	table_id = "BE/BE0401/"
 )
 
-basePath <- buildPath(scbQueryData)
-
-
-baseUrl <- parse_url(basePath)
-
-baseUrl$query = NULL
-baseUrl$params = NULL
-
-build_url(baseUrl)
+baseUrl <- buildPath(scbQueryData)
 
 
 
-
-POST(
-	"http://api.scb.se/OV0104/v1/doris/sv/ssd/BE/BE0401/BE0401B/BefProgFoddaMedel10",
-	body = toJSON(
-		list(query = list(
-			list(code = "Fodelseland",
-				 selection = list(filter = "item",
-				 				 values = list("010","020")
-				 )),
-			list(code = "Alder",
-				 selection = list(filter = "all",
-				 				 values = list("*")
-				 )),
-			list(code = "ContentsCode",
-				 selection = list(filter = "all",
-				 				 values = list("*")
-				 )),			
-			list(code = "Tid",
-				 selection = list(filter = "top",
-				 				 values = list("3")
-				 ))),
-			 response = list(format = "csv"
-			 )))
-)

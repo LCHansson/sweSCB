@@ -11,9 +11,7 @@ getLevels <- function(baseUrl = NULL) {
 		stop("no URL to parse")
 	}
 	
-	nodeResponse <- getData(baseUrl, type="csv")
-	
-	nodeData <- getContent(nodeOutput, type="csv")
+	nodeData <- getMetadata(baseUrl)
 	
 	if(!("id" %in% names(nodeData))) {
 		stop("already at lowest node, fetch data instead")

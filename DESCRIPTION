@@ -11,6 +11,7 @@ Depends:
     RJSONIO
 License: AGPLv3
 Collate:
+    'rUtils.R'
     'getLevels.R'
     'getMetadata.R'
-    'rUtils.R'
+    'rSCBapi.R'

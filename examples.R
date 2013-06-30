@@ -1,87 +1,145 @@
 require(httr)
 require(RJSONIO)
-
-
+require(stringr)
+require(data.table)
+require(ggplot2)
 
 ##### EXAMPLE: HIERARCHY MINING #####
+kMaxLevels = 4
 
-# Define the query
-scbQueryData <- list(
-	base_url = "http://api.scb.se",
-	api_name = "OV0104", # Are there any other names?
-	api_version = "v1",
-	database_id = "doris",
-	language = "sv",
-	levels = "ssd",
-# 	table_id = "AM/AM0114"
-		table_id = "AM/AM0106/AM0106B/Kommun15g"
-)
-
-# Build the base URL
-baseUrl <- buildPath(scbQueryData)
-
-# Get sublevels at the current node
-getLevels(baseUrl)
-
-# Then get the data
-# This won't work... yet
-getScbData(baseUrl)
-
-# We probably also want to be able to recursively describe all subnodes at
-# a certain node.
-# (This also won't work yet)
-getAllLevelsBelow(baseUrl)
+kTakeSample = FALSE
+kSamplesize = 10
 
 
 
-##### EXAMPLE: FETCHING ACTUAL DATA #####
-scbQueryData <- list(
-	base_url = "http://api.scb.se",
-	api_name = "OV0104", # Are there any other names?
-	api_version = "v1",
-	database_id = "doris",
-	language = "sv",
-	levels = "ssd",
-	table_id = "BE/BE0401/BE0401B/BefProgFoddaMedel10"
-)
+# RUN --------------------------------------------------------------------------
+## INIT: Define the data containers
+hierarchy <- data.table(id_lv1 = getLevels(.baseUrl,c=T)$id, desc_lv1 = getLevels(.baseUrl,c=T)$description)
+emptyRows <- list()
+tableAtLevel <- list()
+timeSeries <- data.table(obs=integer(), level=integer(), id=character(), time=numeric())
+count <- 0
 
-baseUrl <- buildPath(scbQueryData)
+## Warn if kTakeSample is FALSE
+if(!kTakeSample) {
+	cat("\n\n!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n")
+	cat("WARNING: Fetching data ALL NODES in the SCB API.\n")
+	cat("This might take a VERY LONG TIME!\n")
+	cat("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n\n\n")
+	
+}
 
-POST(
-	baseUrl,
-	body = toJSON(
-		list(query = list(
-			list(code = "Fodelseland",
-				 selection = list(filter = "item",
-				 				 values = list("010","020")
-				 )),
-			list(code = "Alder",
-				 selection = list(filter = "all",
-				 				 values = list("*")
-				 )),
-			list(code = "ContentsCode",
-				 selection = list(filter = "all",
-				 				 values = list("*")
-				 )),			
-			list(code = "Tid",
-				 selection = list(filter = "top",
-				 				 values = list("3")
-				 ))),
-			 response = list(format = "csv"
-			 )))
-)
+## Run loop
+for(j in 2:kMaxLevels) {
+	
+	# Take a sample of Hierarchy to make it manageable
+	if(kTakeSample) {
+	hierarchy <- hierarchy[
+		sample(
+			nrow(hierarchy),
+			min(nrow(hierarchy),kSamplesize*(j-1)))
+		]
+	}
+	
+	# Define the sublevel at which we will be looking
+	idLevel <- j
+	
+	cat("*******************************************\n")
+	cat("Getting data for level", idLevel,"\n")
+	cat("*******************************************\n\n")
+	
+	# Clear input data
+	subLevelData <- data.table(topId=character(),bottomId = character(),desc=character())
+	
+	topLevelName <- paste0("id_lv",idLevel-1)
+	bottomLevelName <- paste0("id_lv",idLevel)
+	descName <- paste0("desc_lv",idLevel)
+	
+	for(i in 1:nrow(hierarchy)) {
+		count <- count+1
+		topLevelId <- str_trim(as.character(hierarchy[i,topLevelName,with=F][[1]]))
+		if(topLevelId != "") {
+			tid <- system.time({
+				
+				## QUICK FIX FOR BUGS IN THE SCB API:
+				if(!topLevelId %in% c("UF0502C")) {
+					queryUrl <- buildPath(.baseUrl,topLevelId)
+					
+					# Trim levels (some levels are returned with trailing whitespace)
+					queryLevels <- getLevels(queryUrl,c=TRUE,r=F)
+				} else {
+					queryLevels <- FALSE
+				}
+				
+				if(queryLevels[[1]][1] != FALSE) {
+					queryData <- data.table(
+						topId = topLevelId,
+						bottomId = as.character(queryLevels$id),
+						desc = as.character(queryLevels$description)
+					)
+				} else {
+					queryData <- data.table(
+						topId = topLevelId,
+						bottomId = "",
+						desc = ""
+					)
+				}
+				
+				cat("Query",i,":    ",queryUrl,"\n")
+				cat("Level",j-1, "value: ",topLevelId,"\n")
+				cat("Level",j  , "values:",queryData$bottomId,"\n")
+				
+				subLevelData <- rbind(subLevelData,queryData)
+			})
+		} else {
+			# Make sure the timestamp from the previous query doesn't cause us
+			# to post the next query too soon
+			tid <- c(0,0,0)
+		}
+		
+		# Create time series object for analysis purposes
+		timeSeries <- rbind(timeSeries,
+							list(obs=count,
+								 level=j,
+								 id=topLevelId,
+								 time=tid[[3]]))
+		cat("Time taken for query:", tid[[3]],"\n\n")
+		
+		# Ensure we don't overdo our query limit (1/sec) by adding
+		# 0.1-1.2 seconds sleep time, depending on past query processing time 
+		if(tid[[3]] != 0) { Sys.sleep(1.2-min(tid[[3]],1.1)) }
+	}
+	
+	setnames(subLevelData,
+			 names(subLevelData),
+			 c(topLevelName,bottomLevelName,descName))
+	
+	hierarchy <- merge(hierarchy,subLevelData,
+					   by=paste0(topLevelName),
+					   all.x=T)
+	
+# 	emptyRows[[j]] <- hierarchy[get(bottomLevelName) == ""]
+	tableAtLevel[[j]] <- hierarchy
+	
+	if(all(hierarchy[,bottomLevelName,with=F] == "") | nrow(hierarchy) == 0) {
+		stop("Reached bottom node in all data tree paths. Stopping.")
+	}
+	
+# 	hierarchy <- hierarchy[get(bottomLevelName) != ""]
+}
 
+# Order columns
+hierarchy <- hierarchy[,list(
+	id_lv1,
+	desc_lv1,
+	id_lv2,
+	desc_lv2,
+	id_lv3,
+	desc_lv3,
+	id_lv4,
+	desc_lv4)]
 
-## Parse the CSV output to a data.frame and print it
-a <- content(response, as="text")
-b <- read.table(textConnection(a), sep=',', header=T, stringsAsFactors=F)
-print(b)
+hierarchy_bk <- copy(hierarchy)
+save(hierarchy,file="hierarchy.RData")
 
-
-
-
-##### EXAMPLE: INSTALLING THE rSCBapi PACKAGE #####
-require(devtools)
-
-install_github("rSCBapi", "prenumerant")
-
+View(hierarchy)

@@ -4,8 +4,9 @@
 #' 
 #' @param queryData input vector
 
-buildPath <- function(queryData = NULL) {
-	paste(queryData, collapse="/")
+buildPath <- function(...) {
+	urlElements <- c(...)
+	paste0(urlElements, collapse="/")
 }
 
 #' Get content from response

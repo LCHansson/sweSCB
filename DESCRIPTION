@@ -4,15 +4,23 @@ Title: R interface to the SCB API of Statistics Sweden
 Version: 0.1
 Date: 2013-04-20
 Author: Love Hansson, Thomas Reinholdsson
-Maintainer: Who to complain to <yourfault@somewhere.net>
-Description: More about what it does (maybe more than one line)
+Maintainer: Love Hansson, <love.hansson@gmail.com>
+Description: A package to interface with the API of Statistics Sweden. Please
+    note that this package is still in its infancy and might not functino as
+    expected. Version 0.1 contains functinos to inspect metadata, construct
+    url:s, list nodes and subnodes in the API data tree, and download real
+    data.
 Depends:
     httr,
     RJSONIO,
-    data.table
+    data.table,
+    stringr
 License: AGPLv3
 Collate:
     'rUtils.R'
     'getLevels.R'
     'getMetadata.R'
     'constants.R'
+    'rSCBapi.R'
+    'getData.R'
+    'getDims.R'

@@ -1,8 +1,8 @@
 \name{buildPath}
 \alias{buildPath}
-\title{rUtils.R}
+\title{Build a path from character elements}
 \usage{
-  buildPath(queryData = NULL)
+  buildPath(...)
 }
 \arguments{
   \item{queryData}{input vector}

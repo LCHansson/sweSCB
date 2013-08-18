@@ -1,8 +1,9 @@
-#' @title rUtils.R
+#' Build a path from character elements
 #' 
-#' @description ...
+#' ...
 #' 
 #' @param queryData input vector
+#' 
 
 buildPath <- function(...) {
 	urlElements <- c(...)
@@ -15,6 +16,7 @@ buildPath <- function(...) {
 #' 
 #' @param response response object
 #' @param type type format
+#' 
 #' 
 getContent <- function(response, type = "csv") {
     
@@ -37,4 +39,14 @@ getContent <- function(response, type = "csv") {
     }
     
     return(content)
+}
+
+#' Return base URL to SCB API
+#' 
+#' ...
+#' 
+#' @param version The version of SCB API to use. (Default: \code{v1})
+#' @export
+baseURL <- function(version="v1") {
+	paste(sprintf("http://api.scb.se/OV0104/%s/doris/sv/ssd",version))
 }

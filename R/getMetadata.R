@@ -3,8 +3,9 @@
 #' Get data from url
 #' 
 #' @param url url address
+#' @export
 #' 
-getMetadata <- function(url) {
+scbGetMetadata <- function(url) {
     data.frame(
         t(sapply(
             RJSONIO::fromJSON(

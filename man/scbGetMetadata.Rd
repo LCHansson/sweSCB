@@ -1,8 +1,8 @@
-\name{getMetadata}
-\alias{getMetadata}
+\name{scbGetMetadata}
+\alias{scbGetMetadata}
 \title{Get data}
 \usage{
-  getMetadata(url)
+  scbGetMetadata(url)
 }
 \arguments{
   \item{url}{url address}

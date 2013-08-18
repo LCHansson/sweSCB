@@ -14,7 +14,7 @@ kSamplesize = 10
 
 # RUN --------------------------------------------------------------------------
 ## INIT: Define the data containers
-hierarchy <- data.table(id_lv1 = getLevels(.baseUrl,c=T)$id, desc_lv1 = getLevels(.baseUrl,c=T)$description)
+hierarchy <- data.table(id_lv1 = getLevels(baseURL(),c=T)$id, desc_lv1 = getLevels(baseURL(),c=T)$description)
 emptyRows <- list()
 tableAtLevel <- list()
 timeSeries <- data.table(obs=integer(), level=integer(), id=character(), time=numeric())
@@ -63,7 +63,7 @@ for(j in 2:kMaxLevels) {
 				
 				## QUICK FIX FOR BUGS IN THE SCB API:
 				if(!topLevelId %in% c("UF0502C")) {
-					queryUrl <- buildPath(.baseUrl,topLevelId)
+					queryUrl <- buildPath(baseURL(),topLevelId)
 					
 					# Trim levels (some levels are returned with trailing whitespace)
 					queryLevels <- getLevels(queryUrl,c=TRUE,r=F)

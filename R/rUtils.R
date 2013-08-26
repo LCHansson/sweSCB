@@ -3,7 +3,7 @@
 #' ...
 #' 
 #' @param queryData input vector
-#' 
+#' @export
 
 buildPath <- function(...) {
 	urlElements <- c(...)
@@ -16,7 +16,6 @@ buildPath <- function(...) {
 #' 
 #' @param response response object
 #' @param type type format
-#' 
 #' 
 getContent <- function(response, type = "csv") {
     

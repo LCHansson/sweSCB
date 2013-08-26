@@ -18,7 +18,7 @@ scbGetLevels <- function(
 		if(!returnError) return(FALSE)
 	}
 	
-	nodeData <- getMetadata(baseUrl)
+	nodeData <- scbGetMetadata(baseUrl)
 	
 	if(!("id" %in% names(nodeData))) {
 		if(returnError) stop("already at lowest node, fetch data instead")
@@ -46,7 +46,7 @@ checkForLevels <- function(url = baseURL()) {
 		return(FALSE)
 	}
 	
-	nodeData <- getMetadata(url)
+	nodeData <- scbGetMetadata(url)
 	if(!("id" %in% names(nodeData))) {
 		return(FALSE)
 	}

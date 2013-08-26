@@ -7,7 +7,7 @@
 #' @export
 
 scbGetDims <- function(url, verbose=TRUE) {
-	mD <- getMetadata(url)
+	mD <- scbGetMetadata(url)
 	
 	## Deparse metadata object into elements
 	# Title

@@ -13,7 +13,7 @@ b <- scbGetMetadata(buildPath(baseURL(),
 
 # Do this for consecutive steps...
 cc <- scbGetMetadata(buildPath(baseURL(),
-                               as.character(a$id[9])
+                               as.character(a$id[9]),
                                as.character(b$id[4])
 ))
 

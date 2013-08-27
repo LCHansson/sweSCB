@@ -2,9 +2,9 @@ Package: rSCBapi
 Type: Package
 Title: R interface to the SCB API of Statistics Sweden
 Version: 0.1
-Date: 2013-04-20
+Date: 2013-08-28
 Author: Love Hansson, Thomas Reinholdsson
-Maintainer: Love Hansson, <love.hansson@gmail.com>
+Maintainer: Love Hansson, <love.hansson@pensionsmyndigheten.se>
 Description: A package to interface with the API of Statistics Sweden. Please
     note that this package is still in its infancy and might not function as
     expected. Version 0.1 contains functions to inspect metadata, construct

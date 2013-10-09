@@ -6,12 +6,13 @@ rSCBapi is a package to interface with the API of Statistics Sweden, a.k.a. SCB.
 Please note that this package is still in its infancy and might not function as expected. Version 0.1 contains functions to inspect metadata, construct url:s, list nodes and subnodes in the API data tree, and download real data.
 
 ## A brief note on using the SCB API
-THe SCB API is a RESTful API consisting of a metadata part and a data part. The metadata part is structured in a hierarchical node tree, where each node contains information about any (sub-)nodes that are below it in the tree structure or, if the nodes is at the bottom of the tree structure, the data referenced by the node as well as what dimensions are available for the data at that subnode.
+The SCB API is a RESTful API. The data consists of a metadata part and a data part. The metadata part is structured in a hierarchical node tree, where each node contains information about any (sub-)nodes that are below it in the tree structure or, if the nodes is at the bottom of the tree structure, the data referenced by the node as well as what dimensions are available for the data at that subnode.
 
 
 ## Installation
 Use the `devtools` package for easy installation:
 ```r
+install.packages("devtools")
 devtools::install_github("rSCBapi", "prenumerant", "v0.1")
 ```
 
@@ -38,22 +39,28 @@ View(nextNode)
 This can be repeated until we reach a node that references data instead of subnodes.
 
 ## Getting data dimensions
-Next, we want to find the dimensions of the data at a particular node:
-```r
-url <- buildPath(baseURL(), "PR", "PR0101", "PR0101A", "KPIFastM")
-dataNode <- scbGetMetadata(url)
+Next, we want to find the dimensions of the data at a particular bottom node, e.g. the node "KPIFastM" which is the bottom node in the following tree branch:
 
-dims <- scbGetDims(dataURL)
+PR -> PR0101 -> PR0301B -> HMPIM07
+
+The following code constructs the URL and fetches dimension metadata:
+
+```r
+url <- buildPath(baseURL(), "PR", "PR0101", "PR0301B", "HMPIM07")
+
+dims <- scbGetDims(url)
 ```
 
-The function scbGetDims() prints out a friendly message stating that the dimensions for the data at this node are "ContentsCode" and "Tid". We can now either pass on a wildcard ("*") to these dimensions, or a value, or a range of values.
+The function scbGetDims() prints out a friendly message stating that the dimensions for the data at this node are "ContentsCode" and "Tid". We can now either pass on a wildcard ("*") to these dimensions, or a value, or a range of values on vector form.
 
 To see what values are allowed for each dimension, have a look at the `dims` object using `print(dims)`.
 
 ## Getting the data
 This information can now be used to get the actual data:
 ```r
-sdata <- scbGetData(dataURL, list(ContentsCode = "*", Tid = c("1980M01", "1980M02")))
+sdata <- scbGetData(dataURL, list(SPIN2007 = "*", ContentsCode = "PR0301I4", Tid = c("2010M02","2011M03")))
+
+View(sdata)
 ```
 
 ## Further examples

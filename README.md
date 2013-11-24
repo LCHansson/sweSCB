@@ -7,7 +7,7 @@ This is the development version of the rSCB package. The package is provided as-
 If you want to use a stable and tested version of rSCB, please use the version found in the `master` branch of the [rSCB repository](https://github.com/LCHansson/rSCB/). It can be installed by doing the following:
 
 ```s
-devtools::install_github("rSCB","LCHansson",ref="master"")
+devtools::install_github("rSCB","LCHansson",ref="master")
 ```
 
 

@@ -63,7 +63,8 @@ getContent <- function(response, type = "csv") {
 #' ...
 #' 
 #' @param version The version of SCB API to use. (Default: \code{v1})
+#' @param lang The language (two letters) to use in the fetched data. (Default: \code{sv})
 #' @export
-baseURL <- function(version="v1") {
-	paste(sprintf("http://api.scb.se/OV0104/%s/doris/sv/ssd",version))
+baseURL <- function(version="v1",lang="sv") {
+	paste(sprintf("http://api.scb.se/OV0104/%s/doris/%s/ssd",version,lang))
 }

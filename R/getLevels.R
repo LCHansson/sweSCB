@@ -3,29 +3,28 @@
 #' Get levels from a node in the API. If at the lowest node, return error.
 #'
 #' @param baseUrl input URL to node (default: \code{NULL})
-#' @param categoryDescriptions whether to include node descriptions with the node IDs (default: \code{FALSE})
+#' @param descriptions whether to include node descriptions with the node IDs (default: \code{FALSE})
 #' @param quiet Quiet mode. Whether to stop with an error if the input node does not contain any subnodes. If set to \code{TRUE}, the function will quietly return FALSE without any errors. (default: \code{FALSE})
 #' @export
 
 scbGetLevels <- function(
-	baseUrl = baseURL(),
-	categoryDescriptions = FALSE,
-	quiet = FALSE
+	descriptions = FALSE,
+	quiet = FALSE,
+	...
 ) {
 	
 # 	if(is.null(baseUrl)) {
-# 		if(!quiet) stop("no URL to parse")
-# 		if(quiet) return(FALSE)
+# 		baseUrl <- baseURL(...)
 # 	}
 	
-	nodeData <- scbGetMetadata(baseUrl)
+	nodeData <- scbGetMetadata(...)
 	
 	if(!("id" %in% names(nodeData))) {
-		if(!quiet) stop("already at lowest node, fetch data instead")
+		if(!quiet) warning("already at lowest node, fetch data instead")
 		if(quiet) return(FALSE)
 	}
 	
-	if(!categoryDescriptions) {
+	if(!descriptions) {
 		ids <- list(id=nodeData$id)
 	} else {
 		ids <- list(id=nodeData$id,
@@ -40,7 +39,11 @@ scbGetLevels <- function(
 #' 
 #' @param url API url
 #' @export
-checkForLevels <- function(url = baseURL()) {
+checkForLevels <- function(url) {
+	
+	if(missing(url))
+		stop("ERROR: Function rSCB::checkForLevels(): parameter `url` empty.\n
+			 Please see traceback() for more information.")
 	
 	if(is.null(url)) {
 		return(FALSE)
@@ -59,11 +62,12 @@ checkForLevels <- function(url = baseURL()) {
 #' 
 #' @param place Location in hierarchy, in the form of a URL.
 #' @param returnDistance Whether to return only the distance (in nodes) from top node to URL. (Default: \code{FALSE})
+#' @param ... Further arguments passed to \code{baseURL()}.
 #' @export 
 
-deparseLevels <- function(place, returnDistance=FALSE) {
+deparseLevels <- function(place, returnDistance=FALSE, ...) {
 	placeLevels <- str_split(
-		str_replace(place, baseURL(),""),
+		str_replace(place, baseURL(...),""),
 		"/"
 	)
 	

@@ -4,9 +4,13 @@
 #' 
 #' @param varname The name of the variable in the web API. This can be a data node or a tree node.
 #' @param topnodes A string or a list of strings containing the top nodes \emph{in top-to-bottom order}
-#' @param baseURL The base URL to use. This is only useful if you want to use the function for constructing a URL to another web service or SCB suddenly should change their base URL.
+#' @param base The base URL to use. This is only useful if you want to use the function for constructing a URL to another web service or SCB suddenly should change their base URL.
+#' @param ... Further arguments passed to  \code{baseURL()}.
 
-buildPath <- function(varname, topnodes = NULL, base = baseURL()) {
+buildPath <- function(varname, topnodes = NULL, base = NULL...) {
+	if(is.null(base))
+		base <- baseURL(...)
+	
 	# Error handling
 	if(topnodes == "")
 		stop("ERROR: Internal function rSCB:::buildPath: `topnodes` argument set to empty string\n

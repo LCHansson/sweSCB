@@ -3,13 +3,12 @@ Type: Package
 Title: R interface to the web API of Statistics Sweden
 Version: 0.2
 Date: 2013-11-25
-Author: Love Hansson, Thomas Reinholdsson
-Maintainer: Love Hansson, <love.hansson@pensionsmyndigheten.se>
-Description: A package to interface with the API of Statistics Sweden. Please
-    note that this package is still in its infancy and might not function as
-    expected. This version contains functions to inspect metadata, construct
-    url:s, list nodes and subnodes in the API data tree, and download real
-    data.
+Author: Love Hansson, Thomas Reinholdsson, Måns Magnusson
+Maintainer: Love Hansson, <love.hansson@gmail.com>
+Description: A package to interface with the API of Statistics Sweden. The
+    package offers methods to fetch information about the data hierarchy stored
+    behind the API; extract metadata; fetch actual data; and clean up the
+    results.
 Depends:
     httr,
     RJSONIO,

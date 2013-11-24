@@ -1,85 +1,85 @@
 rSCB
 =======
 
-# Please note - development version
-This is the development version of the rSCB package. The package is provided as-is and comes without any warranty or guarantee. If things aren't working in this version you are encouraged to file a bug in the GitHub [issue tracker](https://github.com/LCHansson/rSCB/issues), but please do not be surprised if a function should not work as expected.
-
-If you want to use a stable and tested version of rSCB, please use the version found in the `master` branch of the [rSCB repository](https://github.com/LCHansson/rSCB/). It can be installed by doing the following:
-
-```s
-devtools::install_github("rSCB","LCHansson",ref="master")
-```
-
-
 
 ## Introduction
 rSCB is a package to interface with the API of Statistics Sweden, a.k.a. SCB.
 
-Please note that this package is still in its infancy and might not function as expected. Version 0.1 contains functions to inspect metadata, construct url:s, list nodes and subnodes in the API data tree, and download real data.
+The package offers methods to fetch information about the data hierarchy stored behind the API; extract metadata; fetch actual data; and clean up the results.
+
+The source code for this project is entirely
+
+## New in version 0.2
+Version 0.2 was released on 25 November, 2013 and introduces significant syntax simplifications compared to the previous versions. User @mansmeg also contributed a function to clean up the data fetched from the API: `scbCleanData`.
 
 ## A brief note on using the SCB API
 The SCB API is a RESTful API. The data consists of a metadata part and a data part. The metadata part is structured in a hierarchical node tree, where each node contains information about any (sub-)nodes that are below it in the tree structure or, if the nodes is at the bottom of the tree structure, the data referenced by the node as well as what dimensions are available for the data at that subnode.
-
 
 ## Installation
 Use the `devtools` package for easy installation:
 ```r
 install.packages("devtools")
-devtools::install_github("rSCBapi", "prenumerant", "v0.1")
+devtools::install_github("rSCB", "prenumerant", "v0.2")
 ```
 
 ## Exploring the top node of the API data tree
-Data in the SCB API is structured in a data tree. The URL to the top node is stored in the `baseURL()` function. To explore the top node of the data tree, use `scbGetMetadata()`:
+Data in the SCB API is structured in a data tree. To explore the top node of the data tree, use `scbGetMetadata()`. Provided with no parameters, the function fetches metadata from the top node in the API:
 ```r
-url <- baseURL()
-topNode <- scbGetMetadata(url)
+topNode <- scbGetMetadata()
 View(topNode)
 ```
 
 ## Traversing the node tree
-The node tree can be ascended by adding the id of the next subnode to the URL of the base URL. This id is stored in the "id" column of the topNode object created above.
+The node tree can be ascended by adding the id of the next subnode to the URL of the base URL. This id is stored in the "id" column of the topNode object created above. The example below goes down the node tree one level at the third position in the "id" column:
 
-By using the buildPath() function, this can be easily appended as such:
 ```r
-id <- as.character(topNode$id[16])
-
-url <- buildPath(baseURL(), id)
-
-nextNode <- scbGetMetadata(url)
+nextNode <- scbGetMetadata(topNode$id[3])
 View(nextNode)
 ```
-This can be repeated until we reach a node that references data instead of subnodes.
+This can be repeated until we reach a node that references data instead of subnodes. Once you reach the bottom node, `scbGetMetadata` warns the user that the bottom node has been reached.
 
 ## Getting data dimensions
 Next, we want to find the dimensions of the data at a particular bottom node, e.g. the node "KPIFastM" which is the bottom node in the following tree branch:
 
 PR -> PR0101 -> PR0301B -> HMPIM07
 
-The following code constructs the URL and fetches dimension metadata:
+The following code fetches dimensions for the variable `HMPIM07`:
 
 ```r
-url <- buildPath(baseURL(), "PR", "PR0101", "PR0301B", "HMPIM07")
-
-dims <- scbGetDims(url)
+bottomNode <- scbGetMetadata("HMPIM07")
+dims <- scbGetDims(bottomNode)
 ```
 
-The function scbGetDims() prints out a friendly message stating that the dimensions for the data at this node are "ContentsCode" and "Tid". We can now either pass on a wildcard ("*") to these dimensions, or a value, or a range of values on vector form.
+The first call, `scbGetMetadata("HMPIM07")`, returns a friendly message informing the user that this is a bottom node in the data tree. This call also provides us with a resulting object, `bottomNode`, which contains the URL to the node. We will recycle this when getting 'real' data from the database.
 
-To see what values are allowed for each dimension, have a look at the `dims` object using `print(dims)`.
+The second call, `scbGetDims(bottomNode)` also prints out a friendly message stating that the dimensions for the data at this node are "ContentsCode" and "Tid". We can now either pass on a wildcard ("*") to these dimensions, or a value, or a range of values on vector form.
+
+To see what values are allowed for each dimension, have a look at the `dims` object using `print(dims)`. You will see that this is actually a list, and the values for each of the dimensions can be found by looking closer at each of the elements in the list by calling `dims[[n]]` where `n` is the number of the dimension you want to look at.
 
 ## Getting the data
-This information can now be used to get the actual data:
+The information we got above, i.e. the URL to the data node and the dimensions required for the call, can now be used to construct a call to the API to fetch the actual data:
 ```r
 sdata <- scbGetData(dataURL, list(SPIN2007 = "*", ContentsCode = "PR0301I4", Tid = c("2010M02","2011M03")))
-
-View(sdata)
 ```
 
+The data can now be inspected, e.g. by doing `View(sdata)`.
+
+
+## Cleaning up the results
+Unfortunately, the beta version of the SCB web API often returns faulty formatted data, which can cause a lot of pain. Fortunately, however, version 0.2 of rSCB includes a function to handle this (for most cases). To 'clean' the data into something usable, use the following call:
+```r
+sdata_clean <- scbCleanData(sdata)
+```
+The data should now be ready for use. Thanks to GitHub user @mansmeg for contributing the base of this function!
+
+### A last word of caution
+The SCB web API seems to still be in its early stages, and data quality is sometimes not perfect. If you find an obvious error in your data and it's not obvious that this is because of programming errors in `rSCB`, please consider filing a bug report to the developers at SCB. Follow [this link](http://www.scb.se/api) to find information on how to contact them.
+
 ## Further examples
-Further examples of package usage are contained in the "examples" folder installed with this package. To locate this folder, run `system.file(package = "rSCBapi")` from the R terminal.
+Further examples of package usage are contained in the "examples" folder installed with this package. To locate this folder, run `system.file(package = "rSCB")` from the R terminal.
 
 ## Development information
-This package is still in its early development stages. The package can already be used in its present form to construct a simple menu system, to mine the SCB API for data, or to discover new data. However, work is needed to improve usability and widen the range of possible applications. You are invited to contribute to package development in any way you can and want to.
+This package is still in its early development stages. The package can already be used in its present form to construct a simple menu system, to mine the SCB API for data, or to discover new data. However, work is needed to improve usability and widen the range of possible applications. You are invited to contribute to package development in any way you can and want to. You will, of course, be given due credit for your work.
 
 ## Open source license
 Please note that all source code contained in this project is open source licensed under the Affero Gnu Public License v3. This means that you are allowed to modify, use, and spread the source code freely withoug any permission from the author. HOWEVER, this source code and ANY derivatives thereof MUST be licensed with the same open source license. For further information about the AGPLv3, see LICENSE included with the source code of this package.

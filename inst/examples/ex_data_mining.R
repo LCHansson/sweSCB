@@ -9,8 +9,8 @@ View(a)
 # Go down one level into the node tree.
 b <- scbGetMetadata(buildPath(baseURL(),
                               as.character(a$id[9])
-))
 
+))
 # Do this for consecutive steps...
 cc <- scbGetMetadata(buildPath(baseURL(),
                                as.character(a$id[9]),

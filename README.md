@@ -1,7 +1,7 @@
-rSCBapi
+rSCB
 =======
 
-rSCBapi is a package to interface with the API of Statistics Sweden, a.k.a. SCB.
+rSCB is a package to interface with the API of Statistics Sweden, a.k.a. SCB.
 
 Please note that this package is still in its infancy and might not function as expected. Version 0.1 contains functions to inspect metadata, construct url:s, list nodes and subnodes in the API data tree, and download real data.
 

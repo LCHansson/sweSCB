@@ -2,7 +2,7 @@
 \alias{scbGetDims}
 \title{Get data dimensions form a bottom node in SCB API}
 \usage{
-  scbGetDims(url, verbose = TRUE)
+  scbGetDims(node, verbose = TRUE)
 }
 \arguments{
   \item{url}{URL to get data from}

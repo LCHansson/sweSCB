@@ -6,21 +6,16 @@
 #' @param verbose Verbose output mode.
 #' @export
 
-scbGetDims <- function(url, verbose=TRUE) {
-	mD <- scbGetMetadata(url)
+scbGetDims <- function(node, verbose=TRUE) {
 	
 	## Deparse metadata object into elements
 	# Title
-	title <- mD$title$title
+	title <- node$title$title
 	
-	vars <- mD$variables$variables
+	vars <- node$variables$variables
 	ndim <- length(vars)
 	
 	names <- sapply(vars, function(var,i) { var$code }, 1:ndim)
-# 	types <- sapply(vars, function(var,i) { var$text }, 1:ndim)
-# 	
-# 	times <- sapply(vars, function(var) "time" %in% names(var))
-# 	eliminations <- sapply(vars, function(var) "elimination" %in% names(var))
 	
 	if(verbose) {
 		cat("Title: \n", title, "\n")

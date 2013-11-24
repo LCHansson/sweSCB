@@ -7,14 +7,14 @@ require(ggplot2)
 ##### EXAMPLE: HIERARCHY MINING #####
 kMaxLevels = 4
 
-kTakeSample = FALSE
+kTakeSample = TRUE
 kSamplesize = 10
 
 
 
 # RUN --------------------------------------------------------------------------
 ## INIT: Define the data containers
-hierarchy <- data.table(id_lv1 = getLevels(baseURL(),c=T)$id, desc_lv1 = getLevels(baseURL(),c=T)$description)
+hierarchy <- data.table(id_lv1 = scbGetLevels(descriptions=TRUE)$id, desc_lv1 = scbGetLevels(descriptions=TRUE)$description)
 emptyRows <- list()
 tableAtLevel <- list()
 timeSeries <- data.table(obs=integer(), level=integer(), id=character(), time=numeric())
@@ -57,16 +57,16 @@ for(j in 2:kMaxLevels) {
 	
 	for(i in 1:nrow(hierarchy)) {
 		count <- count+1
-		topLevelId <- str_trim(as.character(hierarchy[i,topLevelName,with=F][[1]]))
+		topLevelId <- str_trim(as.character(hierarchy[i,topLevelName,with=FALSE][[1]]))
 		if(topLevelId != "") {
 			tid <- system.time({
 				
 				## QUICK FIX FOR BUGS IN THE SCB API:
 				if(!topLevelId %in% c("UF0502C")) {
-					queryUrl <- buildPath(baseURL(),topLevelId)
+# 					queryUrl <- buildPath(baseURL(),topLevelId)
 					
 					# Trim levels (some levels are returned with trailing whitespace)
-					queryLevels <- getLevels(queryUrl,c=TRUE,r=F)
+					queryLevels <- scbGetLevels(topLevelId,descriptions=TRUE,quiet=FALSE)
 				} else {
 					queryLevels <- FALSE
 				}
@@ -116,12 +116,12 @@ for(j in 2:kMaxLevels) {
 	
 	hierarchy <- merge(hierarchy,subLevelData,
 					   by=paste0(topLevelName),
-					   all.x=T)
+					   all.x=TRUE)
 	
 # 	emptyRows[[j]] <- hierarchy[get(bottomLevelName) == ""]
 	tableAtLevel[[j]] <- hierarchy
 	
-	if(all(hierarchy[,bottomLevelName,with=F] == "") | nrow(hierarchy) == 0) {
+	if(all(hierarchy[,bottomLevelName,with=FALSE] == "") | nrow(hierarchy) == 0) {
 		stop("Reached bottom node in all data tree paths. Stopping.")
 	}
 	

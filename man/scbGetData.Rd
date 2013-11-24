@@ -16,7 +16,8 @@
   of values for that dimension.}
 }
 \description{
-  Get data from a bottom node in SCB API
+  This function fetches actual data (i.e. values) from the
+  SCB web API.
 }
 \details{
   There are five documented filter types in the SCB API
@@ -25,22 +26,15 @@
   modes. To use "Item" selection, simply submit a value or
   vector of values with each dimensional parameter. To use
   "All" selection, submit a wildcard asterisk ("*") instead
-  of a value.
+  of a value. For detailed examples of how the function can
+  be used, please refer to the manpage for
+  \code{\link{scbCleanData}}. Also see the installed
+  example files in the \code{examples} folder of
+  \code{path.package("rSCB")} (these are also viewable on
+  the project's GitHub page).
 }
-\examples{
-## Get data for a defined node
-url <- buildPath(baseURL(),"BE/BE0401/BE0401B/BefProgFoddaMedel10")
-# alternatively:
-url <- buildPath(baseURL(),"BefProgFoddaMedel10")
-
-data <- scbGetData(url, dims=list(
- 	Fodelseland = "010",
- 	Alder="*",
- 	ContentsCode = "*",
- 	Tid="*"
-))
-
-## Inspect data
-View(data)
+\seealso{
+  \code{\link{scbGetMetadata}}, \code{\link{scbGetDims}},
+  \code{\link{scbGetLevels}}, \code{\link{scbCleanData}}
 }
 

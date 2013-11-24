@@ -1,31 +1,26 @@
 #' Get levels from API node
 #'
-#' Get levels from a node in the API. If at the lowest node, return error.
+#' Get levels from a node in the API. If at the lowest node, return a warning.
 #'
-#' @param baseUrl input URL to node (default: \code{NULL})
-#' @param categoryDescriptions whether to include node descriptions with the node IDs (default: \code{FALSE})
-#' @param returnError whether to stop with an error if the input node does not contain any subnodes. If set to \code{FALSE}, the function will simply exit silently. (default: \code{TRUE})
+#' @param baseUrl Input URL to node (default: \code{NULL})
+#' @param descriptions Whether to include node descriptions with the list of node IDs. (default: \code{FALSE})
+#' @param quiet Quiet mode. Whether to stop with an error if the input node does not contain any subnodes. If set to \code{TRUE}, the function will quietly return FALSE without any errors. (default: \code{FALSE})
 #' @export
 
 scbGetLevels <- function(
-	baseUrl = NULL,
-	categoryDescriptions = FALSE,
-	returnError=TRUE
+	descriptions = FALSE,
+	quiet = FALSE,
+	...
 ) {
 	
-	if(is.null(baseUrl)) {
-		if(returnError) stop("no URL to parse")
-		if(!returnError) return(FALSE)
-	}
-	
-	nodeData <- scbGetMetadata(baseUrl)
+	nodeData <- scbGetMetadata(quiet=TRUE, ...)
 	
 	if(!("id" %in% names(nodeData))) {
-		if(returnError) stop("already at lowest node, fetch data instead")
-		if(!returnError) return(FALSE)
+		if(!quiet) warning("already at lowest node, fetch data instead")
+		if(quiet) return(FALSE)
 	}
 	
-	if(!categoryDescriptions) {
+	if(!descriptions) {
 		ids <- list(id=nodeData$id)
 	} else {
 		ids <- list(id=nodeData$id,
@@ -40,7 +35,11 @@ scbGetLevels <- function(
 #' 
 #' @param url API url
 #' @export
-checkForLevels <- function(url = baseURL()) {
+checkForLevels <- function(url) {
+	
+	if(missing(url))
+		stop("ERROR: Function rSCB::checkForLevels(): parameter `url` empty.\n
+			 Please see traceback() for more information.")
 	
 	if(is.null(url)) {
 		return(FALSE)
@@ -55,26 +54,26 @@ checkForLevels <- function(url = baseURL()) {
 	return(TRUE)
 }
 
-#' Function to deparse an URL into the nodes into 
+#' Function to deparse an URL into its components.
 #' 
-#' @param place Location in hierarchy, in the form of a URL.
+#' This function is currently not used in the package.
+#' 
+#' @param place Location in hierarchy, in the form of a (data-node complete) URL.
 #' @param returnDistance Whether to return only the distance (in nodes) from top node to URL. (Default: \code{FALSE})
-#' @export 
+#' @param ... Further arguments passed to \code{baseURL()}.
 
-deparseLevels <- function(place, returnDistance=FALSE) {
+deparseLevels <- function(place, returnDistance=FALSE, ...) {
 	placeLevels <- str_split(
-		str_replace(place, baseURL(),""),
+		str_replace(place, baseURL(...),""),
 		"/"
 	)
 	
 	# Remove empty elements created by str_split (caused by leadning and/or 
 	# trailing slashes)
 	placeLevels <- placeLevels[[1]][sapply(placeLevels, str_length) > 0]
-	
-	
-	if(returnDistance) {
-		levelsToTop <- length(placeLevels)
 		
+	if(returnDistance) {
+		levelsToTop <- length(placeLevels)		
 		return(levelsToTop)
 	}
 	

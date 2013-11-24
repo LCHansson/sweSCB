@@ -2,12 +2,20 @@
 \alias{scbGetMetadata}
 \title{Get data}
 \usage{
-  scbGetMetadata(url)
+  scbGetMetadata(path = NULL, quiet = FALSE, ...)
 }
 \arguments{
-  \item{url}{url address}
+  \item{path}{URL to fetch metadata from. Defaults to the
+  base URL of the SCB web API, which is equal to the top
+  node in the data tree.}
+
+  \item{quiet}{Quiet mode (never return a message to the
+  user)}
+
+  \item{...}{Further arguments passed to \code{baseURL()}.}
 }
 \description{
-  Get data from url
+  Get data from the API. If at the lowest node, provide the
+  user with a friendly message about this.
 }
 

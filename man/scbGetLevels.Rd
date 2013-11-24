@@ -2,22 +2,21 @@
 \alias{scbGetLevels}
 \title{Get levels from API node}
 \usage{
-  scbGetLevels(baseUrl = NULL,
-    categoryDescriptions = FALSE, returnError = TRUE)
+  scbGetLevels(descriptions = FALSE, quiet = FALSE, ...)
 }
 \arguments{
-  \item{baseUrl}{input URL to node (default: \code{NULL})}
+  \item{baseUrl}{Input URL to node (default: \code{NULL})}
 
-  \item{categoryDescriptions}{whether to include node
-  descriptions with the node IDs (default: \code{FALSE})}
+  \item{descriptions}{Whether to include node descriptions
+  with the list of node IDs. (default: \code{FALSE})}
 
-  \item{returnError}{whether to stop with an error if the
-  input node does not contain any subnodes. If set to
-  \code{FALSE}, the function will simply exit silently.
-  (default: \code{TRUE})}
+  \item{quiet}{Quiet mode. Whether to stop with an error if
+  the input node does not contain any subnodes. If set to
+  \code{TRUE}, the function will quietly return FALSE
+  without any errors. (default: \code{FALSE})}
 }
 \description{
   Get levels from a node in the API. If at the lowest node,
-  return error.
+  return a warning.
 }
 

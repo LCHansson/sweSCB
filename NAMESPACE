@@ -1,5 +1,4 @@
 export(baseURL)
-export(buildPath)
 export(checkForLevels)
 export(cleanSCB)
 export(deparseLevels)

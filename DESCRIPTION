@@ -17,7 +17,7 @@ Depends:
     stringr
 License: AGPLv3
 Collate:
-    'rUtils.R'
+    'sbcUtils.R'
     'getLevels.R'
     'getMetadata.R'
     'constants.R'

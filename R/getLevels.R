@@ -4,25 +4,25 @@
 #'
 #' @param baseUrl input URL to node (default: \code{NULL})
 #' @param categoryDescriptions whether to include node descriptions with the node IDs (default: \code{FALSE})
-#' @param returnError whether to stop with an error if the input node does not contain any subnodes. If set to \code{FALSE}, the function will simply exit silently. (default: \code{TRUE})
+#' @param quiet Quiet mode. Whether to stop with an error if the input node does not contain any subnodes. If set to \code{TRUE}, the function will quietly return FALSE without any errors. (default: \code{FALSE})
 #' @export
 
 scbGetLevels <- function(
-	baseUrl = NULL,
+	baseUrl = baseURL(),
 	categoryDescriptions = FALSE,
-	returnError=TRUE
+	quiet = FALSE
 ) {
 	
-	if(is.null(baseUrl)) {
-		if(returnError) stop("no URL to parse")
-		if(!returnError) return(FALSE)
-	}
+# 	if(is.null(baseUrl)) {
+# 		if(!quiet) stop("no URL to parse")
+# 		if(quiet) return(FALSE)
+# 	}
 	
 	nodeData <- scbGetMetadata(baseUrl)
 	
 	if(!("id" %in% names(nodeData))) {
-		if(returnError) stop("already at lowest node, fetch data instead")
-		if(!returnError) return(FALSE)
+		if(!quiet) stop("already at lowest node, fetch data instead")
+		if(quiet) return(FALSE)
 	}
 	
 	if(!categoryDescriptions) {

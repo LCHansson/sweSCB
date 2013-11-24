@@ -4,7 +4,7 @@
 #' 
 #' @param varname The name of the variable in the web API. This can be a data node or a tree node.
 #' @param topnodes A string or a list of strings containing the top nodes \emph{in top-to-bottom order}
-#' @param baseUrl The base URL to use. This is only useful if you want to use the function for constructing a URL to another web service or SCB suddenly should change their base URL.
+#' @param baseUrl The base URL to use. This is only useful if you want to use the function for constructing a URL to another web service or if SCB should suddenly change their base URL. If you want to pass arguments to \code{baseURL()}, use the \code{...} argument instead.
 #' @param ... Further arguments passed to  \code{baseURL()}.
 
 buildPath <- function(varname, topnodes = NULL, baseUrl = NULL, ...) {
@@ -68,7 +68,8 @@ getContent <- function(response, type = "csv") {
 #' 
 #' @param version The version of SCB API to use. (Default: \code{v1})
 #' @param lang The language (two letters) to use in the fetched data. (Default: \code{sv})
+#' @param ... Additional parameters. These are currently ignored.
 #' @export
-baseURL <- function(version="v1",lang="sv") {
+baseURL <- function(version="v1",lang="sv",...) {
 	paste(sprintf("http://api.scb.se/OV0104/%s/doris/%s/ssd",version,lang))
 }

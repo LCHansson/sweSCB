@@ -7,7 +7,6 @@
 #' @export
 
 scbGetDims <- function(node, verbose=TRUE) {
-# 	mD <- scbGetMetadata(url,...)
 	
 	## Deparse metadata object into elements
 	# Title
@@ -17,10 +16,6 @@ scbGetDims <- function(node, verbose=TRUE) {
 	ndim <- length(vars)
 	
 	names <- sapply(vars, function(var,i) { var$code }, 1:ndim)
-# 	types <- sapply(vars, function(var,i) { var$text }, 1:ndim)
-# 	
-# 	times <- sapply(vars, function(var) "time" %in% names(var))
-# 	eliminations <- sapply(vars, function(var) "elimination" %in% names(var))
 	
 	if(verbose) {
 		cat("Title: \n", title, "\n")

@@ -19,12 +19,7 @@ test <- scbGetData(metadata$URL, dims=list(
 View(test)
 
 # Make sure the data is actually numeric (it often isn't)
-if(is.character(test$Födda.2010)) {
-	for(i in 1:nrow(test)) {
-		test$Födda.2010[i] <- paste0(str_extract_all(test$Födda.2010[i],"[[:digit:]]")[[1]],collapse="")
-	}
-	test$Födda.2010 <- as.numeric(test$Födda.2010)
-}
+testClean <- scbCleanData(test)
 	
 # Plot the data
-ggplot(test,aes(x=ålder,y=Födda.2010,fill=födelseland)) + geom_histogram()
+ggplot(testClean,aes(x=ålder,y=Födda.2010,fill=födelseland)) + geom_histogram()

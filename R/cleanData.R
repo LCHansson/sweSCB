@@ -1,32 +1,29 @@
 #' Tidies the data from SCB to R numeric/factor format in data.frame
 #' 
-#' @param data data.frame object downloaded with the rSCBapi.
+#' @param data data.frame object downloaded with \code{scbGetData}.
 #' 
 #' @examples
 #' ## Get data for a defined node
-#' url <- buildPath(baseURL(),"BE/BE0401/BE0401B/BefProgFoddaMedel10")
-#' # alternatively:
-#' url <- buildPath(baseURL(),"BefProgFoddaMedel10")
+#' datanode <- scbGetMetadata("BefProgFoddaMedel10")
 #' 
-#' data <- scbGetData(url, dims=list(
+#' data <- scbGetData(datanode$url, dims=list(
 #'    Fodelseland = "010",
 #'  	Alder="*",
 #'  	ContentsCode = "*",
 #'  	Tid="*"
 #' ))
 #' 
-#' cleanData <- cleanSCB(data)
+#' cleanData <- scbCleanData(data)
 #' 
 #' ## Inspect data
 #' View(cleanData)
 #' 
 #' @export
 
-cleanSCB <- function(data) {
+scbCleanData <- function(data) {
 	as.data.frame(
-		apply(
+		lapply(
 			X=data,
-			MARGIN=2,
 			FUN=.cleanSCBcol
 		),
 		stringsAsFactors=TRUE

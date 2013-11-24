@@ -7,7 +7,7 @@ rSCB is a package to interface with the API of Statistics Sweden, a.k.a. SCB.
 
 The package offers methods to fetch information about the data hierarchy stored behind the API; extract metadata; fetch actual data; and clean up the results.
 
-The source code for this project is entirely
+The source code for this project is entirely free and is licensed under the [AGPLv3 license](http://www.gnu.org/licenses/agpl-3.0.html) (also included with this package). This means that you are free to use, distribute and modify the code as you see fit. However, any code you add to this code _must_ also be released under the same license or any compatible and equally free license, as-is without any modifications. Freedom is a precious thing and can only be safeguarded by openness, sharing, and a [copyleft](http://en.wikipedia.org/wiki/Copyleft) attitude towards intellectual property.
 
 ## New in version 0.2
 Version 0.2 was released on 25 November, 2013 and introduces significant syntax simplifications compared to the previous versions. User @mansmeg also contributed a function to clean up the data fetched from the API: `scbCleanData`.

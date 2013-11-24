@@ -7,7 +7,7 @@
 #' @param baseUrl The base URL to use. This is only useful if you want to use the function for constructing a URL to another web service or SCB suddenly should change their base URL.
 #' @param ... Further arguments passed to  \code{baseURL()}.
 
-buildPath <- function(varname, topnodes = NULL, baseUrl = NULL...) {
+buildPath <- function(varname, topnodes = NULL, baseUrl = NULL, ...) {
 	if(is.null(baseUrl))
 		baseUrl <- baseURL(...)
 	

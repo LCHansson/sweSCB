@@ -17,7 +17,6 @@ Depends:
     stringr
 License: AGPLv3
 Collate:
-    'sbcUtils.R'
     'getLevels.R'
     'getMetadata.R'
     'constants.R'
@@ -25,3 +24,4 @@ Collate:
     'getData.R'
     'getDims.R'
     'cleanSCB.R'
+    'scbUtils.R'

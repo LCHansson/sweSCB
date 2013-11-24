@@ -3,7 +3,7 @@ rSCB
 
 
 ## Introduction
-rSCB is a package to interface with the API of Statistics Sweden, a.k.a. SCB.
+rSCB is an R package to interface with the API of Statistics Sweden, a.k.a. SCB.
 
 The package offers methods to fetch information about the data hierarchy stored behind the API; extract metadata; fetch actual data; and clean up the results.
 

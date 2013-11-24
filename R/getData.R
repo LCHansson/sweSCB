@@ -27,7 +27,7 @@
 #' 
 #' @export
 
-scbGetData <- function(url, dims) {
+scbGetData <- function(url, dims, ...) {
 	dimNames <- names(dims)
 	
 	queryBody <- list()

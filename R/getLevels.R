@@ -1,6 +1,6 @@
 #' Get levels from API node
 #'
-#' Get levels from a node in the API. If at the lowest node, return error.
+#' Get levels from a node in the API. If at the lowest node, return a warning.
 #'
 #' @param baseUrl Input URL to node (default: \code{NULL})
 #' @param descriptions Whether to include node descriptions with the list of node IDs. (default: \code{FALSE})
@@ -13,7 +13,7 @@ scbGetLevels <- function(
 	...
 ) {
 	
-	nodeData <- scbGetMetadata(...)
+	nodeData <- scbGetMetadata(quiet=TRUE, ...)
 	
 	if(!("id" %in% names(nodeData))) {
 		if(!quiet) warning("already at lowest node, fetch data instead")

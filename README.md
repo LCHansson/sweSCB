@@ -19,7 +19,8 @@ The SCB API is a RESTful API. The data consists of a metadata part and a data pa
 Use the `devtools` package for easy installation:
 ```r
 install.packages("devtools")
-devtools::install_github("rSCB", "prenumerant", "v0.2")
+devtools::install_github("rSCB", "prenumerant", "0.2")
+library(rSCB)
 ```
 
 ## Exploring the top node of the API data tree
@@ -37,6 +38,8 @@ nextNode <- scbGetMetadata(topNode$id[3])
 View(nextNode)
 ```
 This can be repeated until we reach a node that references data instead of subnodes. Once you reach the bottom node, `scbGetMetadata` warns the user that the bottom node has been reached.
+
+Note that `scbGetMetadata` actually takes the name of a node as input parameter, so if you know the name of a subnode in the node tree or a bottom (data) node, you can supply this directly to the function instead of explorin the data tree as we did above.
 
 ## Getting data dimensions
 Next, we want to find the dimensions of the data at a particular bottom node, e.g. the node "KPIFastM" which is the bottom node in the following tree branch:
@@ -59,7 +62,7 @@ To see what values are allowed for each dimension, have a look at the `dims` obj
 ## Getting the data
 The information we got above, i.e. the URL to the data node and the dimensions required for the call, can now be used to construct a call to the API to fetch the actual data:
 ```r
-sdata <- scbGetData(dataURL, list(SPIN2007 = "*", ContentsCode = "PR0301I4", Tid = c("2010M02","2011M03")))
+sdata <- scbGetData(bottomNode$URL, list(SPIN2007 = "*", ContentsCode = "PR0301I4", Tid = c("2010M02","2011M03")))
 ```
 
 The data can now be inspected, e.g. by doing `View(sdata)`.

@@ -1,6 +1,18 @@
 rSCB
 =======
 
+# Please note - development version
+This is the development version of the rSCB package. The package is provided as-is and comes without any warranty or guarantee. If things aren't working in this version you are encouraged to file a bug in the GitHub [issue tracker](https://github.com/LCHansson/rSCB/issues), but please do not be surprised if a function should not work as expected.
+
+If you want to use a stable and tested version of rSCB, please use the version found in the `master` branch of the [rSCB repository](https://github.com/LCHansson/rSCB/). It can be installed by doing the following:
+
+```s
+devtools::install_github("rSCB","LCHansson",ref="master"")
+```
+
+
+
+## Introduction
 rSCB is a package to interface with the API of Statistics Sweden, a.k.a. SCB.
 
 Please note that this package is still in its infancy and might not function as expected. Version 0.1 contains functions to inspect metadata, construct url:s, list nodes and subnodes in the API data tree, and download real data.

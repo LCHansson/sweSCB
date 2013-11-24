@@ -22,10 +22,23 @@
 #' 
 #' @export
 
-cleanSCB<-function(data) as.data.frame(apply(X=data,MARGIN=2,FUN=.cleanSCBcol),stringsAsFactors=TRUE)
+cleanSCB <- function(data) {
+	as.data.frame(
+		apply(
+			X=data,
+			MARGIN=2,
+			FUN=.cleanSCBcol
+		),
+		stringsAsFactors=TRUE
+	)
+}
 
 .cleanSCBcol<-function(x) {
-  suppressWarnings(numx<-as.numeric(str_replace_all(x,"\\s","")))
-  if(sum(is.na(numx))==length(x)) as.character(x) 
-  else numx
+	suppressWarnings(numx <- as.numeric(str_replace_all(x,"\\s","")))
+	
+	if(sum(is.na(numx)) == length(x)) {
+		return(as.character(x))
+	} else {
+		return(numx)
+	}
 }

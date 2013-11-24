@@ -2,11 +2,17 @@
 \alias{baseURL}
 \title{Return base URL to SCB API}
 \usage{
-  baseURL(version = "v1")
+  baseURL(version = "v1", lang = "sv", ...)
 }
 \arguments{
   \item{version}{The version of SCB API to use. (Default:
   \code{v1})}
+
+  \item{lang}{The language (two letters) to use in the
+  fetched data. (Default: \code{sv})}
+
+  \item{...}{Additional parameters. These are currently
+  ignored.}
 }
 \description{
   ...

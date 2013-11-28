@@ -2,17 +2,18 @@
 #' 
 #' @param history keep the history when the function is running.
 #' 
-#' @examples
-#' 
 #' @seealso
 #' \code{\link{scbGetMetadata}}, \code{\link{getData}}
 #' 
 #' @export
 
 # To do: 
-# Lägg in assertions
 # Lägg in att clean and convert med reshape/plyr (to wide format)
 # Put clean in download data function instead
+# Add quit everywhere
+# Remove \n in input
+# Do check for internet connection
+# Add unit tests
 
 findSCBdata<-function(history=FALSE){
   Node <- rSCB::scbGetMetadata() # Get top node

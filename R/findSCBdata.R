@@ -11,7 +11,6 @@
 # Lägg in att clean and convert med reshape/plyr (to wide format)
 # Put clean in download data function instead
 # Add quit everywhere
-# Remove \n in input
 # Do check for internet connection
 # Add unit tests
 
@@ -40,10 +39,11 @@ findSCBdata<-function(history=FALSE){
     
     if(str_detect(inputValue,pattern="[0-9]+")){
       if(Node$type[as.numeric(inputValue)]=="t"){
-        .findScbData.Download(rSCB::scbGetMetadata(Node$id[as.numeric(inputValue)]))
+        .findScbData.Download(list(rSCB::scbGetMetadata(Node$id[as.numeric(inputValue)]),
+                                   Node$id[as.numeric(inputValue)]))
         
         inputDownMore<-.findScbData.input(type="yesno",
-            input="\nDo you want to download more data from SCB?")
+            input="Do you want to download more data from SCB?")
         quit <- inputDownMore == "n"
         next()
       }
@@ -55,17 +55,19 @@ findSCBdata<-function(history=FALSE){
 
 
 .findScbData.Download <- function(dataNode){
+  dataNodeName<-dataNode[[2]]
+  dataNode <- dataNode[[1]] 
   
   inputDown<-.findScbData.input(type="yesno",
-      input="\nDo you want to download this file?")
+      input=str_c("Do you want to download '",dataNodeName,"'?",sep=""))
   if(inputDown=="n"){return()}
 
   inputClean<-.findScbData.input(type="yesno",
-      input="\nDo you want to clean this file (to R format)?")
+      input="Do you want to clean this file (to R format)?")
   clean <- inputClean == "y"
 
   inputName<-.findScbData.input(type="text",
-      input="\nLoad data.frame into R as (ex. myData):")
+      input="Load data.frame into R as (ex. myData):")
   
   # Choose variables values
   varList<-list()

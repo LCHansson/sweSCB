@@ -5,9 +5,9 @@ require(testthat)
 
 test_that(desc=".findScbData.inputBaseCat works",{
   load("testFiles.Rdata")
-  expect_output(.findScbData.inputBaseCat(1:2,codedAlt),
+  expect_output(.findScbData.inputBaseCat(1:2,test_codedAlt),
                 "('q' = Quit, 'b' = Back)")
-  expect_output(.findScbData.inputBaseCat(c(3,6),codedAlt),
+  expect_output(.findScbData.inputBaseCat(c(3,6),test_codedAlt),
                 "('*' = Select all, 'a' = Show all)")
 
 })

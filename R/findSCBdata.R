@@ -3,7 +3,7 @@
 #' @param history keep the history when the function is running.
 #' 
 #' @seealso
-#' \code{\link{scbGetMetadata}}, \code{\link{getData}}
+#' \code{\link{scbGetMetadata}}, \code{\link{scbGetData}}
 #' 
 #' @export
 

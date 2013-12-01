@@ -25,7 +25,7 @@ scbGetMetadata <- function(path = NULL, quiet=FALSE, ...) {
       )
   
 	if(class(df)=="try-error"){
-	  stop("No internet connection to api.scb.se.")
+	  stop(str_join("No internet connection to",url))
 	}
 	
 	if("id" %in% names(df))

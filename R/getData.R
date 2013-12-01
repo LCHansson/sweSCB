@@ -4,6 +4,7 @@
 #' 
 #' @param url URL to get data from (it is usually sufficient to submit the base URL, supplied via the baseURL() function, and the name of the variable).
 #' @param dims A list of dimensional parameters to filter data by. Note that values \emph{must} be submitted for all dimensions of the data. If you don't want to filter data, submit an asterisk in quotation marks ("*") instead of values for that dimension.
+#' @param clean Clean and melt the data to R format.
 #' 
 #' @details
 #' There are five documented filter types in the SCB API documentation; "Item", "All", "Top", "Agg" and "Vs". This function currently only supports the "Item" and "All" modes. 
@@ -15,7 +16,10 @@
 #' 
 #' @export
 
-scbGetData <- function(url, dims) {
+scbGetData <- function(url, dims, clean = FALSE) {
+  # assign("test_url",url,envir=.GlobalEnv)
+  # assign("test_dims",dims,envir=.GlobalEnv)
+
 	dimNames <- names(dims)
 	
 	queryBody <- list()
@@ -36,18 +40,85 @@ scbGetData <- function(url, dims) {
 	}
 	
 	# Get data
-	response <- POST(
+	response <- try(POST(
 		url=url,
 		body=toJSON(list(
 			query = queryBody,
 			response = list(format = "csv")
 		))
-	)
+	),silent=TRUE)
+  
+	if(class(df)=="try-error"){
+	  stop(str_join("No internet connection to",url))
+	}
 	
 	# Parse data into human-readable form
 	a <- content(response, as="text")
-	b <- read.table(textConnection(a), sep=',', header=T, stringsAsFactors=F)
+	b <- read.table(textConnection(a), sep=',', header=TRUE, stringsAsFactors=F)
+  
+  if(clean){
+    b <- .scbClean(b,url=url)
+  }
 	
 	return(b)
+}
 
+
+.scbClean <- function(data2clean,url){  
+  require(reshape2)
+  
+  # Temporary functions (only used in .scbClean)
+  .applyFindLev<-function(vec,val){
+    # Function to create an integer vector with one integer per text in 'val' that
+    # is found in vec
+    resVec<-unlist(lapply(X=vec,
+                          FUN=function(x,val) which(str_detect(as.character(x),val)),
+                          val=val))
+    return(resVec)
+  } 
+  
+  .cleanSCBcol<-function(x) {
+    # Takes a character vector with numbers, remove all
+    # spases and convert to numeric (if not x is a char vector)
+    suppressWarnings(numx <- as.numeric(str_replace_all(x,"\\s","")))    
+    if(sum(is.na(numx)) == length(x)) {
+      return(as.character(x))
+    } else {
+      return(numx)
+    }
+  }
+  
+  # Get metadata to use in creating factors of Tid and contentCode
+  contentNode<-rSCB::scbGetMetadata(path=str_split(url,"/")[[1]][length(str_split(url,"/")[[1]])])
+
+  # Collect factor labels for tid and contentCode and convert 
+  # other variables to factor variables
+  idvars<-character(0)
+  for (content in contentNode$variables$variables){
+    if(content$code%in%c("Tid","ContentsCode")){
+      assign(x=str_join("val", content$code,sep=""),content$values)
+      assign(x=str_join("valText", content$code,sep=""),content$valueTexts)
+      next()}
+    varName<-make.names(content$text)
+    idvars<-c(idvars,varName)
+    data2clean[,varName]<-as.factor(data2clean[,varName])  
+  }
+
+  # Melt the data to long format
+  meltData<-melt(data=data2clean,id.vars=make.names(idvars))
+  
+  tidLev <- .applyFindLev(meltData$variable, valTextTid)
+  tidLab <- valTextTid[sort(unique(tidLev))]  
+  meltData[, "tid"] <- factor(x=tidLev, labels=tidLab)
+  
+  contLev <- .applyFindLev(meltData$variable,make.names(valTextContentsCode))
+  contLab <- valTextContentsCode[sort(unique(contLev))]  
+  meltData[, "tabellinnehåll"] <- factor(x=contLev, labels=contLab)
+  
+  meltData[,"värde"] <- .cleanSCBcol(meltData$value)
+
+  meltData$value <- NULL
+  meltData$variable <- NULL
+  
+  return(meltData)
 }

@@ -7,19 +7,13 @@
 #' 
 #' @export
 
-# To do: 
-# Lägg in att clean and convert med reshape/plyr (to wide format)
-# Put clean in download data function instead
-# Add quit everywhere
-# Do check for internet connection
-# Add unit tests
-
 findSCBdata<-function(history=FALSE){
   Node <- rSCB::scbGetMetadata() # Get top node
   allNodes <- list() # List to store nodes
   quit<-FALSE # Parameter indicating when to jump out of while loop
 
-  while(!quit){ # The main program
+  # The main program
+  while(!quit){ 
     # Generate header
     if(!history){cat("\014")}
     cat("CONTENT OF SCB API AT CURRENT (",length(allNodes)+1,") NODE LEVEL:\n",sep="") 
@@ -53,8 +47,7 @@ findSCBdata<-function(history=FALSE){
   }
 }
 
-
-.findScbData.Download <- function(dataNode){
+.findScbData.Download <- function(dataNode,...){
   dataNodeName<-dataNode[[2]]
   dataNode <- dataNode[[1]] 
   
@@ -62,12 +55,15 @@ findSCBdata<-function(history=FALSE){
       input=str_c("Do you want to download '",dataNodeName,"'?",sep=""))
   if(inputDown=="n"){return()}
 
-  inputClean<-.findScbData.input(type="yesno",
-      input="Do you want to clean this file (to R format)?")
-  clean <- inputClean == "y"
-
   inputName<-.findScbData.input(type="text",
-      input="Load data.frame into R as (ex. myData):")
+                                input="Load data.frame into R as (ex. myData):")  
+  
+  inputClean<-.findScbData.input(type="yesno",
+      input="Do you want to clean and melt this file (to wide R format)?")
+  cleanBool <- inputClean == "y"
+  
+  inputCode<-.findScbData.input(type="yesno",
+                                 input="Do you want to print the code for downloading this data?")
   
   # Choose variables values
   varList<-list()
@@ -77,16 +73,18 @@ findSCBdata<-function(history=FALSE){
     listElem <- dataNode$variables$variables[[i]]
     varDF <- data.frame(id=listElem$values,text=listElem$valueTexts,stringsAsFactors=FALSE)
     
-    varAlt <- .findScbData.input(type="alt",input=list(varDF,listElem$text))
+    varAlt <- .findScbData.input(type="alt", 
+                                 input=list(varDF,
+                                            listElem$text))
     
-    if(varAlt[1]!="*"){
+    if(varAlt[1] != "*"){
       tempAlt <- character(0)
       for (i in 1:length(varAlt)){ 
         index <- as.numeric(unlist(str_split(varAlt[i],pattern=":")))
-        if(length(index)==2){
-          tempAlt <- c(tempAlt,listElem$values[index[1]:index[2]])
+        if(length(index) == 2){
+          tempAlt <- c(tempAlt, listElem$values[index[1]:index[2]])
         }else{
-          tempAlt <- c(tempAlt,listElem$values[index])
+          tempAlt <- c(tempAlt, listElem$values[index])
         }  
       }
     }else{
@@ -99,26 +97,15 @@ findSCBdata<-function(history=FALSE){
                          str_c(tempAlt,collapse="', '"),
                          "')",collapse=""))
   }
+  
   cat("Downloading... ")
-  tempData<-rSCB::scbGetData(dataNode$URL, varList)
+  tempData<-rSCB::scbGetData(dataNode$URL, varList, clean = cleanBool)
   cat("Done.\n")
-  if(clean){tempData<-rSCB::scbCleanData(tempData)}
   assign(inputName,value=tempData,envir=.GlobalEnv)
     
-    # Redo this part as own printout function
-    cat("The data has been downloaded and loaded into R with the following code:\n\n")
-    cat(inputName," <- \n  scbGetData(\"", dataNode$URL,"\",\n",
-        rep(" ",13), "list(",sep="")
-    for (i in 1:length(varListText)){
-      if(i!=1){cat(rep(" ",18),sep="")}
-      cat(varListText[i],sep="")
-      if(i!=length(varListText)){cat(",\n",sep="")}
-    }
-    cat("))\n")
-    if(clean){
-      cat(inputName," <- scbCleanData(",inputName,")\n",sep="")
-    } 
-    cat("\n",sep="")
+  if(inputCode == "y") {
+    .findScbData.printCode(dataNode$URL,varListText,inputName,clean=cleanBool)
+  }
 }
 
 .findScbData.inputBaseCat <- function(alt,codedAlt){
@@ -130,7 +117,6 @@ findSCBdata<-function(history=FALSE){
   }
   return(str_join(output,")", sep=""))
 }
-
 
 .findScbData.input <- function(type=c("node","alt","yesno","text"),input=NULL){
   codedAlt <- data.frame(abbr=c("q","b","*","y","n","a"),
@@ -146,7 +132,7 @@ findSCBdata<-function(history=FALSE){
   }
   
   if(type=="yesno"){
-    baseCat<-4:5
+    baseCat<-c(1,4:5)
     textHead<-input
   }
   
@@ -155,7 +141,7 @@ findSCBdata<-function(history=FALSE){
   }
   
   if(type=="alt"){
-    baseCat<-c(3,6)
+    baseCat<-c(1,3,6)
     varDF<-input[[1]]
     alt<-rownames(varDF)
     # Calculate a short list of alternatives
@@ -185,9 +171,11 @@ findSCBdata<-function(history=FALSE){
     cat(textHead)
     if(type!="text"){cat(.findScbData.inputBaseCat(baseCat,codedAlt),"\n")}
     
-    inputScan <- scan(what=character(), nmax=1, multi.line = FALSE, quiet=TRUE)    
-    inputScan <- tolower(str_trim(unlist(str_split(string=inputScan,pattern=","))))
+    inputScanRaw <- scan(what=character(), nmax=1, multi.line = FALSE, quiet=TRUE)     
+    inputScan <- tolower(str_trim(unlist(str_split(string=inputScanRaw,pattern=","))))
     if(inputScan[1]=="a"){next()}
+    if(inputScan[1]=="q"){stop("Function aborted, returning till R prompt...")}
+    if(type == "text") inputScan <- inputScanRaw
     
     inputOK <- 
       (length(inputScan) == 1 && inputScan %in% tolower(codedAlt$abbr[baseCat])) |
@@ -249,8 +237,19 @@ findSCBdata<-function(history=FALSE){
   if(print){cat(finalText)}else{return(finalText)}
 }
 
+.findScbData.printCode <- function(url,varListText,inputName,clean){
+  cat("To download the same data from SCB again, use the following code:\n\n")
+  cat(inputName," <- \n  scbGetData(\"", url,"\",\n",
+      rep(" ",13), "list(",sep="")
 
-  
+  for (i in 1:length(varListText)){
+    if(i!=1){cat(rep(" ",18),sep="")}
+    cat(varListText[i],sep="")
+    if(i!=length(varListText)){cat(",\n",sep="")}
+  }
 
-
+  cat("),\n")
+  cat(rep(" ",13), "clean = ",as.character(clean),sep="")
+  cat(")\n\n")
+}
 

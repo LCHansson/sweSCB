@@ -17,9 +17,7 @@
 #' @export
 
 scbGetData <- function(url, dims, clean = FALSE) {
-  # assign("test_url",url,envir=.GlobalEnv)
-  # assign("test_dims",dims,envir=.GlobalEnv)
-
+  
 	dimNames <- names(dims)
 	
 	queryBody <- list()
@@ -48,6 +46,7 @@ scbGetData <- function(url, dims, clean = FALSE) {
 		))
 	),silent=TRUE)
   
+  # Print error message
 	if(class(df)=="try-error"){
 	  stop(str_join("No internet connection to",url))
 	}
@@ -56,6 +55,7 @@ scbGetData <- function(url, dims, clean = FALSE) {
 	a <- content(response, as="text")
 	b <- read.table(textConnection(a), sep=',', header=TRUE, stringsAsFactors=F)
   
+  # Clean and melt data 
   if(clean){
     b <- .scbClean(b,url=url)
   }
@@ -107,6 +107,7 @@ scbGetData <- function(url, dims, clean = FALSE) {
   # Melt the data to long format
   meltData<-melt(data=data2clean,id.vars=make.names(idvars))
   
+  # Add variables tid, tabellinnehåll and värde
   tidLev <- .applyFindLev(meltData$variable, valTextTid)
   tidLab <- valTextTid[sort(unique(tidLev))]  
   meltData[, "tid"] <- factor(x=tidLev, labels=tidLab)
@@ -117,6 +118,7 @@ scbGetData <- function(url, dims, clean = FALSE) {
   
   meltData[,"värde"] <- .cleanSCBcol(meltData$value)
 
+  # Remove variables wiyhout any use
   meltData$value <- NULL
   meltData$variable <- NULL
   

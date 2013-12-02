@@ -119,7 +119,7 @@ findSCBdata<-function(history=FALSE){
 }
 
 .findScbData.input <- function(type=c("node","alt","yesno","text"),input=NULL){
-  codedAlt <- data.frame(abbr=c("q","b","*","y","n","a"),
+  codedAlt <- data.frame(abbr=c("esc","b","*","y","n","a"),
                          name=c("Quit","Back","Select all","Yes","No","Show all"),
                          stringsAsFactors=FALSE)
   textTitle<-alt<-character(0)
@@ -171,10 +171,10 @@ findSCBdata<-function(history=FALSE){
     cat(textHead)
     if(type!="text"){cat(.findScbData.inputBaseCat(baseCat,codedAlt),"\n")}
     
-    inputScanRaw <- scan(what=character(), nmax=1, multi.line = FALSE, quiet=TRUE)     
+    inputScanRaw <- scan(what=character(), nmax=1, multi.line = FALSE, quiet=TRUE)
+    if(length(inputScanRaw)==0) {next()}
     inputScan <- tolower(str_trim(unlist(str_split(string=inputScanRaw,pattern=","))))
     if(inputScan[1]=="a"){next()}
-    if(inputScan[1]=="q"){stop("Function aborted, returning till R prompt...")}
     if(type == "text") inputScan <- inputScanRaw
     
     inputOK <- 

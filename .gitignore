@@ -6,3 +6,4 @@
 .Rproj.user
 *.Rproj
 .RData
+.DS_Store

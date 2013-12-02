@@ -1,9 +1,10 @@
-# Testing the functions in the R package
+# Testing the functions in the R package rSCB:
+# file: findSCBdata.R
 # require(testthat)
 # test_file("inst/tests/tests.R")
 # test_package("rSCB")
 
-require(testthat)
+cat("findSCBdata: ")
 
 test_that(desc=".findScbData.inputBaseCat works",{
   load("testFiles.Rdata")
@@ -37,5 +38,5 @@ test_that(desc=".findScbData.printNode works",{
                 "list\\(first")
 })
 
-
+cat("\n")
 

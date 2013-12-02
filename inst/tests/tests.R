@@ -1,5 +1,7 @@
 # Testing the functions in the R package
-# test_file("tests/tests.R")
+# require(testthat)
+# test_file("inst/tests/tests.R")
+# test_package("rSCB")
 
 require(testthat)
 

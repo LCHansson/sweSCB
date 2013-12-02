@@ -28,7 +28,7 @@ Data in the SCB API is structured in a data tree and a wrapper function `findSCB
 ```r
 findSCBdata()
 ```
-The function will automatically print the code needed to reproduce the access to SCB data.
+The function will automatically print (if wanted) the code needed to reproduce the access to SCB data.
 
 
 ## Advanced access to SCB data
@@ -78,11 +78,13 @@ The data can now be inspected, e.g. by doing `View(sdata)`.
 
 
 ### Cleaning up the results
-Unfortunately, the beta version of the SCB web API often returns faulty formatted data, which can cause a lot of pain. Fortunately, however, version 0.2 of rSCB includes a function to handle this (for most cases). To 'clean' the data into something usable, use the following call:
+Unfortunately, the beta version of the SCB web API often returns faulty formatted data, which can cause a lot of pain. In version 0.3 of rSCB this can be handled directly by setting the parameter `clean = TRUE` in the `scbGetData()` function. So to get cleaned and molten data for the same call as in the previous example, just add `clean = TRUE`:
 ```r
-sdata_clean <- scbCleanData(sdata)
+sdata <- scbGetData(bottomNode$URL, 
+  list(SPIN2007 = "*", ContentsCode = "PR0301I4", Tid = c("2010M02","2011M03")),
+  clean=TRUE)
 ```
-The data should now be ready for use. Thanks to GitHub user @mansmeg for contributing the base of this function!
+The data should now be ready for use. 
 
 ## A last word of caution
 The SCB web API seems to still be in its early stages, and data quality is sometimes not perfect. If you find an obvious error in your data and it's not obvious that this is because of programming errors in `rSCB`, please consider filing a bug report to the developers at SCB. Follow [this link](http://www.scb.se/api) to find information on how to contact them.

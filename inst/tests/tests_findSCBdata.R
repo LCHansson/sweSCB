@@ -4,7 +4,7 @@
 # test_file("inst/tests/tests.R")
 # test_package("rSCB")
 
-cat("findSCBdata: ")
+cat("findSCBdata : ")
 
 test_that(desc=".findScbData.inputBaseCat works",{
   load("testFiles.Rdata")

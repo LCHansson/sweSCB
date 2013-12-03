@@ -4,7 +4,7 @@
 # test_file("inst/tests/tests.R")
 # test_package("rSCB")
 
-cat("getMetaData: ")
+cat("getMetaData : ")
 
 test_that(desc="getMetadata works",{
   testFile<-scbGetMetadata()

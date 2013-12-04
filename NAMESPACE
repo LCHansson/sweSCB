@@ -1,7 +1,6 @@
 export(baseURL)
 export(checkForLevels)
 export(findSCBdata)
-export(scbCleanData)
 export(scbGetData)
 export(scbGetDims)
 export(scbGetLevels)

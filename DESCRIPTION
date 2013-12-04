@@ -23,6 +23,5 @@ Collate:
     'getData.R'
     'getDims.R'
     'scbUtils.R'
-    'cleanData.R'
     'rSCB.R'
     'findSCBdata.R'

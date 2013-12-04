@@ -65,8 +65,7 @@ scbGetData <- function(url, dims, clean = FALSE) {
 
 
 .scbClean <- function(data2clean,url){  
-  require(reshape2)
-  
+
   # Temporary functions (only used in .scbClean)
   .applyFindLev<-function(vec,val){
     # Function to create an integer vector with one integer per text in 'val' that

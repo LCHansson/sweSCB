@@ -13,7 +13,8 @@ Depends:
     httr,
     RJSONIO,
     data.table,
-    stringr
+    stringr,
+    reshape2
 License: AGPLv3
 Collate:
     'getLevels.R'

@@ -101,14 +101,7 @@ findSCBdata <- function(history = FALSE){
     # Convert the alternatives from the user to the SCB api format
     if(varAlt[1] != "*"){
       tempAlt <- character(0)
-      for (i in 1:length(varAlt)){ 
-        index <- as.numeric(unlist(str_split(varAlt[i], pattern = ":")))
-        if(length(index) == 2){
-          tempAlt <- c(tempAlt, listElem$values[index[1]:index[2]])
-        }else{
-          tempAlt <- c(tempAlt, listElem$values[index])
-        }  
-      }
+      tempAlt <- listElem$values[as.numeric(varAlt)]
     }else{
       tempAlt <- "*"
     }
@@ -233,17 +226,22 @@ findSCBdata <- function(history = FALSE){
     # Case sensitive text input
     if(type == "text") inputScan <- inputScanRaw
     
+    # Scan for duplicates and do corrections
+    inputScan <- .findScbData.inputConvert(inputScan)
+    
     # Test if the input are OK (valid)
     inputOK <- 
       (length(inputScan) == 1 && inputScan %in% tolower(codedAlt$abbr[baseCat])) |
-      all(inputScan %in% tolower(alt) | 
-          str_detect(string=inputScan, pattern="[0-9]+:[0-9]+")) |
+      all(inputScan %in% tolower(alt)) | 
       type == "text"
+    if(type != "alt" & length(inputScan) > 1) inputOK <- FALSE
+    
         
     if(!inputOK){
       cat("Sorry, no such entry allowed. Please try again!\n")
     }
   } 
+
   return(inputScan)
 }
 
@@ -342,3 +340,35 @@ findSCBdata <- function(history = FALSE){
       as.character(clean), sep="")
   cat(")\n\n")
 }
+
+
+
+
+.findScbData.inputConvert <- function(input){
+  # Set the output (for input of length == 1)
+  output <- input  
+
+  # Do conversions for 
+  if(length(input) > 1 || str_detect(input, ":")){
+    output <- character(0)
+    for(i in 1 : length(input)){
+      # Split input values on the format [0-9]+:[0-9]+
+      if(str_detect(input[i], ":")){
+        index <- as.numeric(unlist(str_split(input[i], pattern = ":")))
+        output <- c(output, as.character(index[1]:index[2]))
+      }else{
+        # Otherwise just add the value
+        output <- c(output, input[i])
+      }
+    }
+    # Sort and remove duplicates
+    output <- unique(output)
+    output <- output[order(as.numeric(output))]
+  }
+  return(output)
+}
+
+
+
+
+

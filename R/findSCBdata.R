@@ -7,7 +7,7 @@
 #' 
 #' @export
 
-findSCBdata <- function(history = FALSE){
+findSCBdata <- function(history = FALSE,...){
   # Get top node
   Node <- rSCB::scbGetMetadata() 
   # List to store nodes
@@ -148,7 +148,7 @@ findSCBdata <- function(history = FALSE){
   return(str_join(output,")", sep=""))
 }
 
-.findScbData.input <- function(type, input = NULL){
+.findScbData.input <- function(type, input = NULL, test_input = character(0)){
   # Define the possible alternatives that the user can do (except alternatives)
   codedAlt <- data.frame(abbr=c("esc", "b", "*", "y", "n", "a"),
                          name=c("Quit", "Back", "Select all", "Yes", "No", "Show all"),
@@ -214,8 +214,12 @@ findSCBdata <- function(history = FALSE){
     if(type != "text"){
       cat(.findScbData.inputBaseCat(baseCat, codedAlt), "\n")
     }
-    # Get input from the user
-    inputScanRaw <- scan(what=character(), multi.line = FALSE, quiet=TRUE, nlines=1 , sep=",")
+    # Get input from the user (if not test run)
+    if(length(test_input)==0){
+      inputScanRaw <- scan(what=character(), multi.line = FALSE, quiet=TRUE, nlines=1 , sep=",")
+    }else{
+      inputScanRaw <- scan(what=character(), quiet=TRUE, sep=",", text=test_input)
+    }
     
     # If just an enter is entered -> start over
     if(length(inputScanRaw) == 0) { next() }

@@ -50,32 +50,29 @@ test_that(desc=".findScbData.inputConvert",{
 })
 
 test_that(desc=".findScbData.input",{
+  load("testFiles.Rdata")
+  
   cat("\n")
-  expect_that(.findScbData.input(type="yesno","Enter 'y'"),is_equivalent_to("y"))
+  expect_that(.findScbData.input(type="yesno","Testing 'y'", test_input="y"),is_equivalent_to("y"))
   cat("\n")
-  expect_that(.findScbData.input(type="yesno","Enter 'n'"),is_equivalent_to("n"))
+  expect_that(.findScbData.input(type="yesno","Testing 'n'", test_input="n"),is_equivalent_to("n"))
   cat("\n")
-  expect_that(.findScbData.input(type="text","Enter 'MyData1'"),is_equivalent_to("MyData1"))
-  cat("\n")
-
-  testNode <- scbGetMetadata()
-  cat("Enter: '3'")
-  expect_that(.findScbData.input(type="node",testNode),
+  expect_that(.findScbData.input(type="text","Testing 'MyData1'", test_input="MyData1"),is_equivalent_to("MyData1"))
+  expect_that(.findScbData.input(type="node", testBaseNode, test_input="3"),
               is_equivalent_to("3"))
   cat("\n")
-  cat("Enter: 'b'")
-  expect_that(.findScbData.input(type="node",testNode),
+  expect_that(.findScbData.input(type="node", testBaseNode, test_input="b"),
               is_equivalent_to("b"))
   cat("\n")
 
-  cat("Enter: '10:12, 1 ,3:1, 2'")
   test_varDF <- list(data.frame(id = as.character(seq(0.5,10,0.5)),
                       text = paste("Värde", as.character(seq(0.5,10,0.5))),
                       stringsAsFactors = FALSE),
                      "testingVärde")
-  expect_that(.findScbData.input(type="alt", test_varDF),
+  expect_that(.findScbData.input(type="alt", input=test_varDF, test_input="10:12, 1 ,3:1, 2"),
               is_equivalent_to(c("1","2","3","10","11","12")))
   cat("\n")
+
 })
 
 

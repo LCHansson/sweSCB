@@ -222,12 +222,12 @@ findSCBdata <- function(history = FALSE){
       cat(.findScbData.inputBaseCat(baseCat, codedAlt), "\n")
     }
     # Get input from the user
-    inputScanRaw <- scan(what=character(), nmax=1, multi.line = FALSE, quiet=TRUE)
+    inputScanRaw <- scan(what=character(), multi.line = FALSE, quiet=TRUE, nlines=1 , sep=",")
     
     # If just an enter is entered -> start over
     if(length(inputScanRaw) == 0) { next() }
     # Format the input data (to lowercase and without whitespaces) and as char vector
-    inputScan <- tolower(str_trim(unlist(str_split(string = inputScanRaw, pattern = ","))))
+    inputScan <- tolower(str_trim(inputScanRaw))
     # If a = "Show all", restart, but show all alternatives
     if(inputScan[1] == "a") { next() }
     # Case sensitive text input

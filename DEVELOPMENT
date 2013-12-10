@@ -9,6 +9,7 @@ Development is done in the 'dev' branch. Before release, 'dev' is forked into a 
 
 Hotfixes (i.e. bugfixes and bugfixes only) happen in 'x.y-hotfix_z' branches forked from the 'master' branch where 'z' designates the GitHub issue containing the bug report being adressed.
 
+
 Version numbering
 -----------------
 Versions are numbered x.y, where 'x' are full releases (i.e. significant feature changes etc.) and 'y' are minor releases (i.e. bug fixes, minor feature improvements, small adjustments).
@@ -21,3 +22,10 @@ If you are not a part of the core development team, please submit your code in t
 Commit early, and commit often. But please keep commits clean, i.e. try to focus on one functionality per commit if possible.
 
 Please do not commit any changes to any other branch than the 'dev' branch unless explicitly tasked with working on another branch.
+
+
+Building
+--------
+Before making a pull request, make sure your code builds. We use `roxygen2` for package building.
+
+DO NOT commit .Rd manpages in the 'dev' branch! These will be committed only in the 'master' branch.

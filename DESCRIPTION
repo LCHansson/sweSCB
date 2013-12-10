@@ -1,7 +1,7 @@
 Package: rSCB
 Type: Package
 Title: R interface to the web API of Statistics Sweden
-Version: 0.2
+Version: 0.2.90
 Date: 2013-11-25
 Author: Love Hansson, Thomas Reinholdsson, Måns Magnusson
 Maintainer: Love Hansson, <love.hansson@gmail.com>
@@ -16,12 +16,3 @@ Depends:
     stringr,
     reshape2
 License: AGPLv3
-Collate:
-    'getLevels.R'
-    'getMetadata.R'
-    'constants.R'
-    'getData.R'
-    'getDims.R'
-    'scbUtils.R'
-    'rSCB.R'
-    'findSCBdata.R'

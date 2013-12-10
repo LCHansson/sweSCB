@@ -7,3 +7,6 @@
 *.Rproj
 .RData
 .DS_Store
+
+# .Rd files (remove this before committing to the 'master' branch)
+*.Rd

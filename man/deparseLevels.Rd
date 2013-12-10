@@ -2,7 +2,7 @@
 \alias{deparseLevels}
 \title{Function to deparse an URL into its components.}
 \usage{
-  deparseLevels(place, returnDistance = FALSE, ...)
+deparseLevels(place, returnDistance = FALSE, ...)
 }
 \arguments{
   \item{place}{Location in hierarchy, in the form of a
@@ -14,6 +14,6 @@
   \item{...}{Further arguments passed to \code{baseURL()}.}
 }
 \description{
-  This function is currently not used in the package.
+This function is currently not used in the package.
 }
 

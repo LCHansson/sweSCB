@@ -2,7 +2,7 @@
 \alias{buildPath}
 \title{Build a path from character elements}
 \usage{
-  buildPath(varname, topnodes = NULL, baseUrl = NULL, ...)
+buildPath(varname, topnodes = NULL, baseUrl = NULL, ...)
 }
 \arguments{
   \item{varname}{The name of the variable in the web API.
@@ -20,7 +20,7 @@
   \item{...}{Further arguments passed to \code{baseURL()}.}
 }
 \description{
-  This function takes a list if strings and builds a URL to
-  the SCB web API \emph{in reverser order}.
+This function takes a list if strings and builds a URL to
+the SCB web API \emph{in reverser order}.
 }
 

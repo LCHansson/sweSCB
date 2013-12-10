@@ -2,7 +2,7 @@
 \alias{scbGetLevels}
 \title{Get levels from API node}
 \usage{
-  scbGetLevels(descriptions = FALSE, quiet = FALSE, ...)
+scbGetLevels(descriptions = FALSE, quiet = FALSE, ...)
 }
 \arguments{
   \item{baseUrl}{Input URL to node (default: \code{NULL})}
@@ -16,7 +16,7 @@
   without any errors. (default: \code{FALSE})}
 }
 \description{
-  Get levels from a node in the API. If at the lowest node,
-  return a warning.
+Get levels from a node in the API. If at the lowest node,
+return a warning.
 }
 

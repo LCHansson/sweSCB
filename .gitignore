@@ -8,5 +8,5 @@
 .RData
 .DS_Store
 
-# .Rd files (remove this before committing to the 'master' branch)
-*.Rd
+# .Rd files (remove this before committing to the 'master' or '*-beta' branch es)
+# *.Rd

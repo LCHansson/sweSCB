@@ -10,7 +10,7 @@
 #' 
 #' @export
 
-findSCBdata <- function(history = FALSE,...){
+findSCBdata <- function(history = FALSE,...) {
   # Get top node
   Node <- scbGetMetadata() 
   
@@ -66,7 +66,7 @@ findSCBdata <- function(history = FALSE,...){
   }
 }
 
-.findScbData.Download <- function(dataNode,...){
+.findScbData.Download <- function(dataNode,...) {
   dataNodeName <- dataNode[[2]]
   dataNode <- dataNode[[1]]
   
@@ -75,7 +75,7 @@ findSCBdata <- function(history = FALSE,...){
     type = "yesno",
     input = str_c("Do you want to download '", dataNodeName, "'?", sep=""))
   
-  if (inputDown == "n"){ return() }
+  if (inputDown == "n") { return() }
 
   inputName <- .findScbData.input(
     type = "text",
@@ -107,7 +107,7 @@ findSCBdata <- function(history = FALSE,...){
       input=list(varDF, listElem$text))
     
     # Convert the alternatives from the user to the SCB api format
-    if (varAlt[1] != "*"){
+    if (varAlt[1] != "*") {
       tempAlt <- character(0)
       tempAlt <- listElem$values[as.numeric(varAlt)]
     } else {
@@ -139,7 +139,7 @@ findSCBdata <- function(history = FALSE,...){
   }
 }
 
-.findScbData.inputBaseCat <- function(alt, codedAlt){
+.findScbData.inputBaseCat <- function(alt, codedAlt) {
   # The function prints the 'alt' rows in 'codedAlt'.
   # The purpose is to print alternatives for each input from the user
   output<-"\n("
@@ -165,22 +165,22 @@ findSCBdata <- function(history = FALSE,...){
   baseCat <- numeric(0)
   
   # Define the different types of input
-  if (type == "node"){
+  if (type == "node") {
     baseCat<-1:2
     alt <- rownames(input)
     textHead <- "\nEnter the data (number) you want to explore:"
   }
   
-  if (type == "yesno"){
+  if (type == "yesno") {
     baseCat <- c(1,4:5)
     textHead <- input
   }
   
-  if (type == "text"){
+  if (type == "text") {
     textHead <- input
   }
   
-  if (type == "alt"){
+  if (type == "alt") {
     baseCat <- c(1,3,6)
     varDF <- input[[1]]
     alt <- rownames(varDF)
@@ -204,14 +204,14 @@ findSCBdata <- function(history = FALSE,...){
   }
 
   inputOK <- FALSE
-  inputScan <- "" 
+  inputScan <- ""
   
   
   while(!inputOK){
     # Print title, alternatives and so forth
     cat(textTitle)
-    if (type == "alt"){
-      if (inputScan == "a"){
+    if (type == "alt") {
+      if (inputScan == "a") {
         toprint <- varDF
       } else {
         toprint <- varDFshort
@@ -224,7 +224,7 @@ findSCBdata <- function(history = FALSE,...){
     }
     
     # Get input from the user (if not test run)
-    if (length(test_input)==0){
+    if (length(test_input)==0) {
       inputScanRaw <- scan(what=character(), multi.line = FALSE, quiet=TRUE, nlines=1 , sep=",")
     } else {
       inputScanRaw <- scan(what=character(), quiet=TRUE, sep=",", text=test_input)
@@ -261,7 +261,7 @@ findSCBdata <- function(history = FALSE,...){
   return(inputScan)
 }
 
-.findScbData.printNode <- function(xscb, print=TRUE){
+.findScbData.printNode <- function(xscb, print=TRUE) {
   # Preparations of for printing the node
   xscb$text <- as.character(xscb$text) 
   nSCBidlen <- max(str_length(as.character(xscb$id))) # Get max str length of id
@@ -311,7 +311,7 @@ findSCBdata <- function(history = FALSE,...){
                  str_join(rep(" ", startPos*(1-as.numeric(first))), collapse=""),
                  str_sub(tempText, 1, tempTextCut), "\n", collapse="")
       
-      if (rerun){
+      if (rerun) {
         tempText <- str_sub(tempText, tempTextCut + 2)
       }
 
@@ -319,7 +319,7 @@ findSCBdata <- function(history = FALSE,...){
     }
   }
   # Print node text or save it as a character value
-  if (print){
+  if (print) {
     cat(finalText)
   } else {
     return(finalText)
@@ -343,7 +343,7 @@ findSCBdata <- function(history = FALSE,...){
       cat(rep(" ", 18), sep="")
     }
     cat(varListText[i], sep="")
-    if (i != length(varListText)){
+    if (i != length(varListText)) {
       cat(",\n",sep="")
     }
   }
@@ -358,16 +358,14 @@ findSCBdata <- function(history = FALSE,...){
 }
 
 
-
-
-.findScbData.inputConvert <- function(input){
+.findScbData.inputConvert <- function(input) {
   # Set the output (for input of length == 1)
   output <- input  
 
   # Do conversions for 
-  if (length(input) > 1 || str_detect(input, ":")){
+  if (length(input) > 1 || str_detect(input, ":")) {
     output <- character(0)
-    for(i in 1 : length(input)){
+    for(i in 1 : length(input)) {
       # Split input values on the format [0-9]+:[0-9]+
       if (str_detect(input[i], ":")){
         index <- as.numeric(unlist(str_split(input[i], pattern = ":")))

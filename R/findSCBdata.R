@@ -34,7 +34,7 @@ findSCBdata <- function(history = FALSE,...) {
     if (inputValue == "q") { quit <- TRUE; next() }
 
     # Traverse to the previous node
-    if (inputValue == "b"){
+    if (inputValue == "b") {
       if (length(allNodes) == 0) { next() }
       Node <- allNodes[[length(allNodes)]]
       allNodes[[length(allNodes)]] <- NULL
@@ -95,7 +95,7 @@ findSCBdata <- function(history = FALSE,...) {
   varListText <- character(0)
   
   # Print the alternatives (for data to download) and choose alternatives to download
-  for(i in 1:length(dataNode$variables$variables)){
+  for(i in 1:length(dataNode$variables$variables)) {
     # Print the alternatives to download
     listElem <- dataNode$variables$variables[[i]]
     varDF <- data.frame(id = listElem$values,
@@ -127,6 +127,7 @@ findSCBdata <- function(history = FALSE,...) {
   cat("Downloading... ")
   tempData <- scbGetData(dataNode$URL, varList, clean = cleanBool)
   cat("Done.\n")
+  
   # Save the object in the global enviroment for the user
   assign(inputName, value = tempData, envir = .GlobalEnv)
   
@@ -186,11 +187,11 @@ findSCBdata <- function(history = FALSE,...) {
     alt <- rownames(varDF)
     
     # Calculate a short list of alternatives
-    if (nrow(varDF) > 11){
+    if (nrow(varDF) > 11) {
       varDFshort <- varDF[c(1:6, (nrow(varDF)-4):nrow(varDF)), ]
       rownames(varDFshort)[6] <- "."
     } else {
-      varDFshort <- varDF}
+      varDFshort <- varDF }
 
     textTitle <- str_join("\nALTERNATIVES FOR VARIABLE: ",
                           toupper(input[[2]]),
@@ -207,7 +208,7 @@ findSCBdata <- function(history = FALSE,...) {
   inputScan <- ""
   
   
-  while(!inputOK){
+  while(!inputOK) {
     # Print title, alternatives and so forth
     cat(textTitle)
     if (type == "alt") {
@@ -219,7 +220,7 @@ findSCBdata <- function(history = FALSE,...) {
       .findScbData.printNode(xscb = toprint, print = TRUE)
     }
     cat(textHead)
-    if (type != "text"){
+    if (type != "text") {
       cat(.findScbData.inputBaseCat(baseCat, codedAlt), "\n")
     }
     
@@ -326,7 +327,7 @@ findSCBdata <- function(history = FALSE,...) {
   }
 }
 
-.findScbData.printCode <- function(url, varListText, inputName, clean){
+.findScbData.printCode <- function(url, varListText, inputName, clean) {
   # Print the code used to download the data
   
   cat("To download the same data from SCB again, use the following code:\n\n")
@@ -338,7 +339,7 @@ findSCBdata <- function(history = FALSE,...) {
       "list(", sep="")
 
   # Print the chosenalternatives for each data dimension
-  for (i in 1:length(varListText)){
+  for (i in 1:length(varListText)) {
     if (i != 1){
       cat(rep(" ", 18), sep="")
     }

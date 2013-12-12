@@ -1,4 +1,6 @@
-#' Wrapper function to simply find and download data from SCB to the current R session. 
+#' @title Find and download data from SCB
+#'
+#' @description Wrapper function (for \link{scbGetData} and \link{scbGetMetadata}) to simply find and download data from SCB to the current R session. 
 #' 
 #' @param history keep the history when the function is running.
 #' 

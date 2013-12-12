@@ -57,21 +57,22 @@ scbGetData <- function(url, dims, clean = FALSE) {
   
   # Clean and melt data 
   if(clean){
-    b <- .scbClean(b,url=url)
+    b <- .scbClean(b, url=url)
   }
 	
 	return(b)
 }
 
 
-.scbClean <- function(data2clean,url){  
+.scbClean <- function(data2clean, url){  
 
   # Temporary functions (only used in .scbClean)
-  .applyFindLev<-function(vec,val){
+  .applyFindLev <- function(vec, val){
+     
     # Function to create an integer vector with one integer per text in 'val' that
     # is found in vec
-    resVec<-unlist(lapply(X=vec,
-                          FUN=function(x,val) which(str_detect(as.character(x),val)),
+    resVec <- unlist(lapply(X=vec,
+                          FUN=function(x, val) which(str_detect(as.character(x), val)),
                           val=val))
     return(resVec)
   } 
@@ -79,7 +80,7 @@ scbGetData <- function(url, dims, clean = FALSE) {
   .cleanSCBcol<-function(x) {
     # Takes a character vector with numbers, remove all
     # spases and convert to numeric (if not x is a char vector)
-    suppressWarnings(numx <- as.numeric(str_replace_all(x,"\\s","")))    
+    suppressWarnings(numx <- as.numeric(str_replace_all(x, "\\s", "")))    
     if(sum(is.na(numx)) == length(x)) {
       return(as.character(x))
     } else {
@@ -88,30 +89,31 @@ scbGetData <- function(url, dims, clean = FALSE) {
   }
   
   # Get metadata to use in creating factors of Tid and contentCode
-  contentNode<-rSCB::scbGetMetadata(path=str_split(url,"/")[[1]][length(str_split(url,"/")[[1]])])
+  contentNode <- scbGetMetadata(path=str_split(url, "/")[[1]][length(str_split(url, "/")[[1]])])
 
   # Collect factor labels for tid and contentCode and convert 
   # other variables to factor variables
-  idvars<-character(0)
-  for (content in contentNode$variables$variables){
-    if(content$code%in%c("Tid","ContentsCode")){
-      assign(x=str_join("val", content$code,sep=""),content$values)
-      assign(x=str_join("valText", content$code,sep=""),content$valueTexts)
-      next()}
-    varName<-make.names(content$text)
-    idvars<-c(idvars,varName)
-    data2clean[,varName]<-as.factor(data2clean[,varName])  
+  idvars <- character(0)
+  for (content in contentNode$variables$variables) {
+    if (content$code %in% c("Tid", "ContentsCode")) {
+      assign(x = str_join("val", content$code, sep=""), content$values)
+      assign(x = str_join("valText", content$code, sep=""), content$valueTexts)
+      next()
+    }
+    varName <- make.names(content$text)
+    idvars <- c(idvars, varName)
+    data2clean[, varName] <- as.factor(data2clean[, varName])  
   }
 
   # Melt the data to long format
-  meltData<-melt(data=data2clean,id.vars=make.names(idvars))
+  meltData <- melt(data=data2clean, id.vars=make.names(idvars))
   
   # Add variables tid, tabellinnehåll and värde
   tidLev <- .applyFindLev(meltData$variable, valTextTid)
   tidLab <- valTextTid[sort(unique(tidLev))]  
   meltData[, "tid"] <- factor(x=tidLev, labels=tidLab)
   
-  contLev <- .applyFindLev(meltData$variable,make.names(valTextContentsCode))
+  contLev <- .applyFindLev(meltData$variable, make.names(valTextContentsCode))
   contLab <- valTextContentsCode[sort(unique(contLev))]  
   meltData[, "tabellinnehåll"] <- factor(x=contLev, labels=contLab)
   

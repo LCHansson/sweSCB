@@ -28,4 +28,4 @@ Building
 --------
 Before making a pull request, make sure your code builds. We use `roxygen2` for package building.
 
-DO NOT commit .Rd manpages in the 'dev' branch! These will be committed only in the 'master' branch.
+DO NOT commit .Rd manpages in the 'dev' branch! Manpages may be added to the '*-beta' branches and must definitely be added to the 'master' branch before committing.

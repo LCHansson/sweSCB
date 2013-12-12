@@ -113,9 +113,9 @@ scbGetData <- function(url, dims, clean = FALSE) {
   
   contLev <- .applyFindLev(meltData$variable,make.names(valTextContentsCode))
   contLab <- valTextContentsCode[sort(unique(contLev))]  
-  meltData[, "tabellinnehåll"] <- factor(x=contLev, labels=contLab)
+  meltData[, "tabellinneh\u00e5ll"] <- factor(x=contLev, labels=contLab)
   
-  meltData[,"värde"] <- .cleanSCBcol(meltData$value)
+  meltData[,"v\u00e4rde"] <- .cleanSCBcol(meltData$value)
 
   # Remove variables wiyhout any use
   meltData$value <- NULL

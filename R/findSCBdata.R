@@ -324,16 +324,16 @@ findSCBdata <- function(history = FALSE,...){
   
   cat("To download the same data from SCB again, use the following code:\n\n")
   cat(inputName,
-      " <- \n  scbGetData(\"", 
+      " <- \n  scbGetData(url = \"", 
       url,
       "\",\n",
       rep(" ",13),
-      "list(", sep="")
+      "dims = list(", sep="")
 
   # Print the chosenalternatives for each data dimension
   for (i in 1:length(varListText)){
     if(i != 1){
-      cat(rep(" ", 18), sep="")
+      cat(rep(" ", 25), sep="")
     }
     cat(varListText[i], sep="")
     if(i != length(varListText)){

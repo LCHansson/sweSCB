@@ -1,6 +1,6 @@
 \name{findSCBdata}
 \alias{findSCBdata}
-\title{SCB API data browser}
+\title{Find and download data from SCB}
 \usage{
   findSCBdata(history = FALSE, ...)
 }
@@ -12,8 +12,9 @@
   ignored.}
 }
 \description{
-  A wrapper function to simply find and download data from
-  the SCB API into the current R session.
+  Wrapper function (for \link{scbGetData} and
+  \link{scbGetMetadata}) to simply find and download data
+  from SCB to the current R session.
 }
 \seealso{
   \code{\link{scbGetMetadata}}, \code{\link{scbGetData}}

@@ -196,7 +196,7 @@ findSCBdata <- function(history = FALSE,...){
                             rep("=", getOption("width")), collapse = ""), 
                           "\n", sep="")
     textHead <-
-      str_join("Choose your alternative(s) by number:",
+      str_join("\nChoose your alternative(s) by number:",
                "\nSeparate multiple choices by ',' and intervals by ':'", sep="")
   }
 

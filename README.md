@@ -97,5 +97,9 @@ This package is still in its early development stages. The package can already b
 ## Reporting bugs
 Please use the GitHub issue tracker for reporting bugs and making further feature requests.
 
+IMPORTANT: When submitting a bug, you can make the lives of the developers easier by submitting the following information along with your bug report:
+- The output of `sessionInfo()`
+- The output of `packageVersion("rSCB")`
+
 ## Open source license
 Please note that all source code contained in this project is open source licensed under the Affero Gnu Public License v3. This means that you are allowed to modify, use, and spread the source code freely withoug any permission from the author. HOWEVER, this source code and ANY derivatives thereof MUST be licensed with the same open source license. For further information about the AGPLv3, see LICENSE included with the source code of this package.

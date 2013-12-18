@@ -1,8 +1,8 @@
 Package: rSCB
 Type: Package
 Title: R interface to the web API of Statistics Sweden
-Version: 0.2.90
-Date: 2013-11-25
+Version: 0.3-beta
+Date: 2014-01-XX
 Author: Love Hansson, Thomas Reinholdsson, Måns Magnusson
 Maintainer: Love Hansson, <love.hansson@gmail.com>
 Description: A package to interface with the API of Statistics Sweden. The

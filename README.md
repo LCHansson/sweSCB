@@ -1,14 +1,5 @@
-rSCB
+rSCB v0.3
 =======
-
-# Please note - development version
-This is the development version of the rSCB package. The package is provided as-is and comes without any warranty or guarantee. If things aren't working in this version you are encouraged to file a bug in the GitHub [issue tracker](https://github.com/LCHansson/rSCB/issues), but please do not be surprised if a function should not work as expected.
-
-If you want to use a stable and tested version of rSCB, please use the version found in the `master` branch of the [rSCB repository](https://github.com/LCHansson/rSCB/). It can be installed by doing the following:
-
-```s
-devtools::install_github("rSCB","LCHansson",ref="master")
-```
 
 ## Introduction
 rSCB is an R package to interface with the API of Statistics Sweden, a.k.a. SCB.
@@ -17,8 +8,8 @@ The package offers methods to fetch information about the data hierarchy stored 
 
 The source code for this project is entirely free and is licensed under the [AGPLv3 license](http://www.gnu.org/licenses/agpl-3.0.html) (also included with this package). This means that you are free to use, distribute and modify the code as you see fit. However, any code you add to this code _must_ also be released under the same license or any compatible and equally free license, as-is without any modifications. Freedom is a precious thing and can only be safeguarded by openness, sharing, and a [copyleft](http://en.wikipedia.org/wiki/Copyleft) attitude towards intellectual property.
 
-## New in version 0.2
-Version 0.2 was released on 25 November, 2013 and introduces significant syntax simplifications compared to the previous versions. User @mansmeg also contributed a function to clean up the data fetched from the API: `scbCleanData`.
+## New in version 0.3
+Version 0.3 was released on XX January, 2014. The most significant user-visible change is the introduction of `findSCBdata()`, a command-line browsing tool for the data tree of the SCB API.
 
 ## A brief note on using the SCB API
 The SCB API is a RESTful API. The data consists of a metadata part and a data part. The metadata part is structured in a hierarchical node tree, where each node contains information about any (sub-)nodes that are below it in the tree structure or, if the nodes is at the bottom of the tree structure, the data referenced by the node as well as what dimensions are available for the data at that subnode.
@@ -32,11 +23,11 @@ library(rSCB)
 ```
 
 ## Easy access to SCB data
-Data in the SCB API is structured in a data tree and a wrapper function `findSCBdata()` has been written for easy navigation and access to data through the SCB api. To get data from SCB just use the `findSCBdata()` function:
+Data in the SCB API is structured in a data tree and a wrapper function `findSCBdata()` has been written for easy navigation and access to data through the SCB api. To get data from SCB simply run the function from the R command line:
 ```r
 findSCBdata()
 ```
-The function will automatically print (if wanted) the code needed to reproduce the access to SCB data.
+The function will automatically print (if requested) the code needed to reproduce the access to SCB data.
 
 
 ## Advanced access to SCB data
@@ -98,10 +89,13 @@ The data should now be ready for use.
 The SCB web API seems to still be in its early stages, and data quality is sometimes not perfect. If you find an obvious error in your data and it's not obvious that this is because of programming errors in `rSCB`, please consider filing a bug report to the developers at SCB. Follow [this link](http://www.scb.se/api) to find information on how to contact them.
 
 ## Further examples
-Further examples of package usage are contained in the "examples" folder installed with this package. To locate this folder, run `system.file(package = "rSCB")` from the R terminal.
+Further examples of advanced package usage are included in the "examples" folder installed with this package. To locate this folder on your system, run `system.file(package = "rSCB")` from the R terminal.
 
 ## Development information
 This package is still in its early development stages. The package can already be used in its present form to construct a simple menu system, to mine the SCB API for data, or to discover new data. However, work is needed to improve usability and widen the range of possible applications. You are invited to contribute to package development in any way you can and want to. You will, of course, be given due credit for your work.
+
+## Reporting bugs
+Please use the GitHub issue tracker for reporting bugs and making further feature requests.
 
 ## Open source license
 Please note that all source code contained in this project is open source licensed under the Affero Gnu Public License v3. This means that you are allowed to modify, use, and spread the source code freely withoug any permission from the author. HOWEVER, this source code and ANY derivatives thereof MUST be licensed with the same open source license. For further information about the AGPLv3, see LICENSE included with the source code of this package.

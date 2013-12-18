@@ -44,7 +44,7 @@ scbGetData <- function(url, dims, clean = FALSE) {
 			query = queryBody,
 			response = list(format = "csv")
 		))
-	),silent=TRUE)
+	) ,silent=TRUE)
   
   # Print error message
 	if(class(df)=="try-error"){
@@ -67,11 +67,8 @@ scbGetData <- function(url, dims, clean = FALSE) {
 .scbClean <- function(data2clean, url){  
 
   # Temporary functions (only used in .scbClean)
-  .applyFindLev <- function(vec, val){
-<<<<<<< HEAD
-     
-=======
->>>>>>> d37ad37d9e11048777bf6de1e751a48d7971a69f
+  .applyFindLev <- function(vec, val){     
+
     # Function to create an integer vector with one integer per text in 'val' that
     # is found in vec
     resVec <- unlist(lapply(X=vec,
@@ -98,11 +95,8 @@ scbGetData <- function(url, dims, clean = FALSE) {
   # other variables to factor variables
   idvars <- character(0)
   for (content in contentNode$variables$variables) {
-<<<<<<< HEAD
     if (content$code %in% c("Tid", "ContentsCode")) {
-=======
-    if (content$code %in% c("Tid","ContentsCode")) {
->>>>>>> d37ad37d9e11048777bf6de1e751a48d7971a69f
+
       assign(x = str_join("val", content$code, sep=""), content$values)
       assign(x = str_join("valText", content$code, sep=""), content$valueTexts)
       next()
@@ -121,10 +115,15 @@ scbGetData <- function(url, dims, clean = FALSE) {
   meltData[, "tid"] <- factor(x=tidLev, labels=tidLab)
   
   contLev <- .applyFindLev(meltData$variable, make.names(valTextContentsCode))
-  contLab <- valTextContentsCode[sort(unique(contLev))]  
+  contLab <- valTextContentsCode[sort(unique(contLev))]
+  
   meltData[, "tabellinnehåll"] <- factor(x=contLev, labels=contLab)
   
   meltData[,"värde"] <- .cleanSCBcol(meltData$value)
+  
+#   meltData[, "tabellinneh\u00e5ll"] <- factor(x=contLev, labels=contLab)
+#   
+#   meltData[,"v\u00e4rde"] <- .cleanSCBcol(meltData$value)
 
   # Remove variables wiyhout any use
   meltData$value <- NULL

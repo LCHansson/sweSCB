@@ -1,6 +1,6 @@
-#' SCB API data browser
-#' 
-#' A wrapper function to simply find and download data from the SCB API into the current R session. 
+#' @title Find and download data from SCB
+#'
+#' @description Wrapper function (for \link{scbGetData} and \link{scbGetMetadata}) to simply find and download data from SCB to the current R session. 
 #' 
 #' @param history keep the history when the function is running.
 #' @param ... further parameters. These are currently ignored.
@@ -10,7 +10,11 @@
 #' 
 #' @export
 
-findSCBdata <- function(history = FALSE,...) {
+
+findSCBdata <- function(history = FALSE,...){
+  # Set encoding to latin-1
+  .Options$encoding <- "latin-1"
+  
   # Get top node
   Node <- scbGetMetadata() 
   
@@ -332,16 +336,16 @@ findSCBdata <- function(history = FALSE,...) {
   
   cat("To download the same data from SCB again, use the following code:\n\n")
   cat(inputName,
-      " <- \n  scbGetData(\"", 
+      " <- \n  scbGetData(url = \"", 
       url,
       "\",\n",
       rep(" ",13),
-      "list(", sep="")
+      "dims = list(", sep="")
 
-  # Print the chosenalternatives for each data dimension
-  for (i in 1:length(varListText)) {
-    if (i != 1){
-      cat(rep(" ", 18), sep="")
+  # Print the chosen alternatives for each data dimension
+  for (i in 1:length(varListText)){
+    if(i != 1){
+      cat(rep(" ", 25), sep="")
     }
     cat(varListText[i], sep="")
     if (i != length(varListText)) {

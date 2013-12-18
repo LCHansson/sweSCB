@@ -1,4 +1,4 @@
-rSCB v0.3
+rSCB v0.3 beta
 =======
 
 ## Introduction
@@ -18,7 +18,7 @@ The SCB API is a RESTful API. The data consists of a metadata part and a data pa
 Use the `devtools` package for easy installation:
 ```r
 install.packages("devtools")
-devtools::install_github("rSCB", "LCHansson")
+devtools::install_github("rSCB","LCHansson",ref="v0.3-beta")
 library(rSCB)
 ```
 

@@ -17,7 +17,6 @@
 #' @export
 
 scbGetData <- function(url, dims, clean = FALSE) {
-   
    dimNames <- names(dims)
    
    queryBody <- list()
@@ -59,7 +58,7 @@ scbGetData <- function(url, dims, clean = FALSE) {
    b <- read.table(textConnection(a), sep=',', header=TRUE, stringsAsFactors=FALSE)
    
    # Clean and melt data 
-   if (clean){
+   if (clean) {
       b <- .scbClean(b, url=url)
    }
    

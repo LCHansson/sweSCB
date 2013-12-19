@@ -128,5 +128,4 @@ scbGetData <- function(url, dims, clean = FALSE) {
    meltData$variable <- NULL
    
    return(meltData)
->>>>>>> dev
 }

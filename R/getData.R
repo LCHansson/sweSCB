@@ -48,8 +48,11 @@ scbGetData <- function(url, dims, clean = FALSE) {
    
    
    # Print error message
-   if (class(df)=="try-error"){
+   if (class(response)=="try-error"){
       stop(str_join("No internet connection to ",url))
+   }
+   if(response$headers$statusmessage != "OK") {
+     stop(str_join("Error in connection: ", response$headers$statusmessage))
    }
    
    # Parse data into human-readable form

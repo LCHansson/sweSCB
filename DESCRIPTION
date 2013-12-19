@@ -16,3 +16,12 @@ Depends:
     stringr,
     reshape2
 License: AGPLv3
+Collate:
+    'constants.R'
+    'findSCBdata.R'
+    'getData.R'
+    'getDims.R'
+    'getLevels.R'
+    'getMetadata.R'
+    'rSCB.R'
+    'scbUtils.R'

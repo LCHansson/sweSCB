@@ -8,5 +8,8 @@
 .RData
 .DS_Store
 
-# .Rd files (remove this before committing to the 'master' or '*-beta' branch es)
-# *.Rd
+# Don't update .gitignore
+.gitignore
+
+# .Rd files (remove this before committing to the 'master' or '*-beta' branches)
+*.Rd

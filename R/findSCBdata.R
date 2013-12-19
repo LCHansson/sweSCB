@@ -10,9 +10,6 @@
 #' @export
 
 findSCBdata <- function(history = FALSE,...){
-  # Set encoding to latin-1
-  .Options$encoding <- "latin-1"
-  
   # Get top node
   Node <- rSCB::scbGetMetadata() 
   # List to store nodes

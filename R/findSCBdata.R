@@ -12,9 +12,6 @@
 
 
 findSCBdata <- function(history = FALSE,...){
-  # Set encoding to latin-1
-  .Options$encoding <- "latin-1"
-  
   # Get top node
   Node <- scbGetMetadata() 
   
@@ -83,7 +80,7 @@ findSCBdata <- function(history = FALSE,...){
 
   inputName <- .findScbData.input(
     type = "text",
-    input = "Load data.frame into R as (ex. myData):")  
+    input = "Name of data.frame object to save data to (ex: myDataFrame):")  
   
   inputClean <- .findScbData.input(
     type = "yesno",
@@ -204,7 +201,7 @@ findSCBdata <- function(history = FALSE,...){
                             rep("=", getOption("width")), collapse = ""), 
                           "\n", sep="")
     textHead <-
-      str_join("Choose your alternative(s) by number:",
+      str_join("\nChoose your alternative(s) by number:",
                "\nSeparate multiple choices by ',' and intervals by ':'", sep="")
   }
 
@@ -255,11 +252,20 @@ findSCBdata <- function(history = FALSE,...){
       (length(inputScan) == 1 && inputScan %in% tolower(codedAlt$abbr[baseCat])) |
       all(inputScan %in% tolower(alt)) | 
       type == "text"
-    if (type != "alt" & length(inputScan) > 1) inputOK <- FALSE
-    
+
+    if(type != "alt" & length(inputScan) > 1) inputOK <- FALSE
+    if(type == "text") {
+      if(make.names(inputScan) != inputScan) {
+        inputOK <- FALSE
+        cat("This is not a valid name of a data.frame object in R.\n")
+        cat("You could change the name to '", 
+            make.names(inputScan),
+            "'.\n", sep="")
+      }
+    }
         
-    if (!inputOK){
-      cat("Sorry, no such entry allowed. Please try again!\n")
+    if(!inputOK){
+      cat("Sorry, no such entry allowed. Please try again!\n\n")
     }
   } 
 

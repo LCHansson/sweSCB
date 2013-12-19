@@ -52,7 +52,7 @@ scbGetData <- function(url, dims, clean = FALSE) {
 	}
 	
 	# Parse data into human-readable form
-	a <- content(response, as="text")
+	a <- content(response, as="text", encoding = "ISO-8859-1")
 	b <- read.table(textConnection(a), sep=',', header=TRUE, stringsAsFactors=F)
   
   # Clean and melt data 

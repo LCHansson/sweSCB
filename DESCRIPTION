@@ -15,4 +15,4 @@ Depends:
     data.table,
     stringr,
     reshape2
-License: AGPLv3
+License: AGPL-3

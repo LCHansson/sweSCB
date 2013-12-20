@@ -2,7 +2,7 @@ rSCB v0.3 beta
 =======
 
 ## Introduction
-rSCB is an R package to interface with the API of Statistics Sweden, a.k.a. SCB.
+rSCB is an R package to interface with the API of Statistics Sweden, a.k.a. SCB. The package is a part of the international R open government data and computation project [rOpenGov](http://ropengov.github.io/).
 
 The package offers methods to fetch information about the data hierarchy stored behind the API; extract metadata; fetch actual data; and clean up the results.
 

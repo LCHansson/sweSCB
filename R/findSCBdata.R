@@ -26,7 +26,7 @@ findSCBdata <- function(history = FALSE,...){
     # Generate header
     if (!history) { cat("\014") }
     cat("CONTENT OF SCB API AT CURRENT (", length(allNodes)+1, ") NODE LEVEL:\n", sep="") 
-    cat(rep("=", getOption("width")), "\n",sep="") 
+    cat(rep("=", round(getOption("width")*0.9)), "\n",sep="") 
     
     # Print information in node and ask for choice
     .findScbData.printNode(Node)
@@ -198,7 +198,7 @@ findSCBdata <- function(history = FALSE,...){
                           toupper(input[[2]]),
                           " \n",
                           str_join(
-                            rep("=", getOption("width")), collapse = ""), 
+                            rep("=", round(getOption("width")*0.9)), collapse = ""), 
                           "\n", sep="")
     textHead <-
       str_join("\nChoose your alternative(s) by number:",
@@ -277,7 +277,7 @@ findSCBdata <- function(history = FALSE,...){
   xscb$text <- as.character(xscb$text) 
   nSCBidlen <- max(str_length(as.character(xscb$id))) # Get max str length of id
   nSCBpos <- max(str_length(rownames(xscb))) # Get max str length of row number 
-  nSCBconsole <- getOption("width")
+  nSCBconsole <- round(getOption("width")*0.9)
   
   # Calculates where the different output should be printed
   startPos <- nSCBpos+nSCBidlen+5

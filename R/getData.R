@@ -49,10 +49,12 @@ scbGetData <- function(url, dims, clean = FALSE) {
    
    # Print error message
    if (class(response)=="try-error"){
-      stop(str_join("No internet connection to ",url))
+      stop(str_join("No internet connection to ",url),
+           call.=FALSE)
    }
    if(response$headers$statusmessage != "OK") {
-     stop(str_join("Error in connection: ", response$headers$statusmessage))
+     stop(str_join("Error in connection: ", response$headers$statusmessage),
+          call.=FALSE)
    }
    
    # Parse data into human-readable form

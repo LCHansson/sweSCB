@@ -1,4 +1,5 @@
 Package: rSCB
+Package: sweSCB
 Type: Package
 Title: R interface to the web API of Statistics Sweden
 Version: 0.2.91

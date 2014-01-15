@@ -1,8 +1,8 @@
-rSCB v0.3 beta
+sweSCB v0.3
 =======
 
 ## Introduction
-rSCB is an R package to interface with the API of Statistics Sweden, a.k.a. SCB. The package is a part of the international R open government data and computation project [rOpenGov](http://ropengov.github.io/).
+sweSCB is an R package to interface with the API of Statistics Sweden, a.k.a. SCB. The package is a part of the international R open government data and computation project [rOpenGov](http://ropengov.github.io/).
 
 The package offers methods to fetch information about the data hierarchy stored behind the API; extract metadata; fetch actual data; and clean up the results.
 
@@ -18,8 +18,8 @@ The SCB API is a RESTful API. The data consists of a metadata part and a data pa
 Use the `devtools` package for easy installation:
 ```r
 install.packages("devtools")
-devtools::install_github("rSCB","LCHansson",ref="v0.3-beta")
-library(rSCB)
+devtools::install_github("sweSCB","LCHansson",ref="v0.3-beta")
+library(sweSCB)
 ```
 
 ## Easy access to SCB data
@@ -77,7 +77,7 @@ The data can now be inspected, e.g. by doing `View(sdata)`.
 
 
 ### Cleaning up the results
-Unfortunately, the beta version of the SCB web API often returns faulty formatted data, which can cause a lot of pain. In version 0.3 of rSCB this can be handled directly by setting the parameter `clean = TRUE` in the `scbGetData()` function. So to get cleaned and molten data for the same call as in the previous example, just add `clean = TRUE`:
+Unfortunately, the beta version of the SCB web API often returns faulty formatted data, which can cause a lot of pain. In version 0.3 of sweSCB this can be handled directly by setting the parameter `clean = TRUE` in the `scbGetData()` function. So to get cleaned and molten data for the same call as in the previous example, just add `clean = TRUE`:
 ```r
 sdata <- scbGetData(bottomNode$URL, 
   list(SPIN2007 = "*", ContentsCode = "PR0301I4", Tid = c("2010M02","2011M03")),
@@ -86,10 +86,10 @@ sdata <- scbGetData(bottomNode$URL,
 The data should now be ready for use. 
 
 ## A last word of caution
-The SCB web API seems to still be in its early stages, and data quality is sometimes not perfect. If you find an obvious error in your data and it's not obvious that this is because of programming errors in `rSCB`, please consider filing a bug report to the developers at SCB. Follow [this link](http://www.scb.se/api) to find information on how to contact them.
+The SCB web API seems to still be in its early stages, and data quality is sometimes not perfect. If you find an obvious error in your data and it's not obvious that this is because of programming errors in `sweSCB`, please consider filing a bug report to the developers at SCB. Follow [this link](http://www.scb.se/api) to find information on how to contact them.
 
 ## Further examples
-Further examples of advanced package usage are included in the "examples" folder installed with this package. To locate this folder on your system, run `system.file(package = "rSCB")` from the R terminal.
+Further examples of advanced package usage are included in the "examples" folder installed with this package. To locate this folder on your system, run `system.file(package = "sweSCB")` from the R terminal.
 
 ## Development information
 This package is still in its early development stages. The package can already be used in its present form to construct a simple menu system, to mine the SCB API for data, or to discover new data. However, work is needed to improve usability and widen the range of possible applications. You are invited to contribute to package development in any way you can and want to. You will, of course, be given due credit for your work.
@@ -99,7 +99,7 @@ Please use the GitHub issue tracker for reporting bugs and making further featur
 
 IMPORTANT: When submitting a bug, you can make the lives of the developers easier by submitting the following information along with your bug report:
 - The output of `sessionInfo()`
-- The output of `packageVersion("rSCB")`
+- The output of `packageVersion("sweSCB")`
 
 ## Open source license
 Please note that all source code contained in this project is open source licensed under the Affero Gnu Public License v3. This means that you are allowed to modify, use, and spread the source code freely withoug any permission from the author. HOWEVER, this source code and ANY derivatives thereof MUST be licensed with the same open source license. For further information about the AGPLv3, see LICENSE included with the source code of this package.

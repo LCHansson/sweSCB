@@ -1,4 +1,4 @@
-## EXAMPLE: USING rSCB TO MINE DATA FROM THE SCB API
+## EXAMPLE: USING sweSCB TO MINE DATA FROM THE SCB API
 
 ## 1. Get metadata from the base node
 a <- scbGetMetadata()

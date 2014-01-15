@@ -38,7 +38,7 @@ scbGetLevels <- function(
 checkForLevels <- function(url) {
 	
 	if(missing(url))
-		stop("ERROR: Function rSCB::checkForLevels(): parameter `url` empty.\n
+		stop("ERROR: Function sweSCB::checkForLevels(): parameter `url` empty.\n
 			 Please see traceback() for more information.")
 	
 	if(is.null(url)) {

@@ -13,7 +13,7 @@ buildPath <- function(varname, topnodes = NULL, baseUrl = NULL, ...) {
 	
 	# Error handling
 	if(topnodes == "")
-		stop("ERROR: Internal function rSCB:::buildPath: `topnodes` argument set to empty string\n
+		stop("ERROR: Internal function sweSCB:::buildPath: `topnodes` argument set to empty string\n
 			 The `topnodes` argument is required to be either NULL or a value or a vector other than [''] interpretable as a character string by paste().\n")
 	
 	# Clean URL string: remove trailing slash

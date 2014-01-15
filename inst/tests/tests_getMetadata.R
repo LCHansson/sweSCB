@@ -1,8 +1,8 @@
-# Testing the functions in the R package rSCB:
+# Testing the functions in the R package sweSCB:
 # file: getMetaData.R
 # require(testthat)
 # test_file("inst/tests/tests.R")
-# test_package("rSCB")
+# test_package("sweSCB")
 
 cat("getMetaData : ")
 

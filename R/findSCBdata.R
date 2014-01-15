@@ -11,7 +11,7 @@
 #' @export
 
 
-findSCBdata <- function(history = FALSE,...){
+findData <- function(history = FALSE,...){
   # Get top node
   Node <- scbGetMetadata() 
   

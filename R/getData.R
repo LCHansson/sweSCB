@@ -9,7 +9,7 @@
 #' @details
 #' There are five documented filter types in the SCB API documentation; "Item", "All", "Top", "Agg" and "Vs". This function currently only supports the "Item" and "All" modes. 
 #' To use "Item" selection, simply submit a value or vector of values with each dimensional parameter. To use "All" selection, submit a wildcard asterisk ("*") instead of a value.
-#' For detailed examples see the installed example files in the \code{examples} folder of \code{path.package("rSCB")} (these are also viewable on the project's GitHub page).
+#' For detailed examples see the installed example files in the \code{examples} folder of \code{path.package("sweSCB")} (these are also viewable on the project's GitHub page).
 #' 
 #' @seealso
 #' \code{\link{scbGetMetadata}}, \code{\link{scbGetDims}}, \code{\link{scbGetLevels}}

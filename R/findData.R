@@ -5,13 +5,14 @@
 #' @param history keep the history when the function is running.
 #' @param ... further parameters. These are currently ignored.
 #' 
+#' 
 #' @seealso
 #' \code{\link{scbGetMetadata}}, \code{\link{scbGetData}}
 #' 
 #' @export
 
 
-findSCBdata <- function(history = FALSE,...){
+findData <- function(history = FALSE,...){
   # Get top node
   Node <- scbGetMetadata() 
   
@@ -29,8 +30,8 @@ findSCBdata <- function(history = FALSE,...){
     cat(rep("=", round(getOption("width")*0.9)), "\n",sep="") 
     
     # Print information in node and ask for choice
-    .findScbData.printNode(Node)
-    inputValue <- .findScbData.input(type = "node", input = Node)
+    .findData.printNode(Node)
+    inputValue <- .findData.input(type = "node", input = Node)
 
     if (inputValue == "q") { quit <- TRUE; next() }
 
@@ -46,14 +47,14 @@ findSCBdata <- function(history = FALSE,...){
        
       # Check if it is the botton node and if so, ask to download data
       if (Node$type[as.numeric(inputValue)] == "t") {
-        .findScbData.Download(
+        .findData.Download(
           list(scbGetMetadata(
             Node$id[as.numeric(inputValue)]),
             Node$id[as.numeric(inputValue)]
           ))
         
         # When download is done, ask if more data should be downloaded
-        inputDownMore <- .findScbData.input(type = "yesno",
+        inputDownMore <- .findData.input(type = "yesno",
             input = "Do you want to download more data from SCB?")
         quit <- inputDownMore == "n"
         next()
@@ -67,27 +68,27 @@ findSCBdata <- function(history = FALSE,...){
   }
 }
 
-.findScbData.Download <- function(dataNode,...) {
+.findData.Download <- function(dataNode,...) {
   dataNodeName <- dataNode[[2]]
   dataNode <- dataNode[[1]]
   
   # Ask if the file should be downloaded
-  inputDown <- .findScbData.input(
+  inputDown <- .findData.input(
     type = "yesno",
     input = str_c("Do you want to download '", dataNodeName, "'?", sep=""))
   
   if (inputDown == "n") { return() }
 
-  inputName <- .findScbData.input(
+  inputName <- .findData.input(
     type = "text",
     input = "Name of data.frame object to save data to (ex: myDataFrame):")  
   
-  inputClean <- .findScbData.input(
+  inputClean <- .findData.input(
     type = "yesno",
     input = "Do you want to clean and melt this file (to wide R format)?")
   cleanBool <- inputClean == "y"
   
-  inputCode <- .findScbData.input(
+  inputCode <- .findData.input(
     type="yesno",
     input="Do you want to print the code for downloading this data?")
   
@@ -103,7 +104,7 @@ findSCBdata <- function(history = FALSE,...){
                         text = listElem$valueTexts,
                         stringsAsFactors = FALSE)
     # Ask for input from user
-    varAlt <- .findScbData.input(
+    varAlt <- .findData.input(
       type="alt", 
       input=list(varDF, listElem$text))
     
@@ -134,14 +135,14 @@ findSCBdata <- function(history = FALSE,...){
   
   # Print the code to repeat the downloading from SCB
   if (inputCode == "y") {
-    .findScbData.printCode(dataNode$URL,
+    .findData.printCode(dataNode$URL,
                            varListText,
                            inputName,
                            clean = cleanBool)
   }
 }
 
-.findScbData.inputBaseCat <- function(alt, codedAlt) {
+.findData.inputBaseCat <- function(alt, codedAlt) {
   # The function prints the 'alt' rows in 'codedAlt'.
   # The purpose is to print alternatives for each input from the user
   output<-"\n("
@@ -158,7 +159,7 @@ findSCBdata <- function(history = FALSE,...){
   return(str_join(output,")", sep=""))
 }
 
-.findScbData.input <- function(type, input = NULL, test_input = character(0)){
+.findData.input <- function(type, input = NULL, test_input = character(0)){
   # Define the possible alternatives that the user can do (except alternatives)
   codedAlt <- data.frame(abbr=c("esc", "b", "*", "y", "n", "a"),
                          name=c("Quit", "Back", "Select all", "Yes", "No", "Show all"),
@@ -218,11 +219,11 @@ findSCBdata <- function(history = FALSE,...){
       } else {
         toprint <- varDFshort
       }
-      .findScbData.printNode(xscb = toprint, print = TRUE)
+      .findData.printNode(xscb = toprint, print = TRUE)
     }
     cat(textHead)
     if (type != "text") {
-      cat(.findScbData.inputBaseCat(baseCat, codedAlt), "\n")
+      cat(.findData.inputBaseCat(baseCat, codedAlt), "\n")
     }
     
     # Get input from the user (if not test run)
@@ -245,7 +246,7 @@ findSCBdata <- function(history = FALSE,...){
     if (type == "text") inputScan <- inputScanRaw
     
     # Scan for duplicates and do corrections
-    inputScan <- .findScbData.inputConvert(inputScan)
+    inputScan <- .findData.inputConvert(inputScan)
     
     # Test if the input are OK (valid)
     inputOK <- 
@@ -272,7 +273,7 @@ findSCBdata <- function(history = FALSE,...){
   return(inputScan)
 }
 
-.findScbData.printNode <- function(xscb, print=TRUE) {
+.findData.printNode <- function(xscb, print=TRUE) {
   # Preparations of for printing the node
   xscb$text <- as.character(xscb$text) 
   nSCBidlen <- max(str_length(as.character(xscb$id))) # Get max str length of id
@@ -337,7 +338,7 @@ findSCBdata <- function(history = FALSE,...){
   }
 }
 
-.findScbData.printCode <- function(url, varListText, inputName, clean) {
+.findData.printCode <- function(url, varListText, inputName, clean) {
   # Print the code used to download the data
   
   cat("To download the same data from SCB again, use the following code:\n\n")
@@ -369,7 +370,7 @@ findSCBdata <- function(history = FALSE,...){
 }
 
 
-.findScbData.inputConvert <- function(input) {
+.findData.inputConvert <- function(input) {
   # Set the output (for input of length == 1)
   output <- input  
 

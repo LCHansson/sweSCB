@@ -9,7 +9,7 @@ The package offers methods to fetch information about the data hierarchy stored 
 The source code for this project is entirely free and is licensed under the [AGPLv3 license](http://www.gnu.org/licenses/agpl-3.0.html) (also included with this package). This means that you are free to use, distribute and modify the code as you see fit. However, any code you add to this code _must_ also be released under the same license or any compatible and equally free license, as-is without any modifications. Freedom is a precious thing and can only be safeguarded by openness, sharing, and a [copyleft](http://en.wikipedia.org/wiki/Copyleft) attitude towards intellectual property.
 
 ## New in version 0.3
-Version 0.3 was released on XX January, 2014. The most significant user-visible change is the introduction of `findSCBdata()`, a command-line browsing tool for the data tree of the SCB API.
+Version 0.3 was released on 15 January, 2014. The most significant user-visible change is the introduction of `finddata()`, a command-line browsing tool for the data tree of the SCB API.
 
 ## A brief note on using the SCB API
 The SCB API is a RESTful API. The data consists of a metadata part and a data part. The metadata part is structured in a hierarchical node tree, where each node contains information about any (sub-)nodes that are below it in the tree structure or, if the nodes is at the bottom of the tree structure, the data referenced by the node as well as what dimensions are available for the data at that subnode.
@@ -25,7 +25,7 @@ library(sweSCB)
 ## Easy access to SCB data
 Data in the SCB API is structured in a data tree and a wrapper function `findSCBdata()` has been written for easy navigation and access to data through the SCB api. To get data from SCB simply run the function from the R command line:
 ```r
-findSCBdata()
+findData()
 ```
 The function will automatically print (if requested) the code needed to reproduce the access to SCB data.
 

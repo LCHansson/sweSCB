@@ -5,7 +5,7 @@
 scbGetDims(node, verbose = TRUE)
 }
 \arguments{
-  \item{url}{URL to get data from}
+  \item{node}{Bottom node to deparse into object}
 
   \item{verbose}{Verbose output mode.}
 }

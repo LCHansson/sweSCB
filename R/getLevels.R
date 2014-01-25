@@ -1,10 +1,10 @@
 #' Get levels from API node
 #'
 #' Get levels from a node in the API. If at the lowest node, return a warning.
-#'
-#' @param baseUrl Input URL to node (default: \code{NULL})
+#' 
 #' @param descriptions Whether to include node descriptions with the list of node IDs. (default: \code{FALSE})
 #' @param quiet Quiet mode. Whether to stop with an error if the input node does not contain any subnodes. If set to \code{TRUE}, the function will quietly return FALSE without any errors. (default: \code{FALSE})
+#' @param ... further argument to send to \code{scbGetMetadata}
 #' @export
 
 scbGetLevels <- function(
@@ -38,7 +38,7 @@ scbGetLevels <- function(
 checkForLevels <- function(url) {
 	
 	if(missing(url))
-		stop("ERROR: Function rSCB::checkForLevels(): parameter `url` empty.\n
+		stop("ERROR: Function sweSCB::checkForLevels(): parameter `url` empty.\n
 			 Please see traceback() for more information.")
 	
 	if(is.null(url)) {

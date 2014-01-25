@@ -12,15 +12,23 @@ scbGetMetadata <- function(path = NULL, quiet=FALSE, ...) {
 		url <- baseURL(...)
 	else
 		url <- paste0(c(baseURL(...),path),collapse="/")
-	
-    df <- data.frame(
+
+    df <- try(
+      data.frame(
         t(sapply(
             RJSONIO::fromJSON(
-                paste(readLines(url, warn = F), collapse = "")
+                paste(readLines(url, warn = F), collapse = ""),
+                encoding = "utf8"
             ),
             c
         ))
-    )
+    ),silent=TRUE
+      )
+  
+	if(class(df)=="try-error"){
+	  stop(str_join("No internet connection to ",url),
+	       call.=FALSE)
+	}
 	
 	if("id" %in% names(df))
 		df$id <- as.character(df$id)

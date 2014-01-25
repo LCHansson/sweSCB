@@ -2,7 +2,7 @@
 \alias{scbGetData}
 \title{Get data from a bottom node in SCB API}
 \usage{
-scbGetData(url, dims)
+scbGetData(url, dims, clean = FALSE)
 }
 \arguments{
   \item{url}{URL to get data from (it is usually sufficient
@@ -14,6 +14,8 @@ scbGetData(url, dims)
   all dimensions of the data. If you don't want to filter
   data, submit an asterisk in quotation marks ("*") instead
   of values for that dimension.}
+
+  \item{clean}{Clean and melt the data to R format.}
 }
 \description{
 This function fetches actual data (i.e. values) from the
@@ -26,15 +28,13 @@ function currently only supports the "Item" and "All"
 modes. To use "Item" selection, simply submit a value or
 vector of values with each dimensional parameter. To use
 "All" selection, submit a wildcard asterisk ("*") instead
-of a value. For detailed examples of how the function can
-be used, please refer to the manpage for
-\code{\link{scbCleanData}}. Also see the installed example
+of a value. For detailed examples see the installed example
 files in the \code{examples} folder of
-\code{path.package("rSCB")} (these are also viewable on the
-project's GitHub page).
+\code{path.package("sweSCB")} (these are also viewable on
+the project's GitHub page).
 }
 \seealso{
 \code{\link{scbGetMetadata}}, \code{\link{scbGetDims}},
-\code{\link{scbGetLevels}}, \code{\link{scbCleanData}}
+\code{\link{scbGetLevels}}
 }
 

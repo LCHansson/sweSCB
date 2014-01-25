@@ -1,0 +1,31 @@
+DEVELOPMENT INSTRUCTIONS
+========================
+
+Branching
+---------
+The 'master' branch is considered stable. DO NOT MAKE COMMITS TO THE 'master' BRANCH WITHOUT DUE PERMISSION.
+
+Development is done in the 'dev' branch. Before release, 'dev' is forked into a 'x.y-beta' branch where only fixes and really minor changes are allowed. When the 'x.y-beta' branch is deemed release ready by the core dev team (currently: Love Hansson, Måns Magnusson), the branch is merged into 'master' and turned into the new stable release.
+
+Hotfixes (i.e. bugfixes and bugfixes only) happen in 'x.y-hotfix_z' branches forked from the 'master' branch where 'z' designates the GitHub issue containing the bug report being adressed.
+
+
+Version numbering
+-----------------
+Versions are numbered x.y, where 'x' are full releases (i.e. significant feature changes etc.) and 'y' are minor releases (i.e. bug fixes, minor feature improvements, small adjustments).
+
+
+Commit instructions
+-------------------
+If you are not a part of the core development team, please submit your code in the form of pull requests. These will be duly reviewed as soon as possible. Please be patient.
+
+Commit early, and commit often. But please keep commits clean, i.e. try to focus on one functionality per commit if possible.
+
+Please do not commit any changes to any other branch than the 'dev' branch unless explicitly tasked with working on another branch.
+
+
+Building
+--------
+Before making a pull request, make sure your code builds. We use `roxygen2` for package building.
+
+DO NOT commit .Rd manpages in the 'dev' branch! Manpages may be added to the '*-beta' branches and must definitely be added to the 'master' branch before committing.

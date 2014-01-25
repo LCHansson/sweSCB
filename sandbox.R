@@ -114,7 +114,7 @@ print(b)
 
 
 
-##### EXAMPLE: INSTALLING THE rSCBapi PACKAGE #####
+##### EXAMPLE: INSTALLING THE sweSCB PACKAGE FROM GITHUB #####
 require(devtools)
 
-install_github("rSCBapi", "prenumerant")
+install_github("sweSCB", "LCHansson")

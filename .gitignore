@@ -6,3 +6,11 @@
 .Rproj.user
 *.Rproj
 .RData
+.DS_Store
+
+# Don't update .gitignore
+.gitignore
+
+# .Rd files (remove this before committing to the 'master' or '*-beta' branches)
+# *.Rd
+

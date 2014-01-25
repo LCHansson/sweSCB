@@ -2,7 +2,7 @@
 #' 
 #' Deparse and reorder data form the metadata object for pretty output
 #' 
-#' @param url URL to get data from
+#' @param node Bottom node to deparse into object
 #' @param verbose Verbose output mode.
 #' @export
 

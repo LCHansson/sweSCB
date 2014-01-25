@@ -9,7 +9,21 @@ The package offers methods to fetch information about the data hierarchy stored 
 The source code for this project is entirely free and is licensed under the [AGPLv3 license](http://www.gnu.org/licenses/agpl-3.0.html) (also included with this package). This means that you are free to use, distribute and modify the code as you see fit. However, any code you add to this code _must_ also be released under the same license or any compatible and equally free license, as-is without any modifications. Freedom is a precious thing and can only be safeguarded by openness, sharing, and a [copyleft](http://en.wikipedia.org/wiki/Copyleft) attitude towards intellectual property.
 
 ## New in version 0.3
-Version 0.3 was released on 15 January, 2014. The most significant user-visible change is the introduction of `finddata()`, a command-line browsing tool for the data tree of the SCB API.
+Version 0.3 was released on 27 January, 2014. The most significant user-visible change is the introduction of `findData()`, a command-line browsing tool for the data tree of the SCB API. 
+
+- Several functions have been renamed for easier use.
+
+- A parameter has been added to `getData()` to allow for nice formatting of downloaded data. This enables users to save data directly as a `data.frame` without further munging.
+
+- The base URL to the API is now implicit in all functions that call the API, like `getMetadata()` and `getDims()`, making the user-provided input less cumbersome.
+
+- The package has been renamed from `rSCB` to `sweSCB`.
+
+- A makefile and automated tests have been added to allow for smoother development.
+
+- Instructions for contributing to package development can now be found in the file named `DEVELOPMENT`.
+
+- Miscellaneous bug fixes.
 
 ## A brief note on using the SCB API
 The SCB API is a RESTful API. The data consists of a metadata part and a data part. The metadata part is structured in a hierarchical node tree, where each node contains information about any (sub-)nodes that are below it in the tree structure or, if the nodes is at the bottom of the tree structure, the data referenced by the node as well as what dimensions are available for the data at that subnode.

@@ -6,6 +6,15 @@
 #' @param quiet Quiet mode (never return a message to the user)
 #' @param ... Further arguments passed to  \code{baseURL()}.
 #' @export
+#' @examples
+#' # Define variable name
+#' varname <- "BefProgFoddaMedel10"
+#' 
+#' # Get metadata
+#' metadata <- scbGetMetadata(varname)
+#' 
+#' # Get dimensions (names of dimensions are printed in the terminal)
+#' dims <- scbGetDims(metadata)
 #' 
 scbGetMetadata <- function(path = NULL, quiet=FALSE, ...) {
 	if(is.null(path))

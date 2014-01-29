@@ -23,4 +23,8 @@ buildPath(varname, topnodes = NULL, baseUrl = NULL, ...)
 This function takes a list if strings and builds a URL to
 the SCB web API \emph{in reverser order}.
 }
+\examples{
+myDataId <- "BefProgFoddaMedel10"
+buildPath(myDataId)
+}
 

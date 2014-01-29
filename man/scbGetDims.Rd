@@ -13,4 +13,22 @@ scbGetDims(node, verbose = TRUE)
 Deparse and reorder data form the metadata object for
 pretty output
 }
+\examples{
+# Get metadata for a variable
+metadata <- scbGetMetadata("BefProgFoddaMedel10")
+
+# Get dimensions (names of dimensions are printed in the terminal)
+dims <- scbGetDims(metadata)
+
+# Get data
+test <- scbGetData(metadata$URL, dims=list(
+   Fodelseland = "010",
+   Alder="*",
+   ContentsCode = "*",
+   Tid="*"
+))
+}
+\seealso{
+\link{scbGetMetadata}
+}
 

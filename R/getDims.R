@@ -4,7 +4,24 @@
 #' 
 #' @param node Bottom node to deparse into object
 #' @param verbose Verbose output mode.
+#' @seealso \link{scbGetMetadata}
 #' @export
+#' @examples
+#' 
+#' # Get metadata for a variable
+#' metadata <- scbGetMetadata("BefProgFoddaMedel10")
+#' 
+#' # Get dimensions (names of dimensions are printed in the terminal)
+#' dims <- scbGetDims(metadata)
+#' 
+#' # Get data
+#' test <- scbGetData(metadata$URL, dims=list(
+#'    Fodelseland = "010",
+#'    Alder="*",
+#'    ContentsCode = "*",
+#'    Tid="*"
+#' ))
+#' 
 
 scbGetDims <- function(node, verbose=TRUE) {
 	

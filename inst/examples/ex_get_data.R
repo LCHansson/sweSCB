@@ -18,8 +18,5 @@ test <- scbGetData(metadata$URL, dims=list(
 # Examine data
 View(test)
 
-# Make sure the data is actually numeric (it often isn't)
-testClean <- scbCleanData(test)
-	
 # Plot the data
 ggplot(testClean,aes(x=ålder,y=Födda.2010,fill=födelseland)) + geom_histogram()

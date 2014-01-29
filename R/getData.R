@@ -15,6 +15,23 @@
 #' \code{\link{scbGetMetadata}}, \code{\link{scbGetDims}}, \code{\link{scbGetLevels}}
 #' 
 #' @export
+#' @examples
+#' # Get metadata for a variable
+#' metadata <- scbGetMetadata("BefProgFoddaMedel10")
+#' # Get dimensions (names of dimensions are printed in the terminal)
+#' dims <- scbGetDims(metadata)
+#' 
+#' # Get data
+#' test <- scbGetData(metadata$URL, dims=list(
+#'    Fodelseland = "010",
+#'    Alder="*",
+#'    ContentsCode = "*",
+#'    Tid="*"
+#' ))
+#' 
+#' # Examine data
+#' View(test)
+#'
 
 scbGetData <- function(url, dims, clean = FALSE) {
 
@@ -86,7 +103,7 @@ scbGetData <- function(url, dims, clean = FALSE) {
    
    .cleanSCBcol <- function(x) {
       # Takes a character vector with numbers, remove all
-      # spases and convert to numeric (if not x is a char vector)
+      # spaces and convert to numeric (if not x is a char vector)
       suppressWarnings(numx <- as.numeric(str_replace_all(x,"\\s","")))
       if(sum(is.na(numx)) == length(x)) {
          return(as.character(x))

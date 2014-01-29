@@ -8,8 +8,12 @@
 #' 
 #' @seealso
 #' \code{\link{scbGetMetadata}}, \code{\link{scbGetData}}
-#' 
 #' @export
+#' @examples
+#' \dontrun{
+#' findData()
+#' }
+
 
 
 findData <- function(history = FALSE,...){

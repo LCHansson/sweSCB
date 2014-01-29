@@ -18,4 +18,14 @@ scbGetMetadata(path = NULL, quiet = FALSE, ...)
 Get data from the API. If at the lowest node, provide the
 user with a friendly message about this.
 }
+\examples{
+# Define variable name
+varname <- "BefProgFoddaMedel10"
+
+# Get metadata
+metadata <- scbGetMetadata(varname)
+
+# Get dimensions (names of dimensions are printed in the terminal)
+dims <- scbGetDims(metadata)
+}
 

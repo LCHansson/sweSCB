@@ -6,9 +6,6 @@
 #' @param topnodes A string or a list of strings containing the top nodes \emph{in top-to-bottom order}
 #' @param baseUrl The base URL to use. This is only useful if you want to use the function for constructing a URL to another web service or if SCB should suddenly change their base URL. If you want to pass arguments to \code{baseURL()}, use the \code{...} argument instead.
 #' @param ... Further arguments passed to  \code{baseURL()}.
-#' @examples
-#' myDataId <- "BefProgFoddaMedel10"
-#' buildPath(myDataId)
 #' 
 
 buildPath <- function(varname, topnodes = NULL, baseUrl = NULL, ...) {

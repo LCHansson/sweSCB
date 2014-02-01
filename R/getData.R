@@ -120,9 +120,9 @@ scbGetData <- function(url, dims, clean = FALSE) {
    idvars <- character(0)
    for (content in contentNode$variables$variables) {
       if (content$code %in% c("Tid", "ContentsCode")) {
-         assign(x = str_join("val", content$code, sep=""), content$values)
-         assign(x = str_join("valText", content$code, sep=""), content$valueTexts)
-         next()
+        if (content$code == "Tid") { valTextTid <- content$values }
+        if (content$code == "ContentsCode") { valTextContentsCode <- content$values }
+        next()
       }
       varName <- content$text
       Encoding(varName) <- "UTF-8"

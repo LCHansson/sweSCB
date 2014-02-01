@@ -49,6 +49,14 @@ test_that(desc=".findData.inputConvert",{
               is_equivalent_to("*"))  
 })
 
+test_that(desc=".findData.Download",{
+  load("testFiles.Rdata")
+  expect_output(.findData.Download(dataNode=testNullNode, test_input=c("n", "mittData", "n", "y")),
+                "mittData")
+  expect_output(.findData.Download(dataNode=testNullNode, test_input=c("n", "mittData", "n", "y")),
+                "To download the same data from SCB again, use the following code:")
+})
+
 test_that(desc=".findData.input",{
   load("testFiles.Rdata")
   

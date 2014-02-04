@@ -2,7 +2,7 @@
 \alias{scbGetMetadata}
 \title{Get data}
 \usage{
-scbGetMetadata(path = NULL, quiet = FALSE, ...)
+scbGetMetadata(path = NULL, quiet = TRUE, ...)
 }
 \arguments{
   \item{path}{URL to fetch metadata from. Defaults to the
@@ -19,6 +19,7 @@ Get data from the API. If at the lowest node, provide the
 user with a friendly message about this.
 }
 \examples{
+## NOTE: DEPRECATED EXAMPLES!
 # Define variable name
 varname <- "BefProgFoddaMedel10"
 

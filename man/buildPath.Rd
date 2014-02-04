@@ -5,8 +5,9 @@
 buildPath(varname, topnodes = NULL, baseUrl = NULL, ...)
 }
 \arguments{
-  \item{varname}{The name of the variable in the web API.
-  This can be a data node or a tree node.}
+  \item{varname}{A character string och a list of strings
+  of the variable(s) in the web API. This can be a data
+  node or a tree node.}
 
   \item{topnodes}{A string or a list of strings containing
   the top nodes \emph{in top-to-bottom order}}
@@ -20,7 +21,7 @@ buildPath(varname, topnodes = NULL, baseUrl = NULL, ...)
   \item{...}{Further arguments passed to \code{baseURL()}.}
 }
 \description{
-This function takes a list if strings and builds a URL to
+This function takes a list of strings and builds a URL to
 the SCB web API \emph{in reverser order}.
 }
 

@@ -13,7 +13,7 @@ scbGetLevels <- function(
 	...
 ) {
 	
-	nodeData <- scbGetMetadata(quiet=TRUE, ...)
+	nodeData <- scbGetMetadata(quiet = TRUE, ...)
 	
 	if(!("id" %in% names(nodeData))) {
 		if(!quiet) warning("already at lowest node, fetch data instead")

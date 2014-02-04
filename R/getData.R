@@ -16,17 +16,21 @@
 #' 
 #' @export
 #' @examples
+#' ## CONTINUED FROM EXAMPLES IN scbGetMetadata()
 #' # Get metadata for a variable
-#' metadata <- scbGetMetadata("BefProgFoddaMedel10")
+#' url <- paste(c(baseURL(),"AM","AM0102","AM0102A","KLStabell14LpMan"), collapse="/")
+#' metadata <- scbGetMetadata(url)
+#' 
 #' # Get dimensions (names of dimensions are printed in the terminal)
 #' dims <- scbGetDims(metadata)
 #' 
 #' # Get data
 #' test <- scbGetData(metadata$URL, dims=list(
-#'    Fodelseland = "010",
-#'    Alder="*",
+#'    Myndighet = "C02",
+#'    Kon = "*",
+#'    Heltiddeltid = "*",
 #'    ContentsCode = "*",
-#'    Tid="*"
+#'    Tid = "*"
 #' ))
 #' 
 #' # Examine data

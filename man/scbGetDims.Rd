@@ -14,7 +14,8 @@ Deparse and reorder data form the metadata object for
 pretty output
 }
 \examples{
-# Get metadata for a named variable (continued from examples in scbGetMetadata())
+## CONTINUED FROM EXAMPLES IN scbGetMetadata()
+# Get metadata for a named variable
 url <- paste(c(baseURL(),"AM","AM0102","AM0102A","KLStabell14LpMan"), collapse="/")
 metadata <- scbGetMetadata(url)
 
@@ -23,10 +24,11 @@ dims <- scbGetDims(metadata)
 
 # Get data
 test <- scbGetData(metadata$URL, dims=list(
-   Fodelseland = "010",
-   Alder="*",
+   Myndighet = "C02",
+   Kon = "*",
+   Heltiddeltid = "*",
    ContentsCode = "*",
-   Tid="*"
+   Tid = "*"
 ))
 }
 \seealso{

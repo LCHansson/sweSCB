@@ -7,6 +7,7 @@
 #' @param ... Further arguments passed to  \code{baseURL()}.
 #' @export
 #' @examples
+#' ## NOTE: DEPRECATED EXAMPLES!
 #' # Define variable name
 #' varname <- "BefProgFoddaMedel10"
 #' 
@@ -16,7 +17,7 @@
 #' # Get dimensions (names of dimensions are printed in the terminal)
 #' dims <- scbGetDims(metadata)
 #' 
-scbGetMetadata <- function(path = NULL, quiet=FALSE, ...) {
+scbGetMetadata <- function(path = NULL, quiet = TRUE, ...) {
    if (is.null(path))
       url <- baseURL(...)
    else

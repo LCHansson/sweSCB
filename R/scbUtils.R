@@ -1,35 +1,37 @@
 #' Build a path from character elements
 #' 
-#' This function takes a list if strings and builds a URL to the SCB web API \emph{in reverser order}.
+#' This function takes a list of strings and builds a URL to the SCB web API \emph{in reverser order}.
 #' 
-#' @param varname The name of the variable in the web API. This can be a data node or a tree node.
+#' @param varname A character string och a list of strings of the variable(s) in the web API. This can be a data node or a tree node.
 #' @param topnodes A string or a list of strings containing the top nodes \emph{in top-to-bottom order}
 #' @param baseUrl The base URL to use. This is only useful if you want to use the function for constructing a URL to another web service or if SCB should suddenly change their base URL. If you want to pass arguments to \code{baseURL()}, use the \code{...} argument instead.
 #' @param ... Further arguments passed to  \code{baseURL()}.
-#' 
+#' @export
 
 buildPath <- function(varname, topnodes = NULL, baseUrl = NULL, ...) {
 	if (is.null(baseUrl))
 		baseUrl <- baseURL(...)
 	
 	# Error handling
-	if (topnodes == "")
-		stop("ERROR: Internal function sweSCB:::buildPath: `topnodes` argument set to empty string\n
+	if (!is.null(topnodes)) {
+	   if (topnodes == "")
+	      stop("ERROR: Internal function sweSCB:::buildPath: `topnodes` argument set to empty string\n
 			 The `topnodes` argument is required to be either NULL or a value or a vector other than [''] interpretable as a character string by paste().\n")
-	
-	# Clean URL string: remove trailing slash
-	base <- str_replace_all(base,"/$","")
+	}
+	   
+	   # Clean URL string: remove trailing slash
+	base <- str_replace_all(baseUrl,"/$","")
 	
 	# Clean topnodes string: Remove whitespace and leading/trailing slashes
 	topnodes <- str_trim(topnodes)
 	topnodes <- str_replace_all(topnodes,"^/|/$","")
 	
 	# Build a vector, in the right order, for the URL elements
-	urlElements <- c(base,topnodes,varname)
+	urlElements <- paste(c(base,topnodes), collapse="/")
 	
 	# Create full path and return it
 	return(
-		paste0(urlElements, collapse="/")
+		paste(urlElements,varname, sep="/")
 	)
 }
 

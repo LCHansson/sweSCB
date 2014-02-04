@@ -17,7 +17,7 @@
 #' dims <- scbGetDims(metadata)
 #' 
 scbGetMetadata <- function(path = NULL, quiet=FALSE, ...) {
-	if(is.null(path))
+	if (is.null(path))
 		url <- baseURL(...)
 	else
 		url <- paste0(c(baseURL(...),path),collapse="/")
@@ -34,15 +34,15 @@ scbGetMetadata <- function(path = NULL, quiet=FALSE, ...) {
     ),silent=TRUE
       )
   
-	if(class(df)=="try-error"){
+	if (class(df)=="try-error"){
 	  stop(str_join("No internet connection to ",url),
 	       call.=FALSE)
 	}
 	
-	if("id" %in% names(df))
+	if ("id" %in% names(df))
 		df$id <- as.character(df$id)
 	else {
-		if(quiet){
+		if (!quiet) {
 			message("The data node returned is a bottom node.\nIf the name of your node object is `node`, call scbGetDims(node$URL) to get further information about the data node.")
 		}
 		df$URL <- url

@@ -9,11 +9,11 @@
 #' 
 
 buildPath <- function(varname, topnodes = NULL, baseUrl = NULL, ...) {
-	if(is.null(baseUrl))
+	if (is.null(baseUrl))
 		baseUrl <- baseURL(...)
 	
 	# Error handling
-	if(topnodes == "")
+	if (topnodes == "")
 		stop("ERROR: Internal function sweSCB:::buildPath: `topnodes` argument set to empty string\n
 			 The `topnodes` argument is required to be either NULL or a value or a vector other than [''] interpretable as a character string by paste().\n")
 	

@@ -9,7 +9,7 @@ cat("getMetaData : ")
 test_that(desc="getMetadata works",{
   testFile<-scbGetMetadata()
   expect_that(testFile,is_a("data.frame"))
-  expect_that(dim(testFile),is_equivalent_to(c(21,3)))
+  expect_that(dim(testFile),is_equivalent_to(c(21,4)))
 })
 
 cat("\n")

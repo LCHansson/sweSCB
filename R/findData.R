@@ -53,8 +53,8 @@ findData <- function(history = FALSE,...){
       if (Node$type[as.numeric(inputValue)] == "t") {
         .findData.Download(dataNode=
           list(scbGetMetadata(
-            Node$id[as.numeric(inputValue)]),
-            Node$id[as.numeric(inputValue)]
+            Node$URL[as.numeric(inputValue)]),
+            Node$URL[as.numeric(inputValue)]
           ))
         
         # When download is done, ask if more data should be downloaded
@@ -64,10 +64,10 @@ findData <- function(history = FALSE,...){
         next()
       }
 
-      # If not the botton node, traverse to the next node (and save the current node)
+      # If not the bottom node, traverse to the next node (and save the current node)
       # to be able to traverse back up in the node tree
       allNodes[[length(allNodes) + 1]] <- Node
-      Node <- scbGetMetadata(Node$id[as.numeric(inputValue)])
+      Node <- scbGetMetadata(Node$URL[as.numeric(inputValue)])
     }
   }
 }

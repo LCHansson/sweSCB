@@ -39,14 +39,21 @@ scbGetMetadata <- function(path = NULL, quiet=FALSE, ...) {
            call.=FALSE)
    }
    
-   if ("id" %in% names(df))
+   if ("id" %in% names(df)) {
+      # Convert id to character
       df$id <- as.character(df$id)
-   else {
+      
+      # Set the URL of each subnode
+      df$URL <- buildPath(df$id, baseUrl = url)
+      
+   } else {
+      
+      df$URL <- url
       if (!quiet) {
          message("The data node returned is a bottom node.\nIf the name of your node object is `node`, call scbGetDims(node$URL) to get further information about the data node.")
       }
-      df$URL <- buildPath(df$id, baseUrl = url)
    }
+   
    
    return(df)
 }

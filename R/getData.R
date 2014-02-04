@@ -113,7 +113,7 @@ scbGetData <- function(url, dims, clean = FALSE) {
    }
    
    # Get metadata to use in creating factors of Tid and contentCode
-   contentNode <- scbGetMetadata(path=str_split(url, "/")[[1]][length(str_split(url, "/")[[1]])])
+   contentNode <- scbGetMetadata(url)
    
    # Collect factor labels for tid and contentCode and convert
    # other variables to factor variables

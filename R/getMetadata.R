@@ -9,14 +9,12 @@
 #' @examples
 #' ## NOTE: DEPRECATED EXAMPLES!
 #' # Define variable name
-#' varname <- "BefProgFoddaMedel10"
+#' topnode <- scbGetMetadata()
 #' 
-#' # Get metadata
-#' metadata <- scbGetMetadata(varname)
+#' # Get metadata for the first element in the top node
+#' nextnode <- scbGetMetadata(topnode$URL[1])
 #' 
-#' # Get dimensions (names of dimensions are printed in the terminal)
-#' dims <- scbGetDims(metadata)
-#' 
+
 scbGetMetadata <- function(path = NULL, quiet = TRUE, ...) {
    if (is.null(path))
       url <- baseURL(...)

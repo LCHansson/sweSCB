@@ -21,12 +21,9 @@ user with a friendly message about this.
 \examples{
 ## NOTE: DEPRECATED EXAMPLES!
 # Define variable name
-varname <- "BefProgFoddaMedel10"
+topnode <- scbGetMetadata()
 
-# Get metadata
-metadata <- scbGetMetadata(varname)
-
-# Get dimensions (names of dimensions are printed in the terminal)
-dims <- scbGetDims(metadata)
+# Get metadata for the first element in the top node
+nextnode <- scbGetMetadata(topnode$URL[1])
 }
 

@@ -5,9 +5,9 @@
 buildPath(varname, topnodes = NULL, baseUrl = NULL, ...)
 }
 \arguments{
-  \item{varname}{A character string och a list of strings
-  of the variable(s) in the web API. This can be a data
-  node or a tree node.}
+  \item{varname}{A character string or a list of strings of
+  the variable(s) in the web API. This can be a data node
+  or a tree node.}
 
   \item{topnodes}{A string or a list of strings containing
   the top nodes \emph{in top-to-bottom order}}

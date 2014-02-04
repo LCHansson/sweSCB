@@ -8,8 +8,9 @@
 #' @export
 #' @examples
 #' 
-#' # Get metadata for a variable
-#' metadata <- scbGetMetadata("BefProgFoddaMedel10")
+#' # Get metadata for a named variable (continued from examples in scbGetMetadata())
+#' url <- paste(c(baseURL(),"AM","AM0102","AM0102A","KLStabell14LpMan"), collapse="/")
+#' metadata <- scbGetMetadata(url)
 #' 
 #' # Get dimensions (names of dimensions are printed in the terminal)
 #' dims <- scbGetDims(metadata)

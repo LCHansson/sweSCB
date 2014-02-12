@@ -17,4 +17,9 @@ baseURL(version = "v1", lang = "sv", ...)
 \description{
 ...
 }
+\examples{
+a <- baseURL()
+b <- baseURL("v2","en")
+print(c(a,b))
+}
 

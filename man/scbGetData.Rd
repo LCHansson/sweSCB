@@ -33,6 +33,27 @@ files in the \code{examples} folder of
 \code{path.package("sweSCB")} (these are also viewable on
 the project's GitHub page).
 }
+\examples{
+## CONTINUED FROM EXAMPLES IN scbGetMetadata()
+# Get metadata for a variable
+url <- paste(c(baseURL(),"AM","AM0102","AM0102A","KLStabell14LpMan"), collapse="/")
+metadata <- scbGetMetadata(url)
+
+# Get dimensions (names of dimensions are printed in the terminal)
+dims <- scbGetDims(metadata)
+
+# Get data
+test <- scbGetData(metadata$URL, dims=list(
+   Myndighet = "C02",
+   Kon = "*",
+   Heltiddeltid = "*",
+   ContentsCode = "*",
+   Tid = "*"
+))
+
+# Examine data
+View(test)
+}
 \seealso{
 \code{\link{scbGetMetadata}}, \code{\link{scbGetDims}},
 \code{\link{scbGetLevels}}

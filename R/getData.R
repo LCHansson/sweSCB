@@ -15,6 +15,27 @@
 #' \code{\link{scbGetMetadata}}, \code{\link{scbGetDims}}, \code{\link{scbGetLevels}}
 #' 
 #' @export
+#' @examples
+#' ## CONTINUED FROM EXAMPLES IN scbGetMetadata()
+#' # Get metadata for a variable
+#' url <- paste(c(baseURL(),"AM","AM0102","AM0102A","KLStabell14LpMan"), collapse="/")
+#' metadata <- scbGetMetadata(url)
+#' 
+#' # Get dimensions (names of dimensions are printed in the terminal)
+#' dims <- scbGetDims(metadata)
+#' 
+#' # Get data
+#' test <- scbGetData(metadata$URL, dims=list(
+#'    Myndighet = "C02",
+#'    Kon = "*",
+#'    Heltiddeltid = "*",
+#'    ContentsCode = "*",
+#'    Tid = "*"
+#' ))
+#' 
+#' # Examine data
+#' View(test)
+#'
 
 scbGetData <- function(url, dims, clean = FALSE) {
 
@@ -86,7 +107,7 @@ scbGetData <- function(url, dims, clean = FALSE) {
    
    .cleanSCBcol <- function(x) {
       # Takes a character vector with numbers, remove all
-      # spases and convert to numeric (if not x is a char vector)
+      # spaces and convert to numeric (if not x is a char vector)
       suppressWarnings(numx <- as.numeric(str_replace_all(x,"\\s","")))
       if(sum(is.na(numx)) == length(x)) {
          return(as.character(x))
@@ -96,15 +117,15 @@ scbGetData <- function(url, dims, clean = FALSE) {
    }
    
    # Get metadata to use in creating factors of Tid and contentCode
-   contentNode <- scbGetMetadata(path=str_split(url, "/")[[1]][length(str_split(url, "/")[[1]])])
+   contentNode <- scbGetMetadata(url)
    
    # Collect factor labels for tid and contentCode and convert
    # other variables to factor variables
    idvars <- character(0)
    for (content in contentNode$variables$variables) {
       if (content$code %in% c("Tid", "ContentsCode")) {
-        if(content$code == "Tid"){valTextTid <- content$values}
-        if(content$code == "ContentsCode"){valTextContentsCode <- content$values}
+        if (content$code == "Tid") { valTextTid <- content$values }
+        if (content$code == "ContentsCode") { valTextContentsCode <- content$values }
         next()
       }
       varName <- content$text

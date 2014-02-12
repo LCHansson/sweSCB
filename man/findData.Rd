@@ -16,6 +16,11 @@ Wrapper function (for \link{scbGetData} and
 \link{scbGetMetadata}) to simply find and download data
 from SCB to the current R session.
 }
+\examples{
+\dontrun{
+findData()
+}
+}
 \seealso{
 \code{\link{scbGetMetadata}}, \code{\link{scbGetData}}
 }

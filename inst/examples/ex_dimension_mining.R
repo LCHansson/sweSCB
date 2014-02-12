@@ -7,21 +7,26 @@ require(ggplot2)
 ##### EXAMPLE: HIERARCHY MINING #####
 kMaxLevels = 4
 
-kTakeSample = TRUE
+kTakeSample = FALSE
 kSamplesize = 10
 
 
 
 # RUN --------------------------------------------------------------------------
 ## INIT: Define the data containers
-hierarchy <- data.table(id_lv1 = scbGetLevels(descriptions=TRUE)$id, desc_lv1 = scbGetLevels(descriptions=TRUE)$description)
+hierarchy <- as.data.table(scbGetLevels(descriptions=TRUE))
+setnames(
+   hierarchy,
+   names(hierarchy),
+   paste(names(hierarchy), "_lv1", sep = "")
+)
 emptyRows <- list()
 tableAtLevel <- list()
 timeSeries <- data.table(obs=integer(), level=integer(), id=character(), time=numeric())
 count <- 0
 
 ## Warn if kTakeSample is FALSE
-if(!kTakeSample) {
+if (!kTakeSample) {
 	cat("\n\n!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n")
 	cat("WARNING: Fetching data ALL NODES in the SCB API.\n")
 	cat("This might take a VERY LONG TIME!\n")
@@ -30,10 +35,10 @@ if(!kTakeSample) {
 }
 
 ## Run loop
-for(j in 2:kMaxLevels) {
+for (j in 2:kMaxLevels) {
 	
 	# Take a sample of Hierarchy to make it manageable
-	if(kTakeSample) {
+	if (kTakeSample) {
 	hierarchy <- hierarchy[
 		sample(
 			nrow(hierarchy),
@@ -49,44 +54,52 @@ for(j in 2:kMaxLevels) {
 	cat("*******************************************\n\n")
 	
 	# Clear input data
-	subLevelData <- data.table(topId=character(),bottomId = character(),desc=character())
+	subLevelData <- data.table(
+      topId       = character(),
+      bottomId    = character(),
+      description = character(),
+      URL         = character()
+	)
 	
-	topLevelName <- paste0("id_lv",idLevel-1)
-	bottomLevelName <- paste0("id_lv",idLevel)
-	descName <- paste0("desc_lv",idLevel)
+	topLevelName <- paste0("id_lv", idLevel-1)
+	topURLName <- paste0("URL_lv", idLevel-1)
+	bottomLevelName <- paste0("id_lv", idLevel)
+	bottomURLName <- paste0("URL_lv", idLevel)
+	descName <- paste0("description_lv", idLevel)
 	
-	for(i in 1:nrow(hierarchy)) {
-		count <- count+1
-		topLevelId <- str_trim(as.character(hierarchy[i,topLevelName,with=FALSE][[1]]))
-		if(topLevelId != "") {
+	for (i in 1:nrow(hierarchy)) {
+		count <- count + 1
+		nodeURL <- hierarchy[i, topURLName, with=FALSE][[1]]
+      nodeId <- hierarchy[i, topLevelName, with=FALSE][[1]]
+		if (nodeId != "") {
 			tid <- system.time({
 				
 				## QUICK FIX FOR BUGS IN THE SCB API:
-				if(!topLevelId %in% c("UF0502C")) {
-# 					queryUrl <- buildPath(baseURL(),topLevelId)
+				if (!nodeId %in% c("BE0001T04BAr")) {
 					
 					# Trim levels (some levels are returned with trailing whitespace)
-					queryLevels <- scbGetLevels(topLevelId,descriptions=TRUE,quiet=FALSE)
+					queryLevels <- scbGetLevels(path = nodeURL, descriptions=TRUE, quiet=FALSE)
 				} else {
-					queryLevels <- FALSE
+					queryLevels <- NULL
 				}
 				
-				if(queryLevels[[1]][1] != FALSE) {
+				if (!is.null(queryLevels$id)) {
 					queryData <- data.table(
-						topId = topLevelId,
-						bottomId = as.character(queryLevels$id),
-						desc = as.character(queryLevels$description)
+						topId       = nodeId,
+						bottomId    = as.character(queryLevels$id),
+						description = as.character(queryLevels$description),
+                  URL         = queryLevels$URL
 					)
 				} else {
 					queryData <- data.table(
-						topId = topLevelId,
-						bottomId = "",
-						desc = ""
+						topId       = nodeId,
+						bottomId    = "",
+						description = "",
+                  URL         = ""
 					)
 				}
 				
-				cat("Query",i,":    ",queryUrl,"\n")
-				cat("Level",j-1, "value: ",topLevelId,"\n")
+				cat("Level",j-1, "value: ",nodeId,"\n")
 				cat("Level",j  , "values:",queryData$bottomId,"\n")
 				
 				subLevelData <- rbind(subLevelData,queryData)
@@ -99,10 +112,10 @@ for(j in 2:kMaxLevels) {
 		
 		# Create time series object for analysis purposes
 		timeSeries <- rbind(timeSeries,
-							list(obs=count,
-								 level=j,
-								 id=topLevelId,
-								 time=tid[[3]]))
+							list(obs  = count,
+								 level = j,
+								 id    = nodeId,
+								 time  = tid[[3]]))
 		cat("Time taken for query:", tid[[3]],"\n\n")
 		
 		# Ensure we don't overdo our query limit (1/sec) by adding
@@ -110,13 +123,15 @@ for(j in 2:kMaxLevels) {
 		if(tid[[3]] != 0) { Sys.sleep(1.2-min(tid[[3]],1.1)) }
 	}
 	
-	setnames(subLevelData,
-			 names(subLevelData),
-			 c(topLevelName,bottomLevelName,descName))
+	setnames(
+	   subLevelData,
+	   names(subLevelData),
+	   c(topLevelName, bottomLevelName, descName, bottomURLName)
+	)
 	
 	hierarchy <- merge(hierarchy,subLevelData,
-					   by=paste0(topLevelName),
-					   all.x=TRUE)
+	                   by = paste0(topLevelName),
+	                   all.x = TRUE)
 	
 # 	emptyRows[[j]] <- hierarchy[get(bottomLevelName) == ""]
 	tableAtLevel[[j]] <- hierarchy
@@ -131,13 +146,18 @@ for(j in 2:kMaxLevels) {
 # Order columns
 hierarchy <- hierarchy[,list(
 	id_lv1,
-	desc_lv1,
+	description_lv1,
+   URL_lv1,
 	id_lv2,
-	desc_lv2,
+	description_lv2,
+	URL_lv2,
 	id_lv3,
-	desc_lv3,
+	description_lv3,
+	URL_lv3,
 	id_lv4,
-	desc_lv4)]
+	description_lv4,
+	URL_lv4
+)]
 
 hierarchy_bk <- copy(hierarchy)
 save(hierarchy,file="hierarchy.RData")

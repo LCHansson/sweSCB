@@ -33,7 +33,7 @@ if(!kTakeSample) {
 for(j in 2:kMaxLevels) {
 	
 	# Take a sample of Hierarchy to make it manageable
-	if(kTakeSample) {
+	if (kTakeSample) {
 	hierarchy <- hierarchy[
 		sample(
 			nrow(hierarchy),
@@ -51,9 +51,9 @@ for(j in 2:kMaxLevels) {
 	# Clear input data
 	subLevelData <- data.table(topId=character(),bottomId = character(),desc=character())
 	
-	topLevelName <- paste0("id_lv",idLevel-1)
-	bottomLevelName <- paste0("id_lv",idLevel)
-	descName <- paste0("desc_lv",idLevel)
+	topLevelName <- paste0("id_lv", idLevel-1)
+	topURLName <- paste0("URL_lv", idLevel-1)
+	descName <- paste0("description_lv", idLevel)
 	
 	for(i in 1:nrow(hierarchy)) {
 		count <- count+1
@@ -62,8 +62,7 @@ for(j in 2:kMaxLevels) {
 			tid <- system.time({
 				
 				## QUICK FIX FOR BUGS IN THE SCB API:
-				if(!topLevelId %in% c("UF0502C")) {
-# 					queryUrl <- buildPath(baseURL(),topLevelId)
+				if (!topLevelId %in% c("UF0502C")) {
 					
 					# Trim levels (some levels are returned with trailing whitespace)
 					queryLevels <- scbGetLevels(topLevelId,descriptions=TRUE,quiet=FALSE)
@@ -71,7 +70,7 @@ for(j in 2:kMaxLevels) {
 					queryLevels <- FALSE
 				}
 				
-				if(queryLevels[[1]][1] != FALSE) {
+				if (queryLevels[[1]][1] != FALSE) {
 					queryData <- data.table(
 						topId = topLevelId,
 						bottomId = as.character(queryLevels$id),
@@ -115,8 +114,8 @@ for(j in 2:kMaxLevels) {
 			 c(topLevelName,bottomLevelName,descName))
 	
 	hierarchy <- merge(hierarchy,subLevelData,
-					   by=paste0(topLevelName),
-					   all.x=TRUE)
+	                   by = paste0(topLevelName),
+	                   all.x = TRUE)
 	
 # 	emptyRows[[j]] <- hierarchy[get(bottomLevelName) == ""]
 	tableAtLevel[[j]] <- hierarchy

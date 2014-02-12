@@ -23,8 +23,10 @@ scbGetLevels <- function(
 	if(!descriptions) {
 		ids <- list(id=nodeData$id)
 	} else {
-		ids <- list(id=nodeData$id,
-					description=nodeData$text
+		ids <- list(
+		   id          = nodeData$id,
+		   description = nodeData$text,
+         URL         = nodeData$URL
 		)
 	}
 	

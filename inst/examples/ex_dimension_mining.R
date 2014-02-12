@@ -69,14 +69,13 @@ for (j in 2:kMaxLevels) {
 	
 	for (i in 1:nrow(hierarchy)) {
 		count <- count + 1
-		# 		topLevelId <- str_trim(as.character(hierarchy[i, topLevelName, with=FALSE][[1]]))
 		nodeURL <- hierarchy[i, topURLName, with=FALSE][[1]]
       nodeId <- hierarchy[i, topLevelName, with=FALSE][[1]]
-		if (topLevelId != "") {
+		if (nodeId != "") {
 			tid <- system.time({
 				
 				## QUICK FIX FOR BUGS IN THE SCB API:
-				if (!topLevelId %in% c("UF0502C")) {
+				if (!nodeId %in% c("UF0502C")) {
 					
 					# Trim levels (some levels are returned with trailing whitespace)
 					queryLevels <- scbGetLevels(path = nodeURL, descriptions=TRUE, quiet=FALSE)
@@ -112,10 +111,10 @@ for (j in 2:kMaxLevels) {
 		
 		# Create time series object for analysis purposes
 		timeSeries <- rbind(timeSeries,
-							list(obs=count,
-								 level=j,
-								 id=topLevelId,
-								 time=tid[[3]]))
+							list(obs  = count,
+								 level = j,
+								 id    = nodeId,
+								 time  = tid[[3]]))
 		cat("Time taken for query:", tid[[3]],"\n\n")
 		
 		# Ensure we don't overdo our query limit (1/sec) by adding

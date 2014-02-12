@@ -2,35 +2,47 @@
 #' 
 #' Get data from the API. If at the lowest node, provide the user with a friendly message about this.
 #' 
-#' @param path URL to fetch metadata from. Defaults to the base URL of the SCB web API, which is equal to the top node in the data tree.
+#' @param path URL to fetch metadata from. If left empty, the function constructs a URL from the \code{node} and \code{topnodes} arguments
+#' @param node A string with the name of the node to fetch. This is ignored if \code{path} is supplied.
+#' @param topnodes A string or list of strings with the names of the parent nodes of \code{node}. This is ignored if \code{path} is supplied.
 #' @param quiet Quiet mode (never return a message to the user)
 #' @param ... Further arguments passed to  \code{baseURL()}.
 #' @export
 #' @examples
-#' ## NOTE: DEPRECATED EXAMPLES!
 #' # Define variable name
 #' topnode <- scbGetMetadata()
 #' 
 #' # Get metadata for the first element in the top node
 #' nextnode <- scbGetMetadata(topnode$URL[1])
 #' 
+#' # Get metadata for a named node with named topnodes
+#' a_node <- scbGetMetadata()
+#' 
 
-scbGetMetadata <- function(path = NULL, quiet = TRUE, ...) {
-   if (is.null(path))
-      url <- baseURL(...)
-   else
+scbGetMetadata <- function(path = NULL, node = NULL, topnodes = NULL, quiet = TRUE, ...) {
+   # Build a URL if no path is supplied
+   if (is.null(path)) {
+      if (is.null(node)) {
+         url <- baseURL(...)
+      } else {
+         url <- buildPath(node, topnodes)
+      }
+   } else {
+      # If a path is supplied, build a URL from that path and ignore the node and topnodes arguments
       url <- path
-   
-   df <- try(
-      data.frame(
+   }
+      
+      df <- try(
+         data.frame(
          t(sapply(
             RJSONIO::fromJSON(
                paste(readLines(url, warn = F), collapse = ""),
                encoding = "utf8"
             ),
             c
-         ))
-      ),silent=TRUE
+         )),
+         stringsAsFactors = FALSE
+      ), silent=TRUE
    )
    
    if (class(df)=="try-error") {

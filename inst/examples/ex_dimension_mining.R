@@ -75,15 +75,15 @@ for (j in 2:kMaxLevels) {
 			tid <- system.time({
 				
 				## QUICK FIX FOR BUGS IN THE SCB API:
-				if (!nodeId %in% c("UF0502C")) {
+				if (!nodeId %in% c("BE0001T04BAr")) {
 					
 					# Trim levels (some levels are returned with trailing whitespace)
 					queryLevels <- scbGetLevels(path = nodeURL, descriptions=TRUE, quiet=FALSE)
 				} else {
-					queryLevels <- FALSE
+					queryLevels <- NULL
 				}
 				
-				if (queryLevels[[1]][1] != FALSE) {
+				if (!is.null(queryLevels$id)) {
 					queryData <- data.table(
 						topId       = nodeId,
 						bottomId    = as.character(queryLevels$id),
@@ -94,7 +94,8 @@ for (j in 2:kMaxLevels) {
 					queryData <- data.table(
 						topId       = nodeId,
 						bottomId    = "",
-						description = ""
+						description = "",
+                  URL         = ""
 					)
 				}
 				

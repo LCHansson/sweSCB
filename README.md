@@ -39,7 +39,7 @@ library(sweSCB)
 ## Easy access to SCB data
 Data in the SCB API is structured in a data tree and a wrapper function `findSCBdata()` has been written for easy navigation and access to data through the SCB api. To get data from SCB simply run the function from the R command line:
 ```r
-findData()
+minData <- findData()
 ```
 The function will automatically print (if requested) the code needed to reproduce the access to SCB data.
 

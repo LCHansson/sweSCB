@@ -2,6 +2,7 @@
 # file: SCBdata.R
 # require(testthat)
 # test_file("inst/tests/tests_finddata.R")
+# load("inst/tests/testFiles.Rdata")
 # test_package("rSCB")
 
 cat("findData : ")
@@ -28,13 +29,11 @@ test_that(desc=".findData.printNode",{
 test_that(desc=".findData.printCode",{
   varListText <- c("first","second","last") 
 
-  expect_output(.findData.printCode(url="urladress", varListText, "namn", clean=TRUE),
+  expect_output(.findData.printCode(url="urladress", varListText, clean=TRUE),
                 "urladress")
-  expect_output(.findData.printCode(url="urladress", varListText, "namn", clean=TRUE),
-                "namn")
-  expect_output(.findData.printCode(url="urladress", varListText, "namn", clean=TRUE),
+  expect_output(.findData.printCode(url="urladress", varListText, clean=TRUE),
                 "clean = TRUE")
-  expect_output(.findData.printCode(url="urladress", varListText, "namn", clean=TRUE),
+  expect_output(.findData.printCode(url="urladress", varListText, clean=TRUE),
                 "list\\(first")
 })
 
@@ -51,9 +50,7 @@ test_that(desc=".findData.inputConvert",{
 
 test_that(desc=".findData.Download",{
   load("testFiles.Rdata")
-  expect_output(.findData.Download(dataNode=testNullNode, test_input=c("n", "mittData", "n", "y")),
-                "mittData")
-  expect_output(.findData.Download(dataNode=testNullNode, test_input=c("n", "mittData", "n", "y")),
+  expect_output(.findData.Download(dataNode=testNullNode, test_input=c("n", "n", "y")),
                 "To download the same data from SCB again, use the following code:")
 })
 

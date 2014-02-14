@@ -11,10 +11,9 @@
 #' @export
 #' @examples
 #' \dontrun{
-#' findData()
+#' myDownloadedData <- findData()
 #' }
-
-
+#' 
 
 findData <- function(history = FALSE,...){
   # Get top node
@@ -51,17 +50,13 @@ findData <- function(history = FALSE,...){
        
       # Check if it is the botton node and if so, ask to download data
       if (Node$type[as.numeric(inputValue)] == "t") {
-        .findData.Download(dataNode=
-          list(scbGetMetadata(
-            Node$URL[as.numeric(inputValue)]),
-            Node$URL[as.numeric(inputValue)]
-          ))
-        
-        # When download is done, ask if more data should be downloaded
-        inputDownMore <- .findData.input(type = "yesno",
-            input = "Do you want to download more data from SCB?")
-        quit <- inputDownMore == "n"
-        next()
+        downloadedData<-
+          .findData.Download(dataNode=
+            list(scbGetMetadata(
+              Node$URL[as.numeric(inputValue)]),
+              Node$URL[as.numeric(inputValue)]
+            ))
+        return(downloadedData)
       }
 
       # If not the bottom node, traverse to the next node (and save the current node)
@@ -72,18 +67,28 @@ findData <- function(history = FALSE,...){
   }
 }
 
+
+#' @title Traverse node for query alternatives and download data.
+#'
+#' @description Goes through the dataNode and ask user for input for all 
+#' variables and then put this together to a query for \link{scbGetData}.
+#' 
+#' @param dataNode Botton node in SCB node tree.
+#' @param test_input Vector of length 4 to test inputs to the first 4 questions in the query.
+#' @param ... further parameters. These are currently ignored.
+#' 
 .findData.Download <- function(dataNode, test_input = NULL, ...) {
   # Assertions
-  stopifnot(length(test_input) == 0 | length(test_input) == 4 )
+  stopifnot(length(test_input) == 0 | length(test_input) == 3 )
+  
   # Define tests
   if(length(test_input) == 0){
-    testInputDown <- testInputName <- testInputClean <- character(0)
+    testInputDown <- testInputClean <- character(0)
     testInputCode <- testInputVarAlt <- character(0)
   } else {
     testInputDown <- test_input[1]
-    testInputName <- test_input[2]
-    testInputClean <- test_input[3]
-    testInputCode <- test_input[4]
+    testInputClean <- test_input[2]
+    testInputCode <- test_input[3]
     testInputVarAlt <- "1"
   }
   
@@ -96,11 +101,6 @@ findData <- function(history = FALSE,...){
     input = str_c("Do you want to download '", dataNodeName, "'?", sep=""),
     test_input = testInputDown)
   download <- inputDown == "y"
-
-  inputName <- .findData.input(
-    type = "text",
-    input = "Name of data.frame object to save data to (ex: myDataFrame):",
-    test_input = testInputName)  
   
   inputClean <- .findData.input(
     type = "yesno",
@@ -155,18 +155,16 @@ findData <- function(history = FALSE,...){
     cat("Downloading... ")
     tempData <- scbGetData(dataNode$URL, varList, clean = cleanBool)
     cat("Done.\n")
-    
-    # Save the object in the global enviroment for the user
-    assign(inputName, value = tempData, envir = .GlobalEnv)
   }
   
   # Print the code to repeat the downloading from SCB
   if (inputCode == "y") {
     .findData.printCode(dataNode$URL,
                            varListText,
-                           inputName,
                            clean = cleanBool)
   }
+  
+  if(download){ return(tempData) } else {return(invisible(NULL))}
 }
 
 .findData.inputBaseCat <- function(alt, codedAlt) {
@@ -365,11 +363,11 @@ findData <- function(history = FALSE,...){
   }
 }
 
-.findData.printCode <- function(url, varListText, inputName, clean) {
+.findData.printCode <- function(url, varListText, clean) {
   # Print the code used to download the data
   
   cat("To download the same data from SCB again, use the following code:\n\n")
-  cat(inputName,
+  cat("myDataSetName",
       " <- \n  scbGetData(url = \"", 
       url,
       "\",\n",

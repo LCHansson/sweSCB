@@ -67,7 +67,6 @@ scbGetData <- function(url, dims, clean = FALSE) {
       ))
    ), silent=TRUE)
    
-   
    # Print error message
    if (class(response)=="try-error"){
       stop(str_join("No internet connection to ",url),
@@ -83,75 +82,81 @@ scbGetData <- function(url, dims, clean = FALSE) {
    # about faulty encoding. Hence the suppressMessages() encapsulation...)
    suppressMessages(a <- content(response, as="text"))
    b <- read.table(textConnection(a), sep=',', header=TRUE, stringsAsFactors=FALSE)
-   
+   head <- str_split(string=str_sub(a, start=1, end=str_locate(a,"\n")[[1]]),"\",\"")[[1]]
+   head <- str_replace_all(string=head,pattern="\r|\n|\"","")
+   rm(a)
+     
    # Clean and melt data 
    if (clean) {
-      b <- .scbClean(b, url=url)
+      b <- .scbClean(data2clean=b, head=head, url=url)
    }
    
    return(b)
 }
 
 
-.scbClean <- function(data2clean, url) {  
+
+#' Clean raw data from SCB
+#' 
+#' This function clean the raw data from SCB to R tall R format. 
+#' 
+#' @param data2clean Data to clean.
+#' @param head Full variable names as character vector
+#' @param url url to the bottom nod (to get meta data)
+#' 
+#' @return data frame melted and in R (numeric) format
+#' 
+
+.scbClean <- function(data2clean, head, url) {  
+  # Assertions
+  stopifnot(ncol(data2clean) == length(head))
+  stopifnot(class(data2clean) == "data.frame")
+  stopifnot(class(head) == "character")
+  stopifnot(class(url) == "character")
+  
+  # Convert to data table
+  data2clean <- as.data.table(data2clean)
+  newhead <- 
+    unlist(
+      lapply(str_split(head,pattern=" "),
+             FUN=function(x) if(length(x)>1) {paste(x[1],"$",x[length(x)],sep="")} else {x})
+    )
+  setnames(data2clean,old=names(data2clean), new=newhead)
    
-   # Temporary functions (only used in .scbClean)
-   .applyFindLev <- function(vec, val) {
-      # Function to create an integer vector with one integer per text in 'val' that
-      # is found in vec
-      resVec <- unlist(lapply(X=vec,
-                              FUN=function(x,val) which(str_detect(as.character(x), val)),
-                              val=val))
-      return(resVec)
-   }
+  # Get metadata to use in creating factors of Tid and contentCode
+  contentNode <- scbGetMetadata(url)
    
-   .cleanSCBcol <- function(x) {
-      # Takes a character vector with numbers, remove all
-      # spaces and convert to numeric (if not x is a char vector)
-      suppressWarnings(numx <- as.numeric(str_replace_all(x,"\\s","")))
-      if(sum(is.na(numx)) == length(x)) {
-         return(as.character(x))
-      } else {
-         return(numx)
-      }
-   }
+  # Collect factor labels for tid and contentCode and convert
+  # other variables to factor variables
+  idvars <- character(0)
+  for (content in contentNode$variables$variables) {
+    if (content$code %in% c("Tid", "ContentsCode")) {
+      if (content$code == "Tid") { valTextTid <- content$values }
+      if (content$code == "ContentsCode") { valTextContentsCode <- content$values }
+      next()
+    }
+    varName <- content$text
+    Encoding(varName) <- "UTF-8"
+    idvars <- c(idvars, varName)
+  }
+
+  # Melt the data to long format 
+  meltData <- data2clean[, list(variable = names(.SD), value = unlist(.SD, use.names = F)), by = eval(idvars)]
+  meltData <- as.data.frame(meltData)
+  # Convert to factors
+  for (idvar in idvars){
+    meltData[,idvar] <- as.factor(meltData[,idvar])
+  }
+
+  # Add variables tid, tabellinneh\u00e5ll and v\u00e4rde
+  epicSplit <- str_locate(meltData$variable,pattern="\\$")[,1]
+  meltData[, "tid"] <- factor(str_sub(meltData$variable,start=epicSplit+1))
+  meltData[, "tabellinneh\u00e5ll"] <- factor(str_sub(meltData$variable,end=epicSplit-1))
+  meltData[, "v\u00e4rde"] <- suppressWarnings(as.numeric(str_replace_all(meltData$value,"\\s","")))
    
-   # Get metadata to use in creating factors of Tid and contentCode
-   contentNode <- scbGetMetadata(url)
+  # Remove variables wiyhout any use
+  meltData$value <- NULL
+  meltData$variable <- NULL
    
-   # Collect factor labels for tid and contentCode and convert
-   # other variables to factor variables
-   idvars <- character(0)
-   for (content in contentNode$variables$variables) {
-      if (content$code %in% c("Tid", "ContentsCode")) {
-        if (content$code == "Tid") { valTextTid <- content$values }
-        if (content$code == "ContentsCode") { valTextContentsCode <- content$values }
-        next()
-      }
-      varName <- content$text
-      Encoding(varName) <- "UTF-8"
-      varName <- make.names(varName)
-      idvars <- c(idvars, varName)
-      data2clean[, varName] <- as.factor(data2clean[, varName])
-   }
-   
-   # Melt the data to long format
-   meltData <- melt(data=data2clean, id.vars=make.names(idvars))
-   
-   # Add variables tid, tabellinnehåll and värde
-   tidLev <- .applyFindLev(meltData$variable, valTextTid)
-   tidLab <- valTextTid[sort(unique(tidLev))]
-   meltData[, "tid"] <- factor(x=tidLev, labels=tidLab)
-   
-   contLev <- .applyFindLev(meltData$variable,make.names(valTextContentsCode))
-   contLab <- valTextContentsCode[sort(unique(contLev))]
-   meltData[, "tabellinneh\u00e5ll"] <- factor(x=contLev, labels=contLab)
-   
-   meltData[,"v\u00e4rde"] <- .cleanSCBcol(meltData$value)
-   
-   # Remove variables wiyhout any use
-   meltData$value <- NULL
-   meltData$variable <- NULL
-   
-   return(meltData)
+  return(meltData)
 }

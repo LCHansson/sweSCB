@@ -19,7 +19,13 @@ test_that(desc="scbGetData",{
                clean = FALSE)  
   expect_equal(object=dim(testData), c(32,8))
   expect_equal(object=class(testData), "data.frame")
-
+  testData2 <- 
+    scbGetData(url = "http://api.scb.se/OV0104/v1/doris/sv/ssd/PR/PR0101/PR0101E/Basbeloppet",
+               dims = list(ContentsCode = c('PR0101A1'),
+                           Tid = c('*')),
+               clean = TRUE)
+  expect_equal(object=class(testData2), "data.frame")
+  expect_equal(object=ncol(testData2), 3)
 })
 
 cat("\n.scbClean : ")

@@ -81,6 +81,7 @@ scbGetData <- function(url, dims, clean = FALSE) {
    # (Due to a weird encoding issue on Windows this generates a warning
    # about faulty encoding. Hence the suppressMessages() encapsulation...)
    suppressMessages(a <- content(response, as="text"))
+   if(str_sub(a,1,1)==",") a <- str_sub(a,2,nchar(a)) # Correcting when the first element is , (few variables)
    b <- read.table(textConnection(a), sep=',', header=TRUE, stringsAsFactors=FALSE)
    head <- str_split(string=str_sub(a, start=1, end=str_locate(a,"\n")[[1]]),"\",\"")[[1]]
    head <- str_replace_all(string=head,pattern="\r|\n|\"","")

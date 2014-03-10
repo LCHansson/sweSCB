@@ -1,6 +1,6 @@
 #' @title sweSCB
 #' 
-#' @description A package for interfacing with the API of Statistics Sweden
+#' @description Interface to the API of Statistics Sweden.
 #' 
 #' 
 #' @name sweSCB

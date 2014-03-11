@@ -1,4 +1,4 @@
-sweSCB v0.3
+sweSCB v0.3.1
 =======
 
 ## Introduction
@@ -8,28 +8,24 @@ The package offers methods to fetch information about the data hierarchy stored 
 
 The source code for this project is entirely free and is licensed under the [AGPLv3 license](http://www.gnu.org/licenses/agpl-3.0.html) (also included with this package). This means that you are free to use, distribute and modify the code as you see fit. However, any code you add to this code _must_ also be released under the same license or any compatible and equally free license, as-is without any modifications. Freedom is a precious thing and can only be safeguarded by openness, sharing, and a [copyleft](http://en.wikipedia.org/wiki/Copyleft) attitude towards intellectual property.
 
-## New in version 0.3
-Version 0.3 was released on 27 January, 2014. The most significant user-visible change is the introduction of `findData()`, a command-line browsing tool for the data tree of the SCB API. 
+## New in version 0.3.1
+Version 0.3.1 was released on 11 Mars, 2014.  
 
-- Several functions have been renamed for easier use.
+- Various bug fixes (prisbasbelopp and tabellinnehåll column in cleaned data)
 
-- A parameter has been added to `getData()` to allow for nice formatting of downloaded data. This enables users to save data directly as a `data.frame` without further munging.
-
-- The base URL to the API is now implicit in all functions that call the API, like `getMetadata()` and `getDims()`, making the user-provided input less cumbersome.
-
-- The package has been renamed from `rSCB` to `sweSCB`.
-
-- A makefile and automated tests have been added to allow for smoother development.
-
-- Instructions for contributing to package development can now be found in the file named `DEVELOPMENT`.
-
-- Miscellaneous bug fixes.
+- The function to clean the data from SCB uses data.table instead of reshape2, som one less package dependency and much better performance for large queries.
 
 ## A brief note on using the SCB API
 The SCB API is a RESTful API. The data consists of a metadata part and a data part. The metadata part is structured in a hierarchical node tree, where each node contains information about any (sub-)nodes that are below it in the tree structure or, if the nodes is at the bottom of the tree structure, the data referenced by the node as well as what dimensions are available for the data at that subnode.
 
 ## Installation
-Use the `devtools` package for easy installation:
+The current package on CRAN is v.0.3. This version can be downloaded as follows:
+```r
+install.packages("sweSCB")
+library(sweSCB)
+```
+
+Use the `devtools` package for easy installation of the latest version:
 ```r
 install.packages("devtools")
 devtools::install_github("sweSCB","LCHansson")

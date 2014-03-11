@@ -184,7 +184,13 @@ findData <- function(history = FALSE,...){
   return(str_join(output,")", sep=""))
 }
 
-.findData.input <- function(type, input = NULL, test_input = character(0)){
+.findData.input <- function(type, input = NULL, test_input = character(0), silent = FALSE){
+  # If silent sink output
+  if(silent){
+    temp <- tempfile()
+    sink(file=temp)
+  }
+  
   # Define the possible alternatives that the user can do (except alternatives)
   codedAlt <- data.frame(abbr=c("esc", "b", "*", "y", "n", "a"),
                          name=c("Quit", "Back", "Select all", "Yes", "No", "Show all"),
@@ -295,6 +301,12 @@ findData <- function(history = FALSE,...){
     }
   } 
 
+  # Stop sink and remove output
+  if(silent){
+    sink()
+    unlink(temp)
+  }
+  
   return(inputScan)
 }
 

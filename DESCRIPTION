@@ -1,8 +1,8 @@
 Package: sweSCB
 Type: Package
 Title: An R interface to the web API of Statistics Sweden
-Version: 0.3.1
-Date: 2014-01-15
+Version: 0.3.2
+Date: 2014-03-12
 Author: Love Hansson, Thomas Reinholdsson, M{\aa}ns Magnusson
 Maintainer: M{\aa}ns Magnusson <mons.magnusson@gmail.com>
 Description: Interface for the REST API of Statistics Sweden. The

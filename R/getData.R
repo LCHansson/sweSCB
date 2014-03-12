@@ -117,12 +117,6 @@ scbGetData <- function(url, dims, clean = FALSE) {
   
   # Convert to data table
   data2clean <- as.data.table(data2clean)
-  newhead <- 
-    unlist(
-      lapply(str_split(head,pattern=" "),
-             FUN=function(x) if(length(x)>1) {paste(x[1],"$",x[length(x)],sep="")} else {x})
-    )
-  setnames(data2clean,old=names(data2clean), new=newhead)
    
   # Get metadata to use in creating factors of Tid and contentCode
   contentNode <- scbGetMetadata(url)
@@ -140,7 +134,24 @@ scbGetData <- function(url, dims, clean = FALSE) {
     Encoding(varName) <- "UTF-8"
     idvars <- c(idvars, varName)
   }
+  notIdIndex <- !head%in%idvars
 
+  # Remove , in variable titles (not compatible with data.table melt)
+  idvars <- str_replace_all(idvars, pattern=",", ":")
+  
+  # Rename columns
+  newhead <- head
+  newhead[notIdIndex] <- 
+    unlist(
+      lapply(str_split(head[notIdIndex],pattern=" "),
+             FUN=function(x) {
+               if(length(x)>1) {
+                paste(paste(x[1:(length(x)-1)],collapse=" "),"$",x[length(x)],sep="")
+                      } else {x}})
+    )
+  newhead[!notIdIndex] <- idvars
+  setnames(data2clean,old=names(data2clean), new=newhead)
+  
   # Melt the data to long format 
   meltData <- data2clean[, list(variable = names(.SD), value = unlist(.SD, use.names = F)), by = eval(idvars)]
   meltData <- as.data.frame(meltData)

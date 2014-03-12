@@ -83,27 +83,18 @@ test_that(desc="scbGetData",{
   Sys.sleep(max(1.1-diff[3],0))
 
   ptm <- proc.time()
-  expect_that({
+  expect_that({ 
     cleanTestData <-
-      scbGetData(url = "http://api.scb.se/OV0104/v1/doris/sv/ssd/AM/AM0114/LCIArbKv",
-                 dims = list(SNI2007 = c('*'),
+      scbGetData(url = "http://api.scb.se/OV0104/v1/doris/sv/ssd/MI/MI0814/MarkanvTatortZonArea",
+                 dims = list(Region = c('*'),
+                             Kmzon = c('*'),
+                             ArealStrandzon = c('*'),
                              ContentsCode = c('*'),
                              Tid = c('*')),
                  clean = TRUE)
-  }, not(throws_error()))
+    }, not(throws_error()))
   diff <- proc.time()-ptm
   Sys.sleep(max(1.1-diff[3],0))
-    
-  
-  cleanTestData <-
-    scbGetData(url = "http://api.scb.se/OV0104/v1/doris/sv/ssd/MI/MI0814/MarkanvTatortZonArea",
-               dims = list(Region = c('*'),
-                           Kmzon = c('*'),
-                           ArealStrandzon = c('*'),
-                           ContentsCode = c('*'),
-                           Tid = c('*')),
-               clean = TRUE)
-  
   
 })
 

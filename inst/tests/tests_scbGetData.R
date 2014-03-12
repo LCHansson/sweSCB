@@ -57,7 +57,7 @@ test_that(desc="scbGetData",{
                dims = list(SNI2007 = c('*'),
                            ContentsCode = c('*'),
                            Tid = c('*')),
-               clean = FALSE)
+               clean = TRUE)
   
   
 })

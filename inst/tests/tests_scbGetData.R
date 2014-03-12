@@ -51,4 +51,14 @@ test_that(desc="scbGetData",{
   expect_is(object=cleanTestData[,3], "factor")
   expect_equal(object=sum(is.na(cleanTestData[,4])), 0)
   expect_is(object=cleanTestData[,4], "factor")
+  
+  cleanTestData <-
+    scbGetData(url = "http://api.scb.se/OV0104/v1/doris/sv/ssd/AM/AM0114/LCIArbKv",
+               dims = list(SNI2007 = c('*'),
+                           ContentsCode = c('*'),
+                           Tid = c('*')),
+               clean = FALSE)
+  
+  
 })
+

@@ -70,6 +70,38 @@ test_that(desc="scbGetData",{
   expect_equal(object=sum(is.na(cleanTestData[,4])), 0)
   expect_is(object=cleanTestData[,4], "factor")
   
+})
+
+cat("\nExample tests : ")
+
+test_that(desc="Documentation examples",{
+  # Test example in scbGetData()
+  expect_that({ 
+    url <- paste(c(baseURL(),"AM","AM0102","AM0102A","KLStabell14LpMan"), collapse="/")
+  }, not(throws_error()))
+  
+  expect_that({   
+    metadata <- scbGetMetadata(url)
+  }, not(throws_error()))
+  
+  expect_that({ 
+    dims <- scbGetDims(metadata)
+  }, not(throws_error()))
+  
+  expect_that({   
+    test <- scbGetData(metadata$URL, dims=list(
+      Myndighet = "C02",
+      Kon = "*",
+      Heltiddeltid = "*",
+      ContentsCode = "*",
+      Tid = "*"))
+  }, not(throws_error()))
+})  
+
+
+cat("\nDownload tests: ")
+
+test_that(desc="Examples",{
   ptm <- proc.time()
   expect_that({
     cleanTestData <-
@@ -81,7 +113,7 @@ test_that(desc="scbGetData",{
   }, not(throws_error()))
   diff <- proc.time()-ptm
   Sys.sleep(max(1.1-diff[3],0))
-
+  
   ptm <- proc.time()
   expect_that({ 
     cleanTestData <-
@@ -92,7 +124,7 @@ test_that(desc="scbGetData",{
                              ContentsCode = c('*'),
                              Tid = c('*')),
                  clean = TRUE)
-    }, not(throws_error()))
+  }, not(throws_error()))
   diff <- proc.time()-ptm
   Sys.sleep(max(1.1-diff[3],0))
   
@@ -109,7 +141,13 @@ test_that(desc="scbGetData",{
   }, not(throws_error()))
   diff <- proc.time()-ptm
   Sys.sleep(max(1.1-diff[3],0))
-  
+})  
+
+
+cat("\nBig query tests : ")
+
+test_that(desc="Big query",{
+#   # Test big data DL  
 #   ptm <- proc.time()
 #   expect_that({ 
 #     cleanTestData <-
@@ -119,6 +157,4 @@ test_that(desc="scbGetData",{
 #   }, not(throws_error()))
 #   diff <- proc.time()-ptm
 #   Sys.sleep(max(1.1-diff[3],0))
-  
-})
-
+})  

@@ -85,7 +85,9 @@ test_that(desc="Documentation examples",{
   }, not(throws_error()))
   
   expect_that({ 
+    sink(file=tempfile())
     dims <- scbGetDims(metadata)
+    sink()
   }, not(throws_error()))
   
   expect_that({   

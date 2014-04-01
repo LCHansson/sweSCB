@@ -149,14 +149,13 @@ test_that(desc="Examples",{
 cat("\nBig query tests : ")
 
 test_that(desc="Big query",{
-#   # Test big data DL  
-#   ptm <- proc.time()
-#   expect_that({ 
-#     cleanTestData <-
-#       scbGetData(url = "http://api.scb.se/OV0104/v1/doris/sv/ssd/BE/BE0101/BE0101A/BefolkningNy",
-#                  dims = list(Region = c('*'), Civilstand = c('*'), Alder = c('*'), Kon = c('*'), ContentsCode = c('*'),Tid = c('*')),
-#                  clean = FALSE)
-#   }, not(throws_error()))
-#   diff <- proc.time()-ptm
-#   Sys.sleep(max(1.1-diff[3],0))
+  ptm <- proc.time()
+   expect_that({
+     cleanTestData <-
+      scbGetData(url = "http://api.scb.se/OV0104/v1/doris/sv/ssd/BE/BE0101/BE0101A/BefolkningNy",
+                 dims = list(Region = c('*'), Civilstand = c('*'), Alder = c('*'), Kon = c('*'), ContentsCode = c('*'),Tid = c('*')),
+                 clean = FALSE)
+  }, throws_error())
+  diff <- proc.time()-ptm
+  Sys.sleep(max(1.1-diff[3],0))
 })  

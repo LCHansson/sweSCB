@@ -73,7 +73,7 @@ scbGetData <- function(url, dims, clean = FALSE) {
            call.=FALSE)
    }
    if(response$headers$statusmessage != "OK") {
-     stop(str_join("Error in connection: ", response$headers$statusmessage),
+     stop(str_join(response$headers$status, response$headers$statusmessage, content(response,as='text'), sep=" "),
           call.=FALSE)
    }
    
